@@ -1,3 +1,22 @@
 <resources>
+
+    // ACTIVITY MAIN
     <string name="app_name">Go4Lunch</string>
+    <string name="map_button_title">Map</string>
+    <string name="list_button_title">List</string>
+    <string name="coworkers_button_title">Workmates</string>
+    <string name="lunch_button_title">YOUR LUNCH</string>
+    <string name="settings_button_title">SETTINGS</string>
+    <string name="log_out_button_title">LOG OUT</string>
+    <string name="activity_sign_in_second_title">Find a nice restaurant and invite your co-workers for lunch!</string>
+    <string name="logo_go_4_lunch" />
+    <string name="background_content_description" />
+
+    // SETTING LAYOUT
+    <string name="settings_layout_title">Settings</string>
+    <string name="delete_account_button_text">delete account</string>
+    <string name="facebook_login_button_text" />
+    <string name="adapted_facebook_login_button_text">sign in with Facebook</string>
+    <string name="google_login_button_text">sign in with Google</string>
+    <string name="search_button_title" />
 </resources>
