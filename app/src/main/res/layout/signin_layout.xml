@@ -43,7 +43,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="60dp"
-            android:text="@string/activity_sign_in_second_title"
+            android:text="@string/sign_in_second_title"
             android:textColor="@color/colorWhite"
             android:textSize="12sp"
             android:textStyle="italic" />
@@ -64,8 +64,9 @@
             android:id="@+id/adapted_facebook_login_button"
             style="@style/SignInButton"
             android:backgroundTint="@color/com_facebook_button_background_color"
-            android:drawableLeft="@drawable/com_facebook_button_icon_blue"
-            android:text="@string/adapted_facebook_login_button_text" />
+            android:drawableLeft="@drawable/facebook_24"
+            android:text="@string/adapted_facebook_login_button_text"
+            app:targetApi="lollipop" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/login_google_button"

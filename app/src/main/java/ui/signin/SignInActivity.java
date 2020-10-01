@@ -1,4 +1,4 @@
-package signin;
+package ui.signin;
 
 public class SignInActivity {
 }
