@@ -9,18 +9,16 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.ActivitySignInBinding;
-import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 
-import java.util.Collections;
 import java.util.Objects;
 
 import ui.MainActivity;
 
 public class SignInActivity extends AppCompatActivity {
 
-    private @org.jetbrains.annotations.NotNull ActivitySignInBinding binding;
+    private ActivitySignInBinding binding;
     private static final int RC_SIGN_IN = 100;
 
 
@@ -30,20 +28,6 @@ public class SignInActivity extends AppCompatActivity {
         binding = ActivitySignInBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-
-        binding.loginGoogleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startSignInActivityGoogle();
-            }
-        });
-
-        binding.adaptedFacebookLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startSignInActivityFacebook();
-            }
-        });
     }
 
     //
@@ -53,30 +37,6 @@ public class SignInActivity extends AppCompatActivity {
         this.handleResponseAfterSignIn(requestCode, resultCode, data);
     }
 
-
-    // Create and launch sign-in activity Google
-    private void startSignInActivityGoogle() {
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(Collections.singletonList(new
-                                AuthUI.IdpConfig.GoogleBuilder().build()))
-                        .setIsSmartLockEnabled(false, true)
-                        .build(),
-                RC_SIGN_IN);
-    }
-
-    // Create and launch sign-in activity Facebook
-    private void startSignInActivityFacebook() {
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(Collections.singletonList(new
-                                AuthUI.IdpConfig.FacebookBuilder().build()))
-                        .setIsSmartLockEnabled(false, true)
-                        .build(),
-                RC_SIGN_IN);
-    }
 
     // Method that handles response after sign in Activity close
     private void handleResponseAfterSignIn(int requestCode, int resultCode, Intent data) {

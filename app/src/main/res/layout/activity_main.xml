@@ -34,7 +34,7 @@
         android:layout_below="@id/main_app_bar_layout">
 
         <FrameLayout
-            android:id="@+id/main_frame_layout"
+            android:id="@+id/amain_frame_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </RelativeLayout>

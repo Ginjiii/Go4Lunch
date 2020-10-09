@@ -26,12 +26,9 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+            android:layout_height="wrap_content"
+                android:orientation="vertical"
+            tools:ignore="ScrollViewCount">
 
                 <com.google.android.material.appbar.AppBarLayout
                     android:layout_width="match_parent"
@@ -44,10 +41,6 @@
                         android:theme="@style/ToolbarStyle" />
                 </com.google.android.material.appbar.AppBarLayout>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
                     <ImageView
                         android:id="@+id/restaurant_detail_picture"
                         android:layout_width="match_parent"
@@ -59,7 +52,6 @@
                         layout="@layout/progress_bar_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
-                </RelativeLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -98,11 +90,6 @@
                         android:textColor="@color/colorWhite"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/restaurant_detail_name" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
 
                     <Button
                         android:id="@+id/restaurant_detail_call_button"
@@ -139,8 +126,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/restaurant_detail_recycle_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
+                    android:layout_height="wrap_content" />
         </ScrollView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
