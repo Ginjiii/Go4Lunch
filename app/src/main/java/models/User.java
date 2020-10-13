@@ -2,13 +2,15 @@ package models;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+
 public class User {
     private String userId;
     private String username;
     @Nullable
     private String urlPicture;
 
-    public User(String userId){
+    public User(String id, String username, String urlPicture, String userId, ArrayList<String> like, int currentTime){
         this.userId = userId;
     }
 

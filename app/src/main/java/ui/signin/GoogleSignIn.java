@@ -9,6 +9,8 @@ import com.firebase.ui.auth.AuthUI;
 
 import java.util.Collections;
 
+import Activities.SignInActivity;
+
 public class GoogleSignIn extends SignInActivity {
 
     private @org.jetbrains.annotations.NotNull ActivitySignInBinding binding;

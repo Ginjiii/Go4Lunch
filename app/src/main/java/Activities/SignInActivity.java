@@ -1,4 +1,4 @@
-package ui.signin;
+package Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import com.firebase.ui.auth.IdpResponse;
 
 import java.util.Objects;
 
-import ui.MainActivity;
+import Activities.MainActivity;
 
 public class SignInActivity extends AppCompatActivity {
 
