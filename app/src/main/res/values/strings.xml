@@ -61,6 +61,7 @@
     <string name="error_authentication_canceled" />
     <string name="connection_succeed" />
     <string name="error_no_internet" />
+    <string name="invalid_email_password" />
 
 
 </resources>

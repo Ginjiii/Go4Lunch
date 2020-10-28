@@ -26,7 +26,7 @@ public class UserHelper {
         User userToCreate = new User(userId, username, urlPicture, placeId, like, currentTime);
         //Add it in Firestore
         return UserHelper.getUsersCollection()
-                .document(userId) //Setting uID for Document
+                .document(userId) //Setting userID for Document
                 .set(userToCreate);//Setting object for Document
     }
 

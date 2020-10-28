@@ -16,13 +16,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name="Activities.MainActivity">
+        <activity android:name="ui.SettingActivity" />
+        <activity android:name="ui.RestaurantActivity" />
+        <activity android:name="ui.MainActivity" />
+        <activity android:name="ui.signin.SignInActivity" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
+</application>
 
-</manifest>
+    </manifest>
