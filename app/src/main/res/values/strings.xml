@@ -48,7 +48,7 @@
     <string name="google_login_button_text">sign in with Google</string>
     <string name="navigation_drawer_open" />
     <string name="navigation_drawer_close" />
-    <string name="facebook_app_id">1272208246491957</string>
+    <string name="facebook_application_id">1272208246491957</string>
     <string name="fb_login_protocol_scheme">fb1272208246491957</string>
     <string name="error_unknown_error" />
     <string name="twitter_api_key">2TszP3aP4v4zm348IYXBWHuRO</string>
@@ -62,6 +62,7 @@
     <string name="connection_succeed" />
     <string name="error_no_internet" />
     <string name="invalid_email_password" />
+    <string name="position" />
 
 
 </resources>

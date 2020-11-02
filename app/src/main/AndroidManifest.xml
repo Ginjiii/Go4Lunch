@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.go4lunch">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -16,10 +16,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name="ui.SettingActivity" />
-        <activity android:name="ui.RestaurantActivity" />
-        <activity android:name="ui.MainActivity" />
-        <activity android:name="ui.signin.SignInActivity" >
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_application_id"
+            tools:replace="android:value"/>
+
+        <activity android:name=".goforlunch.ui.SettingActivity" />
+        <activity android:name=".goforlunch.ui.RestaurantActivity" />
+        <activity android:name=".goforlunch.ui.MainActivity" />
+        <activity android:name=".goforlunch.ui.signin.SignInActivity" >
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

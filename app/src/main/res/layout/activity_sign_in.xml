@@ -56,7 +56,7 @@
         app2:layout_constraintTop_toBottomOf="@id/text_logo_app" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/adapted_facebook_login_button"
+        android:id="@+id/facebookLoginButton"
         style="@style/SignInButton"
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/com_facebook_button_background_color"
@@ -64,19 +64,16 @@
         android:text="@string/adapted_facebook_login_button_text"
         app2:layout_constraintEnd_toEndOf="parent"
         app2:layout_constraintStart_toStartOf="parent"
-        app2:layout_constraintTop_toBottomOf="@+id/text2_logo_app"
-        app:ignore="RtlHardcoded"
-        app:targetApi="lollipop" />
+        app2:layout_constraintTop_toBottomOf="@+id/text2_logo_app" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/login_google_button"
+        android:id="@+id/gmailLoginButton"
         style="@style/SignInButton"
         android:layout_marginTop="8dp"
         android:drawableLeft="@drawable/google_plus_24"
         android:text="@string/google_login_button_text"
         app2:layout_constraintEnd_toEndOf="parent"
         app2:layout_constraintStart_toStartOf="parent"
-        app2:layout_constraintTop_toBottomOf="@+id/adapted_facebook_login_button"
-        app:ignore="RtlHardcoded" />
+        app2:layout_constraintTop_toBottomOf="@+id/facebookLoginButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
