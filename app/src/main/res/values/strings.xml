@@ -1,5 +1,5 @@
 <resources>
-        --- MENU ---
+    --- MENU ---
     // BOTTOM NAVIGATION MENU
     <string name="map_button_title">Map</string>
     <string name="list_button_title">List</string>
@@ -19,7 +19,7 @@
     // TOOLBAR SEARCH MENU
     <string name="search_button_title">search</string>
 
-        --- LAYOUT ---
+    --- LAYOUT ---
 
     // COWORKERS ITEM LAYOUT
     <string name="coworkers_picture" />
@@ -63,6 +63,20 @@
     <string name="error_no_internet" />
     <string name="invalid_email_password" />
     <string name="position" />
+    <string name="hungry" />
+    <string name="list_restaurants_adapter_open_now" />
+    <string name="list_restaurants_adapter_close_now" />
+    <string name="autocomplete_toast" />
+    <string name="map_view_fragment_my_position" />
+    <string name="no_location_message" />
+    <string name="retry_button" />
+    <string name="logged_out_success" />
+    <string name="no_restaurant_picked_message" />
+    <string name="no_time" />
+    <string name="closed" />
+    <string name="open_24_7" />
+    <string name="closing_soon" />
+    <string name="need_permission_message" />
 
 
 </resources>

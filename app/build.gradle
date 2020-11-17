@@ -6,7 +6,7 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "com.example.go4lunch"
+        applicationId "com.go4lunch"
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
@@ -15,13 +15,10 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildFeatures {
+    }
 
-            dataBinding true
-
-            // for view binding:
-             viewBinding true
-        }
+    buildFeatures {
+        viewBinding = true
     }
 
     buildTypes {
@@ -39,7 +36,7 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
@@ -47,33 +44,45 @@ dependencies {
     implementation "androidx.cardview:cardview:1.0.0"
     implementation 'com.android.support:multidex:1.0.3'
 
-    
+
     //noinspection GradleDependency
     implementation 'com.google.firebase:firebase-firestore:21.7.0'
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'androidx.preference:preference:1.1.1'
 
     //GOOGLE
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.maps.android:android-maps-utils:0.4.4'
     implementation 'com.google.android.libraries.places:places:2.4.0'
+
+    implementation 'androidx.multidex:multidex:2.0.1'
 
 
     //FACEBOOK LOGIN SUPPORT
-    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+    implementation 'com.facebook.android:facebook-android-sdk:7.1.0'
 
     //TWITTER
     implementation 'com.twitter.sdk.android:twitter:3.1.1'
     //implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
-    //implementation 'com.twitter.sdk.android:tweet-ui:3.1.1'
+    //implementation 'com.twitter.sdk.android:tweet-com.goforlunch.ui:3.1.1'
 
     //GLIDE
-    implementation 'com.github.bumptech.glide:glide:4.3.1'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.3.1'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
 
     //FIREBASE AUTH
     implementation "com.google.firebase:firebase-auth:20.0.0"
-    implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
+    implementation 'com.google.firebase:firebase-core:18.0.0'
+    implementation "com.firebaseui:firebase-ui-auth:6.2.1"
+
+    //EASY PERMISSIONS
+    implementation 'pub.devrel:easypermissions:1.1.1'
+
+    //RETROFIT
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
 
 }

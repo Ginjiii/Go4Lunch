@@ -7,8 +7,8 @@ import java.util.List;
 
 public class User {
 
-    private String userId;
-    private String userName;
+    private String uid;
+    private String username;
     private String email;
     @Nullable private String urlPicture;
     @Nullable private String restaurantUid;
@@ -16,11 +16,11 @@ public class User {
     @Nullable private String restaurantAddress;
     private List<String> likedRestaurants;
 
-    public User(String userId, String username, String urlPicture, String placeId, ArrayList<String> like, int currentTime){}
+    public User(){}
 
-    public User(String userId, String userName, String email, @Nullable String urlPicture) {
-        this.userId = userId;
-        this.userName = userName;
+    public User(String uid, String username, String email, @Nullable String urlPicture) {
+        this.uid = uid;
+        this.username = username;
         this.email = email;
         this.urlPicture = urlPicture;
     }
@@ -29,20 +29,20 @@ public class User {
     // SETTERS & GETTERS
     //-----------
 
-    public String getUserId() {
-        return userId;
+    public String getUid() {
+        return uid;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Nullable
@@ -113,8 +113,8 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "userId='" + userId + '\'' +
-                ", username='" + userName + '\'' +
+                "uid='" + uid + '\'' +
+                ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", urlPicture='" + urlPicture + '\'' +
                 ", restaurantUid='" + restaurantUid + '\'' +

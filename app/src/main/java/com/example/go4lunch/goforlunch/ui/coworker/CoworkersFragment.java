@@ -1,5 +1,6 @@
-package com.example.go4lunch.goforlunch.ui.fragment;
+package com.example.go4lunch.goforlunch.ui.coworker;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,9 +8,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
-import com.example.go4lunch.R;
+import com.go4lunch.R;
+
 
 public class CoworkersFragment extends Fragment {
 

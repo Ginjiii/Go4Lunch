@@ -1,6 +1,7 @@
 package com.example.go4lunch.goforlunch.ui;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -12,7 +13,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import com.example.go4lunch.R;
+import android.view.View;
+
+import com.example.go4lunch.goforlunch.ui.maps.MapsFragment;
+import com.go4lunch.R;
+import com.go4lunch.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -23,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
+    private ActivityMainBinding binding;
+
     public static Intent newIntent(Context context) {
         return new Intent(context, MainActivity.class);
     }
@@ -30,7 +37,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         toolbar = findViewById(R.id.main_toolbar);
         bottomNavigationView = findViewById(R.id.main_bottom_navigation_view);
@@ -40,10 +49,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.configureDrawerLayout();
         this.configureNavigationView();
 
-    }
+        //For change title Action Bar
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.hungry);
+        }
+        //For bottom navigation View
+        //bottomNavigationView.setOnNavigationItemSelectedListener(navlistener);
 
-    //For bottom navigation View
-    //  bottomNavigationView.setOnNavigationItemSelectedListener(navigationlistener);
+        //For connect MapFragment with activity
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, new MapsFragment()).commit();
+
+    }
 
     // --------------------
     // UI
@@ -63,20 +80,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     switch (menuItem.getItemId()) {
                         case R.id.bottom_navigation_menu_map_button:
-                            // selectedFragment = new MapFragment();
+                             selectedFragment = new MapsFragment();
 
                             break;
                         case R.id.bottom_navigation_menu_list_button:
                             // selectedFragment = new ListFragment();
                             break;
                         case R.id.bottom_navigation_menu_coworkers_button:
-                            // selectedFragment = new WorkmatesFragment();
+                           // selectedFragment = new CoworkersFragment();
 
                             break;
                     }
 
                     if (selectedFragment != null) {
-                        MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_map_container,
+                        MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout,
                                 selectedFragment).commit();
                     }
                     return true;
