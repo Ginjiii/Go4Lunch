@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.go4lunch.goforlunch.ui.maps.MapsFragment;
 import com.go4lunch.R;
 import com.go4lunch.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -54,12 +53,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (actionBar != null) {
             actionBar.setTitle(R.string.hungry);
         }
-        //For bottom navigation View
-        //bottomNavigationView.setOnNavigationItemSelectedListener(navlistener);
 
         //For connect MapFragment with activity
         getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, new MapsFragment()).commit();
-
     }
 
     // --------------------
@@ -70,35 +66,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
     }
 
-    //Bottom Nav
-    private BottomNavigationView.OnNavigationItemSelectedListener navigationlistener =
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @SuppressLint("WrongConstant")
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                    Fragment selectedFragment = null;
+     //Bottom Nav
+     private BottomNavigationView.OnNavigationItemSelectedListener navigationlistener =
+             new BottomNavigationView.OnNavigationItemSelectedListener() {
+                 @SuppressLint("WrongConstant")
+                 @Override
+                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                     Fragment selectedFragment = null;
 
-                    switch (menuItem.getItemId()) {
-                        case R.id.bottom_navigation_menu_map_button:
-                             selectedFragment = new MapsFragment();
+                     switch (menuItem.getItemId()) {
+                         case R.id.bottom_navigation_menu_map_button:
+                              selectedFragment = new MapsFragment();
 
-                            break;
-                        case R.id.bottom_navigation_menu_list_button:
-                            // selectedFragment = new ListFragment();
-                            break;
-                        case R.id.bottom_navigation_menu_coworkers_button:
-                           // selectedFragment = new CoworkersFragment();
+                             break;
+                         case R.id.bottom_navigation_menu_list_button:
+                             // selectedFragment = new ListFragment();
+                             break;
+                         case R.id.bottom_navigation_menu_coworkers_button:
+                            // selectedFragment = new CoworkersFragment();
 
-                            break;
+                             break;
                     }
 
                     if (selectedFragment != null) {
-                        MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout,
-                                selectedFragment).commit();
-                    }
-                    return true;
-                }
-            };
+                       MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout,
+                               selectedFragment).commit();
+                  }
+                   return true;
+             }
+           };
 
     // Navigation Drawer
 
