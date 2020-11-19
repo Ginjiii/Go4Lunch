@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.go4lunch.goforlunch.ui.maps.MapsFragment;
 import com.go4lunch.R;
 import com.go4lunch.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -55,7 +56,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         //For connect MapFragment with activity
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, new MapsFragment()).commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_frame_layout, new MapsFragment())
+                .commit();
     }
 
     // --------------------
