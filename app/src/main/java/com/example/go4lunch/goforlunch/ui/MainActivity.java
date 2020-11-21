@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private BottomNavigationView bottomNavigationView;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-
     private ActivityMainBinding binding;
 
     public static Intent newIntent(Context context) {
