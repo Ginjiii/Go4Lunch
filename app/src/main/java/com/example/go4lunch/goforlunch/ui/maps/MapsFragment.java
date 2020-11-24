@@ -51,13 +51,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private double latitude;
     private double longitude;
     private String position;
-    private String formattedDate;
 
     private static float ZOOM_USER_LOCATION_VALUE = 15;
 
     private static String STATE_KEY_MAP_CAMERA = "keymap";
 
-    public MapsFragment() {}
+    public MapsFragment() {
+    }
 
     @Nullable
     @Override
@@ -73,9 +73,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
         rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
         rlp.setMargins(0, 0, 0, 80);
-        Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
-        formattedDate = df.format(c);
         SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapView);
         if (supportMapFragment != null) {
             supportMapFragment.getMapAsync(MapsFragment.this);
@@ -114,14 +111,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     private void updateLocationUI() {
         try {
-            if (mLocationPermissionGranted) {
-                googleMap.setMyLocationEnabled(true);
-                googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-            } else {
-                googleMap.setMyLocationEnabled(false);
-                googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-                getLocationPermission();
-            }
+            googleMap.setMyLocationEnabled(mLocationPermissionGranted);
+            googleMap.getUiSettings().setMyLocationButtonEnabled(mLocationPermissionGranted);
+            getLocationPermission();
         } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
         }
@@ -154,25 +146,25 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         mapView.onResume();
     }
 
     @Override
-    public void onPause(){
+    public void onPause() {
         super.onPause();
         mapView.onPause();
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
     }
 
     @Override
-    public void onLowMemory(){
+    public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
     }
@@ -181,24 +173,24 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        if(googleMap != null){
+        if (googleMap != null) {
             outState.putParcelable(STATE_KEY_MAP_CAMERA, googleMap.getCameraPosition());
         }
     }
 
-    private void configureMapView(Bundle savedInstanceState){
+    private void configureMapView(Bundle savedInstanceState) {
         mapView = binding.mapView;
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
     }
 
-        @Override
-        public void onMapReady(GoogleMap googleMap) {
-            this.googleMap = googleMap;
-            googleMap.setIndoorEnabled(false);
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.googleMap = googleMap;
+        googleMap.setIndoorEnabled(false);
 
-            getLocationPermission();
-            getDeviceLocation();
-            updateLocationUI();
-        }
+        getLocationPermission();
+        getDeviceLocation();
+        updateLocationUI();
+    }
 }

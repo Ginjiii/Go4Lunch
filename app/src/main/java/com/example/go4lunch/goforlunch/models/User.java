@@ -7,19 +7,19 @@ import java.util.List;
 
 public class User {
 
-    private String uid;
+    private String userId;
     private String username;
     private String email;
     @Nullable private String urlPicture;
-    @Nullable private String restaurantUid;
+    @Nullable private String restaurantUserId;
     @Nullable private String restaurantName;
     @Nullable private String restaurantAddress;
     private List<String> likedRestaurants;
 
     public User(){}
 
-    public User(String uid, String username, String email, @Nullable String urlPicture) {
-        this.uid = uid;
+    public User(String userId, String username, String email, @Nullable String urlPicture) {
+        this.userId = userId;
         this.username = username;
         this.email = email;
         this.urlPicture = urlPicture;
@@ -29,12 +29,12 @@ public class User {
     // SETTERS & GETTERS
     //-----------
 
-    public String getUid() {
-        return uid;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -55,12 +55,12 @@ public class User {
     }
 
     @Nullable
-    public String getRestaurantUid() {
-        return restaurantUid;
+    public String getRestaurantUserId() {
+        return restaurantUserId;
     }
 
-    public void setRestaurantUid(@Nullable String restaurantUid) {
-        this.restaurantUid = restaurantUid;
+    public void setRestaurantUserId(@Nullable String restaurantUserId) {
+        this.restaurantUserId = restaurantUserId;
     }
 
     public String getEmail() {
@@ -113,11 +113,11 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "uid='" + uid + '\'' +
+                "userId='" + userId + '\'' +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", urlPicture='" + urlPicture + '\'' +
-                ", restaurantUid='" + restaurantUid + '\'' +
+                ", restaurantUserId='" + restaurantUserId + '\'' +
                 ", likedRestaurants=" + likedRestaurants +
                 '}';
     }
