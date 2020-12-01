@@ -16,8 +16,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.go4lunch.goforlunch.ui.maps.MapsFragment;
 import com.go4lunch.R;
 import com.go4lunch.databinding.ActivityMainBinding;
@@ -106,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.drawer_menu_settings_button:
                 binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
+                startActivity(new Intent(this, SettingActivity.class));
                 break;
             case R.id.drawer_menu_logout_button:
                 break;
@@ -116,6 +119,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     //NavigationView
     private void configureNavigationView() {
+        binding.mainNavigationView.getHeaderView(0).findViewById(R.id.user_navigation_header_image_view_picture);
+        binding.mainNavigationView.getHeaderView(0).findViewById(R.id.user_navigation_header_name_text);
+        binding.mainNavigationView.getHeaderView(0).findViewById(R.id.user_navigation_header_email_text);
         binding.mainNavigationView.setNavigationItemSelectedListener(this);
     }
 }
