@@ -4,27 +4,25 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.ListFragment;
-
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
-
+import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.example.go4lunch.goforlunch.ui.maps.MapsFragment;
 import com.go4lunch.R;
 import com.go4lunch.databinding.ActivityMainBinding;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.example.go4lunch.goforlunch.ui.signin.SignInActivity;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -73,20 +71,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     switch (itemId) {
                         case R.id.bottom_navigation_menu_map_button:
                             selectedFragment = new MapsFragment();
-
                             break;
                         case R.id.bottom_navigation_menu_list_button:
                              selectedFragment = new ListFragment();
                             break;
                         case R.id.bottom_navigation_menu_coworkers_button:
                              selectedFragment = new CoworkersFragment();
-
                             break;
                     }
 
                     if (selectedFragment != null) {
-                        MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout,
-                                selectedFragment).commit();
+                        MainActivity.this
+                                .getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.main_frame_layout, selectedFragment)
+                                .commit();
                     }
                     return true;
                 }
@@ -107,21 +106,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.drawer_menu_lunch_button:
                 break;
             case R.id.drawer_menu_settings_button:
-                binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
                 startActivity(new Intent(this, SettingActivity.class));
                 break;
             case R.id.drawer_menu_logout_button:
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(this, SignInActivity.class));
+                finish();
                 break;
         }
         binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
+
+
     //NavigationView
     private void configureNavigationView() {
-        binding.mainNavigationView.getHeaderView(0).findViewById(R.id.user_navigation_header_image_view_picture);
-        binding.mainNavigationView.getHeaderView(0).findViewById(R.id.user_navigation_header_name_text);
-        binding.mainNavigationView.getHeaderView(0).findViewById(R.id.user_navigation_header_email_text);
         binding.mainNavigationView.setNavigationItemSelectedListener(this);
+        ImageView imageUser = binding.mainNavigationView.getHeaderView(0).findViewById(R.id.user_navigation_header_image_view_picture);
+        TextView userNameTextView = binding.mainNavigationView.getHeaderView(0).findViewById(R.id.user_navigation_header_name_text);
+        TextView emailTextView = binding.mainNavigationView.getHeaderView(0).findViewById(R.id.user_navigation_header_email_text);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+
+            userNameTextView.setText(user.getDisplayName());
+            emailTextView.setText(user.getEmail());
+            Glide.with(this)
+                    .load(user.getPhotoUrl())
+                    .transform(new CircleCrop())
+                    .into(imageUser);
+        }
     }
 }
