@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.go4lunch.goforlunch.ui.restaurant.RestaurantsListFragment">
+    tools:context="com.example.go4lunch.goforlunch.ui.restaurant.RestaurantsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_list_layout"

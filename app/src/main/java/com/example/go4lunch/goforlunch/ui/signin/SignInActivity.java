@@ -35,7 +35,6 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(view);
 
         binding.facebookLoginButton.setOnClickListener(v -> viewModel.startSignInActivityFacebook(SignInActivity.this));
-
         binding.gmailLoginButton.setOnClickListener(v -> viewModel.startSignInActivityGoogle(SignInActivity.this));
     }
 

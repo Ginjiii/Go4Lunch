@@ -1,11 +1,6 @@
-package com.example.go4lunch.goforlunch.ui.maps;
+package com.example.go4lunch.goforlunch.ui.restaurant;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -14,72 +9,58 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
+import com.example.go4lunch.goforlunch.models.Restaurant;
 import com.go4lunch.R;
-import com.go4lunch.databinding.FragmentMapsBinding;
+import com.go4lunch.databinding.FragmentListLayoutBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
+import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
-public class MapsFragment extends Fragment implements OnMapReadyCallback {
+public class RestaurantsFragment extends Fragment {
 
-    private FragmentMapsBinding binding;
-    private GoogleMap googleMap;
-    private MapView mapView;
-    private CameraUpdate cameraInitialPosition;
+    FragmentListLayoutBinding binding;
+    private List<Restaurant> restaurants;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0;
     private boolean mLocationPermissionGranted;
-    private FusedLocationProviderClient mFusedLocationProviderClient;
+    private GoogleMap googleMap;
     private double latitude;
     private double longitude;
     private String position;
 
-    private static float ZOOM_USER_LOCATION_VALUE = 15;
+    public RestaurantsFragment(){}
 
-    private static String STATE_KEY_MAP_CAMERA = "keymap";
-
-    public MapsFragment() {}
-
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        binding = FragmentMapsBinding.inflate(inflater, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentListLayoutBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
-        this.configureMapView(savedInstanceState);
-        View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
-        RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
-        rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
-        rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-        rlp.setMargins(0, 0, 0, 80);
-        SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapView);
-        if (supportMapFragment != null) {
-            supportMapFragment.getMapAsync(MapsFragment.this);
-        }
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
+        this.configureRecyclerView(view);
         return view;
+    }
+
+    private void configureRecyclerView(View view){
+        restaurants = new ArrayList<>();
     }
 
     private void getLocationPermission() {
@@ -135,54 +116,5 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mapView.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mapView.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mapView.onDestroy();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mapView.onLowMemory();
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        if (googleMap != null) {
-            outState.putParcelable(STATE_KEY_MAP_CAMERA, googleMap.getCameraPosition());
-        }
-    }
-
-    private void configureMapView(Bundle savedInstanceState) {
-        mapView = binding.mapView;
-        mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync(this);
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        this.googleMap = googleMap;
-        googleMap.setIndoorEnabled(false);
-
-        getLocationPermission();
-        getDeviceLocation();
-        updateLocationUI();
     }
 }
