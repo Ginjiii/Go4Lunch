@@ -5,5 +5,9 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
-public class RestaurantNavigator {
+public interface RestaurantsNavigator {
+
+    void displayRestaurants(List<Restaurant> restaurants);
+    void displayRestaurantDetail();
+    void configureLocation(LatLng location);
 }

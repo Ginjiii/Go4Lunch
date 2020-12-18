@@ -4,10 +4,11 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Restaurant {
 
-    private String rId;
+    private String uid;
     private String name;
     private Double latitude;
     private Double longitude;
@@ -20,8 +21,8 @@ public class Restaurant {
     private String webSite;
     private List<User> usersEatingHere;
 
-    public Restaurant(String rId, String name, Double latitude, Double longitude, @Nullable String address, @Nullable int openingHours, @Nullable String urlPhoto, @Nullable int rating, String phoneNumber, String webSite) {
-        this.rId = rId;
+    public Restaurant(String uid, String name, Double latitude, Double longitude, @Nullable String address, @Nullable int openingHours, @Nullable String urlPhoto, String phoneNumber, String webSite) {
+        this.uid = uid;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -34,12 +35,12 @@ public class Restaurant {
         usersEatingHere = new ArrayList<>();
     }
 
-    public String getRid() {
-        return rId;
+    public String getUid() {
+        return uid;
     }
 
-    public void setRid(String rId) {
-        this.rId = rId;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getName() {

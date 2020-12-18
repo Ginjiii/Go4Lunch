@@ -1,17 +1,15 @@
 package com.example.go4lunch.goforlunch.service;
 
-import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RetrofitService {
-
-    public static Retrofit retrofit = new Retrofit.Builder()
-            //define root URL
-            .baseUrl("https://maps.googleapis.com/")
-            //serialize Gson
+public class Retrofit {
+    /**
+     * Create an instance of Retrofit with the base url of API Google
+     */
+    retrofit2.Retrofit retrofit = new retrofit2.Retrofit.Builder()
+            .baseUrl("https://maps.googleapis.com/maps/api/place/")
             .addConverterFactory(GsonConverterFactory.create())
-            //For RxJava
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build();
 }

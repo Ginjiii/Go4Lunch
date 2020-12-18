@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.example.go4lunch.goforlunch.ui.maps.MapsFragment;
+import com.example.go4lunch.goforlunch.ui.restaurant.RestaurantsFragment;
 import com.go4lunch.R;
 import com.go4lunch.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationView;
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             selectedFragment = new MapsFragment();
                             break;
                         case R.id.bottom_navigation_menu_list_button:
-                             selectedFragment = new ListFragment();
+                             selectedFragment = new RestaurantsFragment();
                             break;
                         case R.id.bottom_navigation_menu_coworkers_button:
                              selectedFragment = new CoworkersFragment();
