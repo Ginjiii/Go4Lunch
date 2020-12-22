@@ -14,7 +14,7 @@ public class RestaurantResult implements Serializable {
     @SerializedName("vicinity")
     private String address;
     @SerializedName("place_id")
-    private String placeId;
+    private static String placeId;
     @SerializedName("photos")
     private List<RestaurantPhoto> restaurantPhotos;
     private float rating;

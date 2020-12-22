@@ -12,8 +12,8 @@ public class DetailsResult implements Serializable {
     @SerializedName("opening_hours")
     private RestaurantOpeningHours restaurantOpeningHours;
     @SerializedName("geometry")
-    private RestaurantGeometry detailsGeometry;
-    private String name;
+    private static RestaurantGeometry detailsGeometry;
+    private static String name;
     @SerializedName("photos")
     private List<RestaurantPhoto> detailsPhotos;
     private float rating;
