@@ -1,134 +1,173 @@
 package com.example.go4lunch.goforlunch.models;
 
-import androidx.annotation.Nullable;
+import com.example.go4lunch.goforlunch.models.places.RestaurantsDetail.Location;
+import com.example.go4lunch.goforlunch.models.places.RestaurantsDetail.OpeningHours;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 
-public class Restaurant {
+public class Restaurant implements Serializable, Comparable<Restaurant> {
+    private String restaurantsPlaceId;
+    private String restaurantsName;
+    private String restaurantsAddress;
+    private String restaurantsPhoneNumber;
+    private String restaurantsWebSite;
+    private String restaurantsDistanceText;
+    private double restaurantsRating;
+    private String restaurantsPhotoUrl;
+    private Location restaurantsLocation;
+    private OpeningHours restaurantsOpeningHours;
+    private int restaurantsDistance;
+    private List<CoworkersList> restaurantsCoworkersList;
 
-    private String uid;
-    private String name;
-    private Double latitude;
-    private Double longitude;
-    private String address;
-    private int openingHours;
-    private Integer distance;
-    private String urlPhoto;
-    private int rating;
-    private String phoneNumber;
-    private String webSite;
-    private List<User> usersEatingHere;
+    public Restaurant () {}
 
-    public Restaurant(String uid, String name, Double latitude, Double longitude, @Nullable String address, @Nullable int openingHours, @Nullable String urlPhoto, String phoneNumber, String webSite) {
-        this.uid = uid;
-        this.name = name;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.address = address;
-        this.openingHours = openingHours;
-        this.urlPhoto = urlPhoto;
-        this.rating = rating;
-        this.phoneNumber = phoneNumber;
-        this.webSite = webSite;
-        usersEatingHere = new ArrayList<>();
+    public Restaurant(String restaurantsPlaceId, String restaurantsName) {
+        restaurantsPlaceId = restaurantsPlaceId;
+        restaurantsName = restaurantsName;
     }
 
-    public String getUid() {
-        return uid;
+    public Restaurant(String restaurantsPlaceId, String restaurantsName, String restaurantsAddress,
+                      String restaurantsDistanceText, double restaurantsRating, String restaurantsPhotoUrl,
+                      Location restaurantsLocation, OpeningHours restaurantsOpeningHours,
+                      int restaurantsDistance, List<CoworkersList> restaurantsCoworkersList) {
+        restaurantsPlaceId = restaurantsPlaceId;
+        restaurantsName = restaurantsName;
+        restaurantsAddress = restaurantsAddress;
+        restaurantsDistanceText = restaurantsDistanceText;
+        restaurantsRating = restaurantsRating;
+        restaurantsPhotoUrl = restaurantsPhotoUrl;
+        restaurantsLocation = restaurantsLocation;
+        restaurantsOpeningHours = restaurantsOpeningHours;
+        restaurantsDistance = restaurantsDistance;
+        restaurantsCoworkersList = restaurantsCoworkersList;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public Restaurant(String restaurantsPlaceId, String restaurantsName, String restaurantsAddress, String restaurantsPhoneNumber, String restaurantsWebSite,
+                      String restaurantsDistanceText,  double restaurantsRating, String restaurantsPhotoUrl,
+                      Location restaurantsLocation, OpeningHours restaurantsOpeningHours,
+                      int restaurantsDistance, List<CoworkersList> restaurantsCoworkersList) {
+
+        restaurantsPlaceId = restaurantsPlaceId;
+        restaurantsName = restaurantsName;
+        restaurantsAddress = restaurantsAddress;
+        restaurantsPhoneNumber = restaurantsPhoneNumber;
+        restaurantsWebSite = restaurantsWebSite;
+        restaurantsDistanceText = restaurantsDistanceText;
+        restaurantsRating = restaurantsRating;
+        restaurantsPhotoUrl = restaurantsPhotoUrl;
+        restaurantsLocation = restaurantsLocation;
+        restaurantsOpeningHours = restaurantsOpeningHours;
+        restaurantsDistance = restaurantsDistance;
+        restaurantsCoworkersList = restaurantsCoworkersList;
     }
 
-    public String getName() {
-        return name;
+    public String getRestaurantsPlaceId() { return restaurantsPlaceId; }
+
+    public void setRestaurantsPlaceId(String restaurantsPlaceId) { restaurantsPlaceId = restaurantsPlaceId; }
+
+    public String getRestaurantsNameName() { return restaurantsName; }
+
+    public void setRestaurantsNameName(String restaurantsName) { restaurantsName = restaurantsName; }
+
+    public String getRestaurantsAddress() { return restaurantsAddress; }
+
+    public void setRestaurantsAddress(String restaurantsAddress) { restaurantsAddress = restaurantsAddress; }
+
+    public String getRestaurantsPhoneNumber() { return restaurantsPhoneNumber; }
+
+    public void setRestaurantsPhoneNumber(String restaurantsPhoneNumber) { restaurantsPhoneNumber = restaurantsPhoneNumber; }
+
+    public String getRestaurantsWebSite() { return restaurantsWebSite; }
+
+    public void setRestaurantsWebSite(String restaurantsWebSite) { restaurantsWebSite = restaurantsWebSite; }
+
+    public String getRestaurantsDistanceText() { return restaurantsDistanceText; }
+
+    public void setRestaurantsDistanceText(String restaurantsDistanceText) { restaurantsDistanceText = restaurantsDistanceText; }
+
+    public double getRestaurantsRating() { return restaurantsRating; }
+
+    public void setRestaurantsRating(double restaurantsRating) { restaurantsRating = restaurantsRating; }
+
+    public String getRestaurantsPhotoUrl() { return restaurantsPhotoUrl; }
+
+    public void setRestaurantsPhotoUrl(String restaurantsPhotoUrl) { restaurantsPhotoUrl = restaurantsPhotoUrl; }
+
+    public Location getRestaurantsLocation() { return restaurantsLocation; }
+
+    public void setRestaurantsLocation(Location restaurantsLocation) { restaurantsLocation = restaurantsLocation; }
+
+    public OpeningHours getRestaurantsOpeningHours() { return restaurantsOpeningHours; }
+
+    public void setRestaurantsOpeningHours(OpeningHours restaurantsOpeningHours) { restaurantsOpeningHours = restaurantsOpeningHours; }
+
+    public int getRestaurantsDistance() { return restaurantsDistance; }
+
+    public void setRestaurantsDistance(int restaurantsDistance) { restaurantsDistance = restaurantsDistance; }
+
+    public List<CoworkersList> getRestaurantsCoworkersList() {
+        return restaurantsCoworkersList;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRestaurantsCoworkersList(List<CoworkersList> restaurantsCoworkersList) {
+        restaurantsCoworkersList = restaurantsCoworkersList;
     }
 
-    public Double getLatitude() {
-        return latitude;
+    @Override
+    public int compareTo(Restaurant restaurant) { return restaurant.restaurantsDistance - this.restaurantsDistance; }
+
+    public static class CoworkersList {
+        public String coworkersId;
+        public String coworkersName;
+        public String coworkersUrl;
+
+        public CoworkersList() {}
+
+        public CoworkersList(String coworkersId, String coworkersName, String coworkersUrl) {
+            coworkersId = coworkersId;
+            coworkersName = coworkersName;
+            coworkersUrl = coworkersUrl;
+        }
+
+        public String getCoworkersId() {
+            return coworkersId;
+        }
+
+        public void setCoworkersId(String coworkersId) {
+            coworkersId = coworkersId;
+        }
+
+        public String getCoworkersName() {
+            return coworkersName;
+        }
+
+        public void setCoworkersName(String coworkersName) {
+            coworkersName = coworkersName;
+        }
+
+        public String getCoworkersUrl() {
+            return coworkersUrl;
+        }
+
+        public void setCoworkersUrl(String coworkersUrl) {
+            coworkersUrl = coworkersUrl;
+        }
     }
 
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public int getOpeningHours() {
-        return openingHours;
-    }
-
-    public void setOpeningHours(int openingHours) {
-        this.openingHours = openingHours;
-    }
-
-    public Integer getDistance() {
-        return distance;
-    }
-
-    public void setDistance(Integer distance) {
-        this.distance = distance;
-    }
-
-    public String getUrlPhoto() {
-        return urlPhoto;
-    }
-
-    public void setUrlPhoto(String urlPhoto) {
-        this.urlPhoto = urlPhoto;
-    }
-
-    public void setUserGoingEating(List<User> users){
-        usersEatingHere = users;
-
-    }
-
-    public List<User> getUsersEatingHere(){
-        return usersEatingHere;
-    }
-
-    public int getRating() {
-        return rating;
-    }
-
-    public void setRating(int rating) {
-        this.rating = rating;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getWebSite() {
-        return webSite;
-    }
-
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
+    public enum Fields{
+        Restaurant,
+        restaurantsPlaceId,
+        restaurantsName,
+        restaurantsAddress,
+        restaurantsPhoneNumber,
+        restaurantsWebSite,
+        restaurantsDistanceText,
+        restaurantsRating,
+        restaurantsPhotoUrl,
+        restaurantsLocation,
+        restaurantsOpeningHours,
+        restaurantsDistance,
+        restaurantsCoworkersList
     }
 }

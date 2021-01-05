@@ -1,5 +1,6 @@
-package com.example.go4lunch.goforlunch.models.places;
+package com.example.go4lunch.goforlunch.models.places.RestaurantsDetail;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -8,15 +9,20 @@ import java.util.List;
 public class DetailsResponse implements Serializable {
 
     @SerializedName("html_attributions")
+    @Expose
     private List<Object> htmlAttributions = null;
     @SerializedName("result")
+    @Expose
     private DetailsResult detailsResult;
+    @SerializedName("status")
+    @Expose
     private String status;
 
     public DetailsResponse() {
     }
 
     public DetailsResponse(List<Object> htmlAttributions, DetailsResult detailsResult, String status) {
+        super();
         this.htmlAttributions = htmlAttributions;
         this.detailsResult = detailsResult;
         this.status = status;
@@ -30,12 +36,22 @@ public class DetailsResponse implements Serializable {
         this.htmlAttributions = htmlAttributions;
     }
 
+    public DetailsResponse withHtmlAttributions(List<Object> htmlAttributions) {
+        this.htmlAttributions = htmlAttributions;
+        return this;
+    }
+
     public DetailsResult getDetailsResult() {
         return detailsResult;
     }
 
     public void setDetailsResult(DetailsResult detailsResult) {
         this.detailsResult = detailsResult;
+    }
+
+    public DetailsResponse withDetailsResult(DetailsResult detailsResult) {
+        this.detailsResult = detailsResult;
+        return this;
     }
 
     public String getStatus() {
@@ -46,12 +62,8 @@ public class DetailsResponse implements Serializable {
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "DetailsResponse{" +
-                "htmlAttributions=" + htmlAttributions +
-                ", detailsResult=" + detailsResult +
-                ", status='" + status + '\'' +
-                '}';
+    public DetailsResponse withStatus(String status) {
+        this.status = status;
+        return this;
     }
 }
