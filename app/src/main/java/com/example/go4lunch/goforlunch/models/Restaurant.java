@@ -1,173 +1,174 @@
 package com.example.go4lunch.goforlunch.models;
 
-import com.example.go4lunch.goforlunch.models.places.RestaurantsDetail.Location;
-import com.example.go4lunch.goforlunch.models.places.RestaurantsDetail.OpeningHours;
+import android.location.Location;
+
+import com.example.go4lunch.goforlunch.models.places.RestaurantDetail;
 
 import java.io.Serializable;
 import java.util.List;
 
 public class Restaurant implements Serializable, Comparable<Restaurant> {
-    private String restaurantsPlaceId;
-    private String restaurantsName;
-    private String restaurantsAddress;
-    private String restaurantsPhoneNumber;
-    private String restaurantsWebSite;
-    private String restaurantsDistanceText;
-    private double restaurantsRating;
-    private String restaurantsPhotoUrl;
-    private Location restaurantsLocation;
-    private OpeningHours restaurantsOpeningHours;
-    private int restaurantsDistance;
-    private List<CoworkersList> restaurantsCoworkersList;
+    private String restaurantPlaceId;
+    private String restaurantName;
+    private String restaurantAddress;
+    private String restaurantPhone;
+    private String restaurantWebSite;
+    private String restaurantDistanceText;
+    private double restaurantRating;
+    private String restaurantPhotoUrl;
+    private RestaurantDetail.Location restaurantLocation;
+    private RestaurantDetail.OpeningHours restaurantOpeningHours;
+    private int restaurantDistance;
+    private List<CoworkerList> restaurantCoworkerList;
 
     public Restaurant () {}
 
-    public Restaurant(String restaurantsPlaceId, String restaurantsName) {
-        restaurantsPlaceId = restaurantsPlaceId;
-        restaurantsName = restaurantsName;
+    public Restaurant(String mRestaurantPlaceId, String mRestaurantName) {
+        restaurantPlaceId = mRestaurantPlaceId;
+        restaurantName = mRestaurantName;
     }
 
-    public Restaurant(String restaurantsPlaceId, String restaurantsName, String restaurantsAddress,
-                      String restaurantsDistanceText, double restaurantsRating, String restaurantsPhotoUrl,
-                      Location restaurantsLocation, OpeningHours restaurantsOpeningHours,
-                      int restaurantsDistance, List<CoworkersList> restaurantsCoworkersList) {
-        restaurantsPlaceId = restaurantsPlaceId;
-        restaurantsName = restaurantsName;
-        restaurantsAddress = restaurantsAddress;
-        restaurantsDistanceText = restaurantsDistanceText;
-        restaurantsRating = restaurantsRating;
-        restaurantsPhotoUrl = restaurantsPhotoUrl;
-        restaurantsLocation = restaurantsLocation;
-        restaurantsOpeningHours = restaurantsOpeningHours;
-        restaurantsDistance = restaurantsDistance;
-        restaurantsCoworkersList = restaurantsCoworkersList;
+    public Restaurant(String mRestaurantPlaceId, String mRestaurantName, String mRestaurantAddress,
+                      String mRestaurantDistanceText, double mRestaurantRating, String mRestaurantPhotoUrl,
+                      RestaurantDetail.Location mRestaurantLocation, RestaurantDetail.OpeningHours mRestaurantOpeningHours,
+                      int mRestaurantDistance, List<CoworkerList> mRestaurantCoworkerList) {
+        restaurantPlaceId = mRestaurantPlaceId;
+        restaurantName = mRestaurantName;
+        restaurantAddress = mRestaurantAddress;
+        restaurantDistanceText = mRestaurantDistanceText;
+        restaurantRating = mRestaurantRating;
+        restaurantPhotoUrl = mRestaurantPhotoUrl;
+        restaurantLocation = mRestaurantLocation;
+        restaurantOpeningHours = mRestaurantOpeningHours;
+        restaurantDistance = mRestaurantDistance;
+        restaurantCoworkerList = mRestaurantCoworkerList;
     }
 
-    public Restaurant(String restaurantsPlaceId, String restaurantsName, String restaurantsAddress, String restaurantsPhoneNumber, String restaurantsWebSite,
-                      String restaurantsDistanceText,  double restaurantsRating, String restaurantsPhotoUrl,
-                      Location restaurantsLocation, OpeningHours restaurantsOpeningHours,
-                      int restaurantsDistance, List<CoworkersList> restaurantsCoworkersList) {
+    public Restaurant(String mRestaurantPlaceId, String mRestaurantName, String mRestaurantAddress, String mRestaurantPhone, String mRestaurantWebSite,
+                      String mRestaurantDistanceText,  double mRestaurantRating, String mRestaurantPhotoUrl,
+                      RestaurantDetail.Location mRestaurantLocation, RestaurantDetail.OpeningHours mRestaurantOpeningHours,
+                      int mRestaurantDistance, List<CoworkerList> mRestaurantCoworkerList) {
 
-        restaurantsPlaceId = restaurantsPlaceId;
-        restaurantsName = restaurantsName;
-        restaurantsAddress = restaurantsAddress;
-        restaurantsPhoneNumber = restaurantsPhoneNumber;
-        restaurantsWebSite = restaurantsWebSite;
-        restaurantsDistanceText = restaurantsDistanceText;
-        restaurantsRating = restaurantsRating;
-        restaurantsPhotoUrl = restaurantsPhotoUrl;
-        restaurantsLocation = restaurantsLocation;
-        restaurantsOpeningHours = restaurantsOpeningHours;
-        restaurantsDistance = restaurantsDistance;
-        restaurantsCoworkersList = restaurantsCoworkersList;
+        restaurantPlaceId = mRestaurantPlaceId;
+        restaurantName = mRestaurantName;
+        restaurantAddress = mRestaurantAddress;
+        restaurantPhone = mRestaurantPhone;
+        restaurantWebSite = mRestaurantWebSite;
+        restaurantDistanceText = mRestaurantDistanceText;
+        restaurantRating = mRestaurantRating;
+        restaurantPhotoUrl = mRestaurantPhotoUrl;
+        restaurantLocation = mRestaurantLocation;
+        restaurantOpeningHours = mRestaurantOpeningHours;
+        restaurantDistance = mRestaurantDistance;
+        restaurantCoworkerList = mRestaurantCoworkerList;
     }
 
-    public String getRestaurantsPlaceId() { return restaurantsPlaceId; }
+    public String getRestaurantPlaceId() { return restaurantPlaceId; }
 
-    public void setRestaurantsPlaceId(String restaurantsPlaceId) { restaurantsPlaceId = restaurantsPlaceId; }
+    public void setRestaurantPlaceId(String mRestaurantPlaceId) { restaurantPlaceId = mRestaurantPlaceId; }
 
-    public String getRestaurantsNameName() { return restaurantsName; }
+    public String getRestaurantName() { return restaurantName; }
 
-    public void setRestaurantsNameName(String restaurantsName) { restaurantsName = restaurantsName; }
+    public void setRestaurantName(String mRestaurantName) { restaurantName = mRestaurantName; }
 
-    public String getRestaurantsAddress() { return restaurantsAddress; }
+    public String getRestaurantAddress() { return restaurantAddress; }
 
-    public void setRestaurantsAddress(String restaurantsAddress) { restaurantsAddress = restaurantsAddress; }
+    public void setRestaurantAddress(String mRestaurantAddress) { restaurantAddress = mRestaurantAddress; }
 
-    public String getRestaurantsPhoneNumber() { return restaurantsPhoneNumber; }
+    public String getRestaurantPhone() { return restaurantPhone; }
 
-    public void setRestaurantsPhoneNumber(String restaurantsPhoneNumber) { restaurantsPhoneNumber = restaurantsPhoneNumber; }
+    public void setRestaurantPhone(String mRestaurantPhone) { restaurantPhone = mRestaurantPhone; }
 
-    public String getRestaurantsWebSite() { return restaurantsWebSite; }
+    public String getRestaurantWebSite() { return restaurantWebSite; }
 
-    public void setRestaurantsWebSite(String restaurantsWebSite) { restaurantsWebSite = restaurantsWebSite; }
+    public void setRestaurantWebSite(String mRestaurantWebSite) { restaurantWebSite = mRestaurantWebSite; }
 
-    public String getRestaurantsDistanceText() { return restaurantsDistanceText; }
+    public String getRestaurantDistanceText() { return restaurantDistanceText; }
 
-    public void setRestaurantsDistanceText(String restaurantsDistanceText) { restaurantsDistanceText = restaurantsDistanceText; }
+    public void setRestaurantDistanceText(String mRestaurantDistanceText) { restaurantDistanceText = mRestaurantDistanceText; }
 
-    public double getRestaurantsRating() { return restaurantsRating; }
+    public double getRestaurantRating() { return restaurantRating; }
 
-    public void setRestaurantsRating(double restaurantsRating) { restaurantsRating = restaurantsRating; }
+    public void setRestaurantRating(double mRestaurantRating) { restaurantRating = mRestaurantRating; }
 
-    public String getRestaurantsPhotoUrl() { return restaurantsPhotoUrl; }
+    public String getRestaurantPhotoUrl() { return restaurantPhotoUrl; }
 
-    public void setRestaurantsPhotoUrl(String restaurantsPhotoUrl) { restaurantsPhotoUrl = restaurantsPhotoUrl; }
+    public void setRestaurantPhotoUrl(String mRestaurantPhotoUrl) { restaurantPhotoUrl = mRestaurantPhotoUrl; }
 
-    public Location getRestaurantsLocation() { return restaurantsLocation; }
+    public RestaurantDetail.Location getRestaurantLocation() { return restaurantLocation; }
 
-    public void setRestaurantsLocation(Location restaurantsLocation) { restaurantsLocation = restaurantsLocation; }
+    public void setRestaurantLocation(RestaurantDetail.Location mRestaurantLocation) { restaurantLocation = mRestaurantLocation; }
 
-    public OpeningHours getRestaurantsOpeningHours() { return restaurantsOpeningHours; }
+    public RestaurantDetail.OpeningHours getRestaurantOpeningHours() { return restaurantOpeningHours; }
 
-    public void setRestaurantsOpeningHours(OpeningHours restaurantsOpeningHours) { restaurantsOpeningHours = restaurantsOpeningHours; }
+    public void setRestaurantOpeningHours(RestaurantDetail.OpeningHours mRestaurantOpeningHours) { restaurantOpeningHours = mRestaurantOpeningHours; }
 
-    public int getRestaurantsDistance() { return restaurantsDistance; }
+    public int getRestaurantDistance() { return restaurantDistance; }
 
-    public void setRestaurantsDistance(int restaurantsDistance) { restaurantsDistance = restaurantsDistance; }
+    public void setRestaurantDistance(int mRestaurantDistance) { restaurantDistance = mRestaurantDistance; }
 
-    public List<CoworkersList> getRestaurantsCoworkersList() {
-        return restaurantsCoworkersList;
+    public List<CoworkerList> getRestaurantCoworkerList() {
+        return restaurantCoworkerList;
     }
 
-    public void setRestaurantsCoworkersList(List<CoworkersList> restaurantsCoworkersList) {
-        restaurantsCoworkersList = restaurantsCoworkersList;
+    public void setRestaurantCoworkerList(List<CoworkerList> mRestaurantCoworkerList) {
+        restaurantCoworkerList = mRestaurantCoworkerList;
     }
 
     @Override
-    public int compareTo(Restaurant restaurant) { return restaurant.restaurantsDistance - this.restaurantsDistance; }
+    public int compareTo(Restaurant mRestaurant) { return mRestaurant.restaurantDistance - this.restaurantDistance; }
 
-    public static class CoworkersList {
-        public String coworkersId;
-        public String coworkersName;
-        public String coworkersUrl;
+    public static class CoworkerList {
+        public String coworkerId;
+        public String coworkerName;
+        public String coworkerUrl;
 
-        public CoworkersList() {}
+        public CoworkerList() {}
 
-        public CoworkersList(String coworkersId, String coworkersName, String coworkersUrl) {
-            coworkersId = coworkersId;
-            coworkersName = coworkersName;
-            coworkersUrl = coworkersUrl;
+        public CoworkerList(String mCoworkerId, String mCoworkerName, String mCoworkerUrl) {
+            coworkerId = mCoworkerId;
+            coworkerName = mCoworkerName;
+            coworkerUrl = mCoworkerUrl;
         }
 
-        public String getCoworkersId() {
-            return coworkersId;
+        public String getCoworkerId() {
+            return coworkerId;
         }
 
-        public void setCoworkersId(String coworkersId) {
-            coworkersId = coworkersId;
+        public void setCoworkerId(String mCoworkerId) {
+            coworkerId = mCoworkerId;
         }
 
-        public String getCoworkersName() {
-            return coworkersName;
+        public String getCoworkerName() {
+            return coworkerName;
         }
 
-        public void setCoworkersName(String coworkersName) {
-            coworkersName = coworkersName;
+        public void setCoworkerName(String mCoworkerName) {
+            coworkerName = mCoworkerName;
         }
 
-        public String getCoworkersUrl() {
-            return coworkersUrl;
+        public String getCoworkerUrl() {
+            return coworkerUrl;
         }
 
-        public void setCoworkersUrl(String coworkersUrl) {
-            coworkersUrl = coworkersUrl;
+        public void setCoworkerUrl(String mCoworkerUrl) {
+            coworkerUrl = mCoworkerUrl;
         }
     }
 
     public enum Fields{
         Restaurant,
-        restaurantsPlaceId,
-        restaurantsName,
-        restaurantsAddress,
-        restaurantsPhoneNumber,
-        restaurantsWebSite,
-        restaurantsDistanceText,
-        restaurantsRating,
-        restaurantsPhotoUrl,
-        restaurantsLocation,
-        restaurantsOpeningHours,
-        restaurantsDistance,
-        restaurantsCoworkersList
+        restaurantPlaceId,
+        restaurantName,
+        restaurantAddress,
+        restaurantPhone,
+        restaurantWebSite,
+        restaurantDistanceText,
+        restaurantRating,
+        restaurantPhotoUrl,
+        restaurantLocation,
+        restaurantOpeningHours,
+        restaurantDistance,
+        restaurantWkList
     }
 }

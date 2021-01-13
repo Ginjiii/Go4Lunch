@@ -7,9 +7,16 @@ public class Retrofit {
     /**
      * Create an instance of Retrofit with the base url of API Google
      */
-    retrofit2.Retrofit retrofit = new retrofit2.Retrofit.Builder()
-            .baseUrl("https://maps.googleapis.com/maps/api/place/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .build();
+    private static retrofit2.Retrofit retrofit;
+
+    public static retrofit2.Retrofit getClient(String baseUrl) {
+        if (retrofit == null) {
+            retrofit = new retrofit2.Retrofit.Builder()
+                    .baseUrl("https://maps.googleapis.com/maps/api/place/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build();
+        }
+        return retrofit;
+    }
 }

@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.go4lunch.goforlunch.base.BaseFragment;
+import com.example.go4lunch.goforlunch.factory.Go4LunchFactory;
+import com.example.go4lunch.goforlunch.injections.Injection;
 import com.example.go4lunch.goforlunch.models.Restaurant;
 import com.example.go4lunch.goforlunch.ui.signin.SignInViewModel;
 import com.go4lunch.R;
@@ -59,7 +61,9 @@ public class RestaurantsFragmentList extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        viewModel = new ViewModelProvider(this).get(RestaurantsViewModel.class);
+        Go4LunchFactory mFactory = Injection.go4LunchFactory();
+
+        viewModel = new ViewModelProvider(requireActivity(), mFactory).get(RestaurantsViewModel.class);
 
     }
 

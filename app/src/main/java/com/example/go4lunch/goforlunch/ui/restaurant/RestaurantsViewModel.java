@@ -10,17 +10,17 @@ import java.util.List;
 
 public class RestaurantsViewModel  extends ViewModel {
 
-    private RestaurantRepository repository;
+    private final RestaurantRepository mRepository;
 
-  //  public RestaurantsViewModel(RestaurantRepository restaurantsRepository) {
-   //     repository = restaurantsRepository;
-    //}
+    public RestaurantsViewModel(RestaurantRepository restaurantRepository) {
+        mRepository = restaurantRepository;
+    }
 
     /**
      * Get restaurant list
      * @return : list object : restaurant list
      */
     public LiveData<List<Restaurant>>  getRestaurantList() {
-        return null;
+        return mRepository.getGoogleRestaurantList();
     }
 }
