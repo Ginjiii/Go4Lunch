@@ -3,6 +3,7 @@ package com.example.go4lunch.goforlunch.utils;
 import android.annotation.SuppressLint;
 import android.location.Location;
 
+import com.example.go4lunch.goforlunch.models.places.RestaurantDetail;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.maps.android.SphericalUtil;
@@ -43,15 +44,15 @@ public class Go4LunchHelper {
 
     /**
      * Calculate the distance between the current location and the restaurant
-     * @param currentLocation : object : current location
-     * @param restaurantLocation : object : restaurant location
+     * @param mCurrentLocation : object : current location
+     * @param mRestaurantLocation : object : restaurant location
      * @return int : return the distance
      */
-    public static int getRestaurantDistanceToCurrentLocation(Location currentLocation, Location restaurantLocation) {
-        Location lRestaurantLocation = new Location(TXT_PROVIDER);
-        restaurantLocation.setLatitude(restaurantLocation.getLatitude());
-        restaurantLocation.setLongitude(restaurantLocation.getLongitude());
-        return (int) currentLocation.distanceTo(lRestaurantLocation);
+    public static int getRestaurantDistanceToCurrentLocation(Location mCurrentLocation, RestaurantDetail.Location mRestaurantLocation) {
+        Location rRestaurantLocation = new Location(TXT_PROVIDER);
+        mRestaurantLocation.setLat(mRestaurantLocation.getLat());
+        mRestaurantLocation.setLng(mRestaurantLocation.getLng());
+        return (int) mCurrentLocation.distanceTo(rRestaurantLocation);
     }
 
     /**

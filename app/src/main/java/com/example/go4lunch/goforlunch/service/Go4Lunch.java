@@ -81,7 +81,6 @@ public class Go4Lunch extends MultiDexApplication {
             double lLng = Double.parseDouble(getString(R.string.default_longitude_position));
             Location location = Go4LunchHelper.setCurrentLocation(lLat, lLng);
             api.setLocation(location);
-            api.saveLocationInSharedPreferences(location);
         }
     }
 

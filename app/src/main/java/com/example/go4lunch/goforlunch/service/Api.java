@@ -33,7 +33,4 @@ public interface Api {
 
     Location getLocation();
 
-    void saveLocationInSharedPreferences(Location mLocation);
-
-    double getLocationFromSharedPreferences(String mTypeLocation);
 }

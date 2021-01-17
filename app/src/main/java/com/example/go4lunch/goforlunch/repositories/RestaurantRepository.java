@@ -125,17 +125,15 @@ public class RestaurantRepository {
      */
     public MutableLiveData<List<Restaurant>> getRestaurantList() {
         isFromAutoComplete = false;
-        latitude = api.getLocationFromSharedPreferences(PREF_KEY_LATITUDE);
-        longitude = api.getLocationFromSharedPreferences(PREF_KEY_LONGITUDE);
         fusedLocationProvider = Go4LunchHelper.setCurrentLocation(latitude, longitude);
         restaurantLastUpdRef.document(String.valueOf(FirestoreUpdate.dateLastUpdateListRestaurant))
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         DocumentSnapshot result = task.getResult();
-                        Timestamp timestamp;
+      //                  Timestamp timestamp;
                         if (result.getData() != null) {
-                            timestamp = (Timestamp) result.getData().get(String.valueOf(FirestoreUpdate.restaurantLastUpdateList));
+       //                     timestamp = (Timestamp) result.getData().get(String.valueOf(FirestoreUpdate.restaurantLastUpdateList));
      //                       if (timestamp != null) {
       //                          Date date = new Date();
        //                         Calendar calendar = Calendar.getInstance();
@@ -314,22 +312,22 @@ public class RestaurantRepository {
      * Prepare the restaurant list to be display and send it back to the view model
      * @param prepareRestaurantList : list object : restaurant list to be prepared
      */
-    private void prepareAndSendRestaurantListForDisplay(List<Restaurant> prepareRestaurantList) {
-
-  //      mRestaurantList = updateDistanceInRestaurantList(prepareRestaurantList);
-        Collections.sort(mRestaurantList);
-        Collections.reverse(mRestaurantList);
-        if (!isFromAutoComplete) {
-            removeRestaurantOutOfRadiusFromList(mRestaurantList);
-        }
-        api.setRestaurantList(mRestaurantList);
-
-        if (isFromAutoComplete) {
-            autocompleteRestaurantList.setValue(mRestaurantList);
-        } else {
-            restaurantList.setValue(mRestaurantList);
-        }
-    }
+ //   private void prepareAndSendRestaurantListForDisplay(List<Restaurant> prepareRestaurantList) {
+//
+ //       mRestaurantList = updateDistanceInRestaurantList(prepareRestaurantList);
+ //       Collections.sort(mRestaurantList);
+ //       Collections.reverse(mRestaurantList);
+ //       if (!isFromAutoComplete) {
+ //           removeRestaurantOutOfRadiusFromList(mRestaurantList);
+ //       }
+ //       api.setRestaurantList(mRestaurantList);
+//
+ //       if (isFromAutoComplete) {
+ //           autocompleteRestaurantList.setValue(mRestaurantList);
+ //       } else {
+ //           restaurantList.setValue(mRestaurantList);
+ //       }
+ //   }
 
     /**
      * Remove the restaurant which have a distance above the radius

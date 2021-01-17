@@ -44,39 +44,39 @@ public class Coworker {
         this.coworkerRestaurantChosen = coworkerRestaurantChosen;
     }
 
-    public Coworker(String CoworkerId, String coworkerName, String coworkerEmail, String coworkerPhotoUrl,
-                    CoworkerRestaurantChoice coworkerRestaurantChosen, List<Likes> coworkerLikes) {
-        coworkerId = coworkerId;
-        coworkerName = coworkerName;
-        coworkerEmail = coworkerEmail;
-        coworkerPhotoUrl = coworkerPhotoUrl;
-        coworkerRestaurantChosen = coworkerRestaurantChosen;
-        coworkerLikes = coworkerLikes;
+    public Coworker(String mCoworkerId, String mCoworkerName, String mCoworkerEmail, String mCoworkerPhotoUrl,
+                    CoworkerRestaurantChoice mCoworkerRestaurantChosen, List<Likes> mCoworkerLikes) {
+        coworkerId = mCoworkerId;
+        coworkerName = mCoworkerName;
+        coworkerEmail = mCoworkerEmail;
+        coworkerPhotoUrl = mCoworkerPhotoUrl;
+        coworkerRestaurantChosen = mCoworkerRestaurantChosen;
+        coworkerLikes = mCoworkerLikes;
     }
 
     public String getCoworkerName() { return coworkerName; }
 
-    public void setCoworkerName(String coworkerName) { coworkerName = coworkerName; }
+    public void setCoworkerName(String mCoworkerName) { coworkerName = mCoworkerName; }
 
     public String getCoworkerEmail() { return coworkerEmail; }
 
-    public void setCoworkerEmail(String coworkerEmail) { coworkerEmail = coworkerEmail; }
+    public void setCoworkerEmail(String mCoworkerEmail) { coworkerEmail = mCoworkerEmail; }
 
     public String getCoworkerPhotoUrl() { return coworkerPhotoUrl; }
 
-    public void setCoworkerPhotoUrl(@Nullable String coworkerPhotoUrl) { coworkerPhotoUrl = coworkerPhotoUrl; }
+    public void setCoworkerPhotoUrl(@Nullable String mCoworkerPhotoUrl) { coworkerPhotoUrl = mCoworkerPhotoUrl; }
 
     public CoworkerRestaurantChoice getCoworkerRestaurantChosen() { return coworkerRestaurantChosen; }
 
-    public void setCoworkerRestaurantChosen(CoworkerRestaurantChoice coworkerRestaurantChosen) { coworkerRestaurantChosen = coworkerRestaurantChosen; }
+    public void setCoworkerRestaurantChosen(CoworkerRestaurantChoice mCoworkerRestaurantChosen) { coworkerRestaurantChosen = mCoworkerRestaurantChosen; }
 
     public String getCoworkerId() { return coworkerId; }
 
-    public void setCoworkerId(String coworkerId) { coworkerId = coworkerId; }
+    public void setCoworkerId(String mCoworkerId) { coworkerId = mCoworkerId; }
 
     public List<Likes> getCoworkerLikes() { return coworkerLikes; }
 
-    public void setCoworkerLikes(List<Likes> coworkerLikes) { coworkerLikes = coworkerLikes; }
+    public void setCoworkerLikes(List<Likes> mCoworkerLikes) { coworkerLikes = mCoworkerLikes; }
 
     public static class Likes {
         public String restaurantId;
@@ -84,18 +84,18 @@ public class Coworker {
 
         public Likes() {}
 
-        public Likes(String restaurantId, String restaurantName) {
-            restaurantId = restaurantId;
-            restaurantName = restaurantName;
+        public Likes(String mRestaurantId, String mRestaurantName) {
+            restaurantId = mRestaurantId;
+            restaurantName = mRestaurantName;
         }
 
         public String getRestaurantId() { return restaurantId; }
 
-        public void setRestaurantId(String restaurantId) { restaurantId = restaurantId; }
+        public void setRestaurantId(String mRestaurantId) { restaurantId = mRestaurantId; }
 
         public String getRestaurantName() { return restaurantName; }
 
-        public void setRestaurantName(String restaurantName) { restaurantName = restaurantName; }
+        public void setRestaurantName(String mRestaurantName) { restaurantName = mRestaurantName; }
     }
 
     public static class CoworkerRestaurantChoice {
@@ -105,34 +105,34 @@ public class Coworker {
 
         public CoworkerRestaurantChoice() {}
 
-        public CoworkerRestaurantChoice(String restaurantId, String restaurantName, Timestamp restaurantDateChoice) {
-            restaurantId = restaurantId;
-            restaurantName = restaurantName;
-            restaurantDateChoice = restaurantDateChoice;
+        public CoworkerRestaurantChoice(String mRestaurantId, String mRestaurantName, Timestamp mRestaurantDateChoice) {
+            restaurantId = mRestaurantId;
+            restaurantName = mRestaurantName;
+            restaurantDateChoice = mRestaurantDateChoice;
         }
 
         public String getRestaurantId() {
             return restaurantId;
         }
 
-        public void setRestaurantId(String restaurantId) {
-            restaurantId = restaurantId;
+        public void setRestaurantId(String mRestaurantId) {
+            restaurantId = mRestaurantId;
         }
 
         public String getRestaurantName() {
             return restaurantName;
         }
 
-        public void setRestaurantName(String restaurantName) {
-            restaurantName = restaurantName;
+        public void setRestaurantName(String mRestaurantName) {
+            restaurantName = mRestaurantName;
         }
 
         public Timestamp getRestaurantDateChoice() {
             return restaurantDateChoice;
         }
 
-        public void setRestaurantDateChoice(Timestamp restaurantDateChoice) {
-            restaurantDateChoice = restaurantDateChoice;
+        public void setRestaurantDateChoice(Timestamp mRestaurantDateChoice) {
+            restaurantDateChoice = mRestaurantDateChoice;
         }
     }
 

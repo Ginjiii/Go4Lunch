@@ -33,5 +33,4 @@ public class PreferencesHelper {
     public static void saveIntPreferences(String key, int valueSaved) {
         preferences.edit().putInt(key,valueSaved).apply();
     }
-
 }

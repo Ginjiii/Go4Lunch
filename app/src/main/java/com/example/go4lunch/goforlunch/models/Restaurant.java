@@ -1,7 +1,5 @@
 package com.example.go4lunch.goforlunch.models;
 
-import android.location.Location;
-
 import com.example.go4lunch.goforlunch.models.places.RestaurantDetail;
 
 import java.io.Serializable;

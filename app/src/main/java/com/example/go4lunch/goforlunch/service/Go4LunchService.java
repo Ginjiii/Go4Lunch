@@ -16,68 +16,59 @@ public class Go4LunchService implements Api {
     public static final String PREF_KEY_LATITUDE = "PREF_KEY_LATITUDE";
     public static final String PREF_KEY_LONGITUDE = "PREF_KEY_LONGITUDE";
 
-    private Coworker coworker;
-    private String coworkerId;
-    private Restaurant restaurant;
-    private String restaurantId;
-    private List<Restaurant> restaurantList;
-    private Location location;
+    private Coworker mCoworker;
+    private String mCoworkerId;
+    private Restaurant mRestaurant;
+    private String mRestaurantId;
+    private List<Restaurant> mRestaurantList;
+    private Location mLocation;
 
     @Override
     public void setCoworkerId(String userId) {
-        coworkerId = userId;
+        mCoworkerId = userId;
     }
 
     @Override
     public String getCoworkerId() {
-        return coworkerId;
+        return mCoworkerId;
     }
 
     @Override
     public void setCoworker(Coworker coworker) {
-        coworker = coworker;
+        mCoworker = coworker;
     }
 
     @Override
     public Coworker getCoworker() {
-        return coworker;
+        return mCoworker;
     }
 
     @Override
-    public void setRestaurantId(String restaurantId) { restaurantId = restaurantId; }
+    public void setRestaurantId(String restaurantId) { mRestaurantId = restaurantId; }
 
     @Override
-    public String getRestaurantId() { return restaurantId; };
+    public String getRestaurantId() { return mRestaurantId; };
 
     @Override
     public void setRestaurant(Restaurant restaurant) {
-        restaurant = restaurant;
+        mRestaurant = restaurant;
     }
 
     @Override
     public Restaurant getRestaurant() {
-        return restaurant;
+        return mRestaurant;
     }
 
     @Override
-    public void setRestaurantList(List<Restaurant> restaurantList) { restaurantList = restaurantList; }
+    public void setRestaurantList(List<Restaurant> restaurantList) { mRestaurantList = restaurantList; }
 
     @Override
-    public List<Restaurant> getRestaurantList() { return restaurantList; }
+    public List<Restaurant> getRestaurantList() { return mRestaurantList; }
 
     @Override
-    public void setLocation(Location location) { location = location; }
+    public void setLocation(Location location) { mLocation = location; }
 
     @Override
-    public Location getLocation() { return location; }
+    public Location getLocation() { return mLocation; }
 
-    public void saveLocationInSharedPreferences(Location pLocation) {
-        PreferencesHelper.saveStringPreferences(PREF_KEY_LATITUDE, String.valueOf(location.getLatitude()));
-        PreferencesHelper.saveStringPreferences(PREF_KEY_LONGITUDE, String.valueOf(location.getLongitude()));
-    }
-
-    @Override
-    public double getLocationFromSharedPreferences(String typeLocation) {
-        return  Double.parseDouble(Objects.requireNonNull(preferences.getString(typeLocation, "")));
-    }
 }

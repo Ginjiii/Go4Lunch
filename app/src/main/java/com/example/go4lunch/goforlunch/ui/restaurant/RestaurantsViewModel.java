@@ -21,6 +21,6 @@ public class RestaurantsViewModel  extends ViewModel {
      * @return : list object : restaurant list
      */
     public LiveData<List<Restaurant>>  getRestaurantList() {
-        return mRepository.getGoogleRestaurantList();
+        return mRepository.getRestaurantList();
     }
 }
