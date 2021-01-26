@@ -1,5 +1,7 @@
 package com.example.go4lunch.goforlunch.ui.restaurant;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -11,6 +13,7 @@ import java.util.List;
 public class RestaurantsViewModel  extends ViewModel {
 
     private final RestaurantRepository mRepository;
+    private final String TAG = "in";
 
     public RestaurantsViewModel(RestaurantRepository restaurantRepository) {
         mRepository = restaurantRepository;
@@ -21,6 +24,7 @@ public class RestaurantsViewModel  extends ViewModel {
      * @return : list object : restaurant list
      */
     public LiveData<List<Restaurant>>  getRestaurantList() {
+        Log.d(TAG, "getRestaurantList parent hit ");
         return mRepository.getGoogleRestaurantList();
     }
 }

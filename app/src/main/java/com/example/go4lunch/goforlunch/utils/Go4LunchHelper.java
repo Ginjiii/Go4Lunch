@@ -57,36 +57,36 @@ public class Go4LunchHelper {
 
     /**
      * Convert a latitude and a longitude into a location
-     * @param pLat : double : latitude
-     * @param pLng: double : longitude
+     * @param mLat : double : latitude
+     * @param mLng: double : longitude
      * @return : object : location
      */
-    public static Location setCurrentLocation(Double pLat, Double pLng) {
-        Location lFusedLocationProvider = new Location(TXT_PROVIDER);
-        lFusedLocationProvider.setLatitude(pLat);
-        lFusedLocationProvider.setLongitude(pLng);
-        return lFusedLocationProvider;
+    public static Location setCurrentLocation(Double mLat, Double mLng) {
+        Location mFusedLocationProvider = new Location(TXT_PROVIDER);
+        mFusedLocationProvider.setLatitude(mLat);
+        mFusedLocationProvider.setLongitude(mLng);
+        return mFusedLocationProvider;
     }
 
     /**
      * Convert the distance in a text format for the display
-     * @param pDistance : int : distance
+     * @param mDistance : int : distance
      * @return : string : distance with the indicator meters or kilometers
      */
-    public static String convertDistance(int pDistance) {
-        String lNewDistance = String.valueOf(pDistance);
-        double lDistance = pDistance*0.001;
+    public static String convertDistance(int mDistance) {
+        String mNewDistance = String.valueOf(mDistance);
+        double dDistance = mDistance*0.001;
 
         DecimalFormat lDecimalFormat = new DecimalFormat("##.#");
         lDecimalFormat.setRoundingMode(RoundingMode.UP);
 
-        if(pDistance<1000) {
-            lNewDistance = lNewDistance + "m";
+        if(mDistance<1000) {
+            mNewDistance = mNewDistance + "m";
         } else {
-            lNewDistance = lDecimalFormat.format(lDistance) + "km";
+            mNewDistance = lDecimalFormat.format(dDistance) + "km";
         }
 
-        return lNewDistance;
+        return mNewDistance;
     }
 
     /**
@@ -102,20 +102,20 @@ public class Go4LunchHelper {
 
     /**
      * Get day in string format
-     * @param pDay : int : day
+     * @param mDay : int : day
      * @return : string : day
      */
     @SuppressLint("SimpleDateFormat")
-    public static String getDayString(int pDay) {
-        String[] lShortWeekDay = new DateFormatSymbols().getShortWeekdays();
-        String lStringDay = "";
+    public static String getDayString(int mDay) {
+        String[] mShortWeekDay = new DateFormatSymbols().getShortWeekdays();
+        String mStringDay = "";
 
-        for(int lIndex = 1; lIndex < lShortWeekDay.length; lIndex++) {
-            if (lIndex == pDay+1) {
-                lStringDay = lShortWeekDay[lIndex];
+        for(int mIndex = 1; mIndex < mShortWeekDay.length; mIndex++) {
+            if (mIndex == mDay+1) {
+                mStringDay = mShortWeekDay[mIndex];
             }
         }
-        return lStringDay;
+        return mStringDay;
     }
 
     /**
@@ -130,39 +130,39 @@ public class Go4LunchHelper {
 
     /**
      * Get current time with a string format
-     * @param pTime : int : time
+     * @param mTime : int : time
      * @return : string : time
      */
-    public static String getCurrentTimeFormatted(int pTime) {
+    public static String getCurrentTimeFormatted(int mTime) {
 
         @SuppressLint("DefaultLocale")
-        String lResult = String.format("%02d:%02d", pTime / 100, pTime % 100);
+        String mResult = String.format("%02d:%02d", mTime / 100, mTime % 100);
 
-        return lResult;
+        return mResult;
     }
 
     /**
      * Convert time into minutes
-     * @param pTime : int : time
+     * @param mTime : int : time
      * @return : int : minutes
      */
-    public static int convertTimeInMinutes(int pTime) {
-        int lHourIntoMin = (pTime/100)*60;
-        int lMinutes = pTime % 100;
-        return (lHourIntoMin + lMinutes);
+    public static int convertTimeInMinutes(int mTime) {
+        int mHourIntoMin = (mTime/100)*60;
+        int mMinutes = mTime % 100;
+        return (mHourIntoMin + mMinutes);
     }
 
     /**
      * Format the address
-     * @param pAddress : string : address
+     * @param mAddress : string : address
      * @return : string : address
      */
-    public static String formatAddress(String pAddress) {
-        String lAddress = null;
-        if(pAddress.indexOf(",")>0) {
-            lAddress = pAddress.substring(0, pAddress.indexOf(","));
+    public static String formatAddress(String mAddress) {
+        String aAddress = null;
+        if(mAddress.indexOf(",")>0) {
+            aAddress = mAddress.substring(0, mAddress.indexOf(","));
         }
-        return lAddress;
+        return aAddress;
     }
 
     /**

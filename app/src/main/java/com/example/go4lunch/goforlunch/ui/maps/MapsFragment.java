@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.example.go4lunch.goforlunch.models.Restaurant;
 import com.go4lunch.R;
 import com.go4lunch.databinding.FragmentMapsBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -29,11 +30,16 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -174,6 +180,36 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         mapView = binding.mapView;
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+    }
+
+    /**
+     * Set the markers on the map
+     * @param mRestaurants : list object : restaurant list
+     */
+    public void setMapMarkers(List<Restaurant> mRestaurants) {
+        BitmapDescriptor mIcon;
+        if (googleMap != null) {
+            googleMap.clear();
+            for (Restaurant rRestaurant : mRestaurants) {
+
+                String lName = rRestaurant.getRestaurantName();
+                if ((rRestaurant.getRestaurantCoworkerList() != null) && (rRestaurant.getRestaurantCoworkerList().size() > 0)) {
+                    mIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_round_restaurant_24);
+                } else {
+                    mIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_round_orange_restaurant_24);
+                }
+
+                if (rRestaurant.getRestaurantLocation()!= null) {
+                    LatLng latLng = new LatLng(rRestaurant.getRestaurantLocation().getLat(),
+                            rRestaurant.getRestaurantLocation().getLng());
+                    Marker lMarker = googleMap.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .title(lName)
+                            .icon(mIcon));
+                    lMarker.setTag(rRestaurant);
+                }
+            }
+        }
     }
 
     @Override

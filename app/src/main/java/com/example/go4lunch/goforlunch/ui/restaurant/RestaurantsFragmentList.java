@@ -2,6 +2,7 @@ package com.example.go4lunch.goforlunch.ui.restaurant;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,7 @@ public class RestaurantsFragmentList extends BaseFragment {
 
         recyclerView = binding.fragmentListLayout;
         initRecyclerView();
+        configureViewModel();
     }
 
     private void initRecyclerView()  {
@@ -68,6 +70,7 @@ public class RestaurantsFragmentList extends BaseFragment {
     }
 
     private void configureViewModel() {
+        Log.d("ok", "configureViewModel: ");
         viewModel.getRestaurantList().observe(getViewLifecycleOwner(), this::changeAndNotifyAdapterChange);
     }
 
@@ -83,7 +86,6 @@ public class RestaurantsFragmentList extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        configureViewModel();
     }
 
     @Override

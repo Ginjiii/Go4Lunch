@@ -43,7 +43,7 @@ public class Go4Lunch extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
 
-        createNotificationChannels();
+  //      createNotificationChannels();
         initializeSharedPreferences();
         removePreviousRestaurantChoice();
     }
@@ -84,23 +84,23 @@ public class Go4Lunch extends MultiDexApplication {
         }
     }
 
-    /**
-     * Create notification channels
-     */
-    private void createNotificationChannels() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
-            NotificationManager lManager = getSystemService(NotificationManager.class);
-            NotificationChannel lChannel4 = new NotificationChannel(
-                    CHANNEL_4_ID, getString(R.string.notif_high),
-                    NotificationManager.IMPORTANCE_HIGH);
-            lChannel4.setDescription(getString(R.string.notif_high_importance));
-
-            if (lManager != null) {
-                lManager.createNotificationChannel(lChannel4);
-            }
-        }
-    }
+  //  /**
+  //   * Create notification channels
+  //   */
+  //  private void createNotificationChannels() {
+  //      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//
+  //          NotificationManager lManager = getSystemService(NotificationManager.class);
+  //          NotificationChannel lChannel4 = new NotificationChannel(
+  //                  CHANNEL_4_ID, getString(R.string.notif_high),
+  //                  NotificationManager.IMPORTANCE_HIGH);
+  //          lChannel4.setDescription(getString(R.string.notif_high_importance));
+//
+  //          if (lManager != null) {
+  //              lManager.createNotificationChannel(lChannel4);
+  //          }
+  //      }
+  //  }
 
     @Override
     protected void attachBaseContext(Context context) {

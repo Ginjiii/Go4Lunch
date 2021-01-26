@@ -23,8 +23,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     private List<Restaurant> restaurantList;
     private Context context;
 
-    public void setRestaurantList(List<Restaurant> restaurantList) {
-        restaurantList = restaurantList;
+    public void setRestaurantList(List<Restaurant> mRestaurantList) {
+        restaurantList = mRestaurantList;
     }
 
     @NonNull
@@ -35,7 +35,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         return new RestaurantViewHolder(view);
     }
 
-    @SuppressLint("SetText")
+    @SuppressLint({"SetText", "SetTextI18n"})
     @Override
     public void onBindViewHolder(@NonNull RestaurantViewHolder restaurantViewHolder, int position) {
         int numberOfWorkmate = 0;
@@ -60,8 +60,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
 
     @Override
     public int getItemCount() {
-        return 0;
-    }
+        return restaurantList.size();
+        }
 
     static class RestaurantViewHolder extends RecyclerView.ViewHolder {
 

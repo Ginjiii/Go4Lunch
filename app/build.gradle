@@ -86,8 +86,8 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
 
     //FIREBASE AUTH
-    implementation "com.google.firebase:firebase-auth:20.0.1"
-    implementation 'com.google.firebase:firebase-core:18.0.0'
+    implementation "com.google.firebase:firebase-auth:20.0.2"
+    implementation 'com.google.firebase:firebase-core:18.0.1'
     implementation "com.firebaseui:firebase-ui-auth:6.2.1"
 
     //EASY PERMISSIONS

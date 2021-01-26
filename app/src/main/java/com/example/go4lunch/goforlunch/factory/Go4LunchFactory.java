@@ -11,11 +11,11 @@ import com.example.go4lunch.goforlunch.ui.signin.SignInViewModel;
 
 public class Go4LunchFactory implements ViewModelProvider.Factory {
 
-    private RestaurantRepository mRestaurantRepository;
+    private final RestaurantRepository restaurantRepository;
 
 
-    public Go4LunchFactory(RestaurantRepository pRestaurantRepository) {
-        this.mRestaurantRepository = pRestaurantRepository;
+    public Go4LunchFactory(RestaurantRepository restaurantRepository) {
+        this.restaurantRepository = restaurantRepository;
     }
 
     @SuppressWarnings("unchecked")
@@ -27,10 +27,10 @@ public class Go4LunchFactory implements ViewModelProvider.Factory {
         }
 
         if (modelClass.isAssignableFrom(RestaurantDetailViewModel.class)) {
-            return (T) new RestaurantDetailViewModel(this.mRestaurantRepository);
+            return (T) new RestaurantDetailViewModel(this.restaurantRepository);
         }
         if (modelClass.isAssignableFrom(RestaurantsViewModel.class)) {
-            return (T) new RestaurantsViewModel(this.mRestaurantRepository);
+            return (T) new RestaurantsViewModel(this.restaurantRepository);
         }
         throw new IllegalArgumentException("Problem with ViewModelFactory");
     }
