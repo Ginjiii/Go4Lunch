@@ -13,7 +13,7 @@ import java.util.List;
 public class RestaurantsViewModel  extends ViewModel {
 
     private final RestaurantRepository mRepository;
-    private final String TAG = "in";
+    private final String TAG = "RestaurantsViewModel";
 
     public RestaurantsViewModel(RestaurantRepository restaurantRepository) {
         mRepository = restaurantRepository;
@@ -24,7 +24,7 @@ public class RestaurantsViewModel  extends ViewModel {
      * @return : list object : restaurant list
      */
     public LiveData<List<Restaurant>>  getRestaurantList() {
-        Log.d(TAG, "getRestaurantList parent hit ");
+        Log.d(TAG, "TAG_REPO_RESTAURANT ");
         return mRepository.getGoogleRestaurantList();
     }
 }

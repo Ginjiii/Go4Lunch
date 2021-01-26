@@ -60,7 +60,10 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
 
     @Override
     public int getItemCount() {
-        return restaurantList.size();
+        if (restaurantList != null){
+            return restaurantList.size();
+        }
+        return 0;
         }
 
     static class RestaurantViewHolder extends RecyclerView.ViewHolder {

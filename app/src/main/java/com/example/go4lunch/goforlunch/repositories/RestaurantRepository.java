@@ -63,7 +63,6 @@ import static com.example.go4lunch.goforlunch.utils.PreferencesHelper.preference
 public class RestaurantRepository {
 
     public static final String TAG = "TAG_REPO_RESTAURANT";
-    public static final String TAG1 = "ok";
 
     public static final String RESTAURANT = "RESTAURANT";
     public static final String TYPE_DEF_VALUE = "restaurant";
@@ -143,30 +142,37 @@ public class RestaurantRepository {
     public LiveData<List<Restaurant>> getGoogleRestaurantList() {
 
         String type = preferences.getString(PREF_KEY_TYPE_GOOGLE_SEARCH, TYPE_DEF_VALUE);
-        Log.d(TAG1, "getGoogleRestaurantList:");
+        Log.d(TAG, "Get_Google_Restaurant:");
 
         googlePlacesService = Retrofit.getClient(BASE_URL_GOOGLE).create(GooglePlacesService.class);
+        Log.d(TAG, "Get_Google_Restaurant_RetroFit:");
 
         Call<com.example.go4lunch.goforlunch.models.places.Restaurant> restaurantCall = googlePlacesService.getNearByPlaces(key, type,
                 latitude + "," + longitude, proximityRadius);
+        Log.d(TAG, "Get_Google_Restaurant_restaurantCall:");
+
 
         restaurantCall.enqueue(new Callback<com.example.go4lunch.goforlunch.models.places.Restaurant>() {
             @Override
             public void onResponse(@NonNull Call<com.example.go4lunch.goforlunch.models.places.Restaurant> call, @NonNull Response<com.example.go4lunch.goforlunch.models.places.Restaurant> response) {
                 if (response.isSuccessful()) {
+                    Log.d(TAG, "Get_Google_Restaurant_restaurantResponse: "+response.raw());
+
                     List<com.example.go4lunch.goforlunch.models.places.Restaurant.Result> restaurantResponse = Objects.requireNonNull(response.body()).getResults();
 
                     for (com.example.go4lunch.goforlunch.models.places.Restaurant.Result restaurant : restaurantResponse) {
-   //                     getGoogleDetailRestaurant(restaurant.getPlaceId(), restaurantResponse.size());
+                        Log.d(TAG, "Get a rezstuarant:"+restaurant.getName());
+
+                        // getGoogleDetailRestaurant(restaurant.getPlaceId(), restaurantResponse.size());
                     }
-                    Log.d(TAG1, "onResponse:");
+                    Log.d(TAG, "TAG_REPO_RESTAURANT on response:");
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<com.example.go4lunch.goforlunch.models.places.Restaurant> call, @NonNull Throwable t) {
                 Log.e(TAG, ERROR_ON_FAILURE_LISTENER + t.toString());
-                Log.d(TAG1, "onFailure:");
+                Log.d(TAG, "TAG_REPO_RESTAURANT_Failure:");
             }
         });
         return restaurantList;
