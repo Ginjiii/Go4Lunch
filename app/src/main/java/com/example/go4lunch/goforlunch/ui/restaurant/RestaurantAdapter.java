@@ -43,7 +43,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
 
         restaurantViewHolder.restaurantName.setText(restaurantList.get(position).getRestaurantName());
         restaurantViewHolder.restaurantDistance.setText(restaurantList.get(position).getRestaurantDistanceText());
-        restaurantViewHolder.restaurantAddress.setText(Utils.formatAddress(restaurantList.get(position).getRestaurantAddress()));
+        if (restaurantList.get(position).getRestaurantAddress() != null){
+            restaurantViewHolder.restaurantAddress.setText(Utils.formatAddress(restaurantList.get(position).getRestaurantAddress()));
+        }
 
         if (restaurantList.get(position).getRestaurantCoworkerList() != null) {
             numberOfWorkmate = restaurantList.get(position).getRestaurantCoworkerList().size();

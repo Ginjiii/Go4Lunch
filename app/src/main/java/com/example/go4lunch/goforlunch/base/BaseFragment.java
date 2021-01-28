@@ -48,6 +48,8 @@ public abstract class BaseFragment extends Fragment {
 
     public abstract void configureLocation(LatLng location);
 
+    protected abstract void configureLocation();
+
 
     // @Nullable
   // @Override

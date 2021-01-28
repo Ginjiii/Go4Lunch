@@ -131,7 +131,7 @@ public class RestaurantRepository {
 
         String type = preferences.getString(PREF_KEY_TYPE_GOOGLE_SEARCH, TYPE_DEF_VALUE);
         Log.d(TAG, "Get_Google_Restaurant:");
-
+        List<Restaurant> restoList = new ArrayList<>();
         googlePlacesService = Retrofit.getClient(BASE_URL_GOOGLE).create(GooglePlacesService.class);
         Log.d(TAG, "Get_Google_Restaurant_RetroFit:");
 
@@ -144,16 +144,21 @@ public class RestaurantRepository {
             @Override
             public void onResponse(@NonNull Call<com.example.go4lunch.goforlunch.models.places.Restaurant> call, @NonNull Response<com.example.go4lunch.goforlunch.models.places.Restaurant> response) {
                 if (response.isSuccessful()) {
-                    Log.d(TAG, "Get_Google_Restaurant_restaurantResponse: "+response.raw());
+                    Log.d(TAG, "Get_Google_Restaurant_restaurantResponse: " + response.raw());
+
+                    Log.d(TAG, "Get_Google_Restaurant_restaurantBody: " + response.body());
 
                     List<com.example.go4lunch.goforlunch.models.places.Restaurant.Result> restaurantResponse = Objects.requireNonNull(response.body()).getResults();
-
+                    Log.d(TAG, "Get_Google_Restaurant_restaurantBody: " + Objects.requireNonNull(response.body()).getResults());
                     for (com.example.go4lunch.goforlunch.models.places.Restaurant.Result restaurant : restaurantResponse) {
-                        Log.d(TAG, "Get a restaurant:"+restaurant.getName());
-
+                        Log.d(TAG, "Get a restaurant:" + restaurant.getName());
+                        restoList.add(new Restaurant(restaurant.getPlaceId(),restaurant.getName()));
                         // getGoogleDetailRestaurant(restaurant.getPlaceId(), restaurantResponse.size());
                     }
                     Log.d(TAG, "TAG_REPO_RESTAURANT on response:");
+                    restaurantList.postValue(restoList);
+                    Log.d(TAG, "TAG_REPO_RESTAURANT on response nbnumùber on list :"+restoList.size());
+
                 }
             }
 
@@ -163,6 +168,7 @@ public class RestaurantRepository {
                 Log.d(TAG, "TAG_REPO_RESTAURANT_Failure:");
             }
         });
+
         return restaurantList;
     }
 

@@ -30,5 +30,6 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         TextView restaurantNameTextView = binding.restaurantDetailName;
         TextView restaurantInfoTextView = binding.restaurantDetailInfo;
         ImageView restaurantPictureImageView = binding.restaurantDetailPicture;
+
     }
 }
