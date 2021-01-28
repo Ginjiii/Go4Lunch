@@ -19,6 +19,8 @@ import com.example.go4lunch.goforlunch.ui.maps.MapsFragment;
 import com.example.go4lunch.goforlunch.ui.restaurant.RestaurantsFragmentList;
 import com.go4lunch.R;
 import com.go4lunch.databinding.ActivityMainBinding;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,6 +29,7 @@ import com.example.go4lunch.goforlunch.ui.signin.SignInActivity;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ActivityMainBinding binding;
+    private FusedLocationProviderClient fusedLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.configureDrawerLayout();
         this.configureNavigationView();
         this.configureBottomView();
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         //For change title Action Bar
         ActionBar actionBar = getSupportActionBar();

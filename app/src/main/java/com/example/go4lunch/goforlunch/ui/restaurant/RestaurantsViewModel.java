@@ -23,8 +23,8 @@ public class RestaurantsViewModel  extends ViewModel {
      * Get restaurant list
      * @return : list object : restaurant list
      */
-    public LiveData<List<Restaurant>>  getRestaurantList() {
+    public LiveData<List<Restaurant>>  getRestaurantList(double latitude, double longitude) {
         Log.d(TAG, "TAG_REPO_RESTAURANT ");
-        return mRepository.getGoogleRestaurantList();
+        return mRepository.getGoogleRestaurantList(latitude, longitude);
     }
 }

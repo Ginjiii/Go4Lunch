@@ -10,7 +10,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.go4lunch.goforlunch.models.FirestoreUpdate;
 import com.example.go4lunch.goforlunch.models.Restaurant;
-import com.example.go4lunch.goforlunch.models.places.RestaurantDetail;
 import com.example.go4lunch.goforlunch.service.GooglePlacesService;
 import com.example.go4lunch.goforlunch.service.Retrofit;
 import com.example.go4lunch.goforlunch.utils.Go4LunchHelper;
@@ -24,7 +23,6 @@ import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -32,13 +30,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -46,13 +40,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.example.go4lunch.goforlunch.service.Go4Lunch.ERROR_ON_FAILURE_LISTENER;
-import static com.example.go4lunch.goforlunch.service.Go4Lunch.PREF_KEY_BOUND_RADIUS;
-import static com.example.go4lunch.goforlunch.service.Go4Lunch.PREF_KEY_PLACE_DETAIL_FIELDS;
-import static com.example.go4lunch.goforlunch.service.Go4Lunch.PREF_KEY_RADIUS;
 import static com.example.go4lunch.goforlunch.service.Go4Lunch.PREF_KEY_TYPE_GOOGLE_SEARCH;
 import static com.example.go4lunch.goforlunch.service.Go4Lunch.api;
-import static com.example.go4lunch.goforlunch.service.Go4LunchService.PREF_KEY_LATITUDE;
-import static com.example.go4lunch.goforlunch.service.Go4LunchService.PREF_KEY_LONGITUDE;
 import static com.example.go4lunch.goforlunch.service.GooglePlacesService.BASE_URL_GOOGLE;
 import static com.example.go4lunch.goforlunch.service.GooglePlacesService.KEY_GOOGLE;
 import static com.example.go4lunch.goforlunch.service.GooglePlacesService.MAX_WIDTH_GOOGLE;
@@ -88,9 +77,6 @@ public class RestaurantRepository {
     private final MutableLiveData<List<Restaurant>> autocompleteRestaurantList = new MutableLiveData<>();
 
     private Location fusedLocationProvider;
-    private Double latitude;
-    private Double longitude;
-    private String type;
     private boolean isFromAutoComplete = false;
 
     private List<Restaurant> mRestaurantList = new ArrayList<>();
@@ -118,7 +104,7 @@ public class RestaurantRepository {
      * Manage the recovery of the restaurant list
      * @return : mutable live data list object : list of the restaurants
      */
-    public MutableLiveData<List<Restaurant>> getRestaurantList() {
+    public MutableLiveData<List<Restaurant>> getRestaurantList(double latitude, double longitude) {
         isFromAutoComplete = false;
         fusedLocationProvider = Go4LunchHelper.setCurrentLocation(latitude, longitude);
         restaurantLastUpdRef.document(String.valueOf(FirestoreUpdate.dateLastUpdateListRestaurant))
@@ -131,15 +117,17 @@ public class RestaurantRepository {
                                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
                                 }
                             }
-                            getGoogleRestaurantList();
+                            getGoogleRestaurantList(latitude, longitude);
                         });
         return restaurantList;
     }
     /**
      * Get the restaurant list from Google
      * @return
+     * @param latitude
+     * @param longitude
      */
-    public LiveData<List<Restaurant>> getGoogleRestaurantList() {
+    public LiveData<List<Restaurant>> getGoogleRestaurantList(double latitude, double longitude) {
 
         String type = preferences.getString(PREF_KEY_TYPE_GOOGLE_SEARCH, TYPE_DEF_VALUE);
         Log.d(TAG, "Get_Google_Restaurant:");
@@ -161,7 +149,7 @@ public class RestaurantRepository {
                     List<com.example.go4lunch.goforlunch.models.places.Restaurant.Result> restaurantResponse = Objects.requireNonNull(response.body()).getResults();
 
                     for (com.example.go4lunch.goforlunch.models.places.Restaurant.Result restaurant : restaurantResponse) {
-                        Log.d(TAG, "Get a rezstuarant:"+restaurant.getName());
+                        Log.d(TAG, "Get a restaurant:"+restaurant.getName());
 
                         // getGoogleDetailRestaurant(restaurant.getPlaceId(), restaurantResponse.size());
                     }
