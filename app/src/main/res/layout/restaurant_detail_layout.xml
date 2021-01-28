@@ -24,43 +24,43 @@
             android:tint="@color/colorWhite" />
 
         <ScrollView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
                 android:orientation="vertical"
             tools:ignore="ScrollViewCount">
 
                 <com.google.android.material.appbar.AppBarLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.appbar.MaterialToolbar
                         android:id="@+id/restaurant_detail_toolbar"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:theme="@style/ToolbarStyle" />
                 </com.google.android.material.appbar.AppBarLayout>
 
                     <ImageView
                         android:id="@+id/restaurant_detail_picture"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
                         android:contentDescription="@string/restaurant_picture"
                         android:src="@drawable/ic_baseline_photo_24" />
 
                     <include
                         layout="@layout/progress_bar_layout"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorPrimary"
                     android:padding="15dp">
 
                     <TextView
                         android:id="@+id/restaurant_detail_name"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:padding="5dp"
@@ -84,7 +84,7 @@
                     <TextView
                         android:id="@+id/restaurant_detail_info"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:padding="5dp"
                         android:textColor="@color/colorWhite"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -117,8 +117,8 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
                     android:layout_marginTop="@dimen/default_margin"
                     android:background="@color/colorLightGrey" />
 

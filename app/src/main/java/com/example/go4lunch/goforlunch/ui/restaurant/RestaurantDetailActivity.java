@@ -27,9 +27,9 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        TextView restaurantNameTextView = binding.restaurantDetailName;
-        TextView restaurantInfoTextView = binding.restaurantDetailInfo;
-        ImageView restaurantPictureImageView = binding.restaurantDetailPicture;
+        //TextView restaurantNameTextView = binding.restaurantDetailName;
+        //TextView restaurantInfoTextView = binding.restaurantDetailInfo;
+        //ImageView restaurantPictureImageView = binding.restaurantDetailPicture;
 
     }
 }
