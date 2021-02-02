@@ -21,7 +21,8 @@
             app:layout_anchor="@+id/restaurant_detail_picture"
             app:layout_anchorGravity="bottom|right|end"
             app:rippleColor="#FFFEFE"
-            android:tint="@color/colorWhite" />
+            android:tint="@color/colorWhite"
+            android:contentDescription="@string/restaurant_favorite_button" />
 
         <ScrollView
             android:layout_width="match_parent"

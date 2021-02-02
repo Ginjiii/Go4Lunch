@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.go4lunch.goforlunch.models.FirestoreUpdate;
 import com.example.go4lunch.goforlunch.models.Restaurant;
+import com.example.go4lunch.goforlunch.models.places.RestaurantDetail;
 import com.example.go4lunch.goforlunch.service.GooglePlacesService;
 import com.example.go4lunch.goforlunch.service.Retrofit;
 import com.example.go4lunch.goforlunch.utils.Go4LunchHelper;
@@ -40,6 +41,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.example.go4lunch.goforlunch.service.Go4Lunch.ERROR_ON_FAILURE_LISTENER;
+import static com.example.go4lunch.goforlunch.service.Go4Lunch.PREF_KEY_PLACE_DETAIL_FIELDS;
 import static com.example.go4lunch.goforlunch.service.Go4Lunch.PREF_KEY_TYPE_GOOGLE_SEARCH;
 import static com.example.go4lunch.goforlunch.service.Go4Lunch.api;
 import static com.example.go4lunch.goforlunch.service.GooglePlacesService.BASE_URL_GOOGLE;
@@ -177,58 +179,58 @@ public class RestaurantRepository {
      * @param restaurantListId : string : id of the restaurant
      * @param responseSize : int : size of the restaurant list
      */
-  //  public void getGoogleDetailRestaurant(String restaurantListId, int responseSize) {
-  //      String fields = preferences.getString(PREF_KEY_PLACE_DETAIL_FIELDS, null);
-//
-  //      googlePlacesService = Retrofit.getClient(BASE_URL_GOOGLE).create(GooglePlacesService.class);
-//
-  //      Call<RestaurantDetail> restaurantDetailCall = googlePlacesService.getRestaurantDetail(key,
-  //              restaurantListId, fields);
-//
-  //      restaurantDetailCall.enqueue(new Callback<RestaurantDetail>() {
-  //          @Override
-  //          public void onResponse(@NonNull Call<RestaurantDetail> call, @NonNull Response<RestaurantDetail> response) {
-  //              if (response.isSuccessful()) {
-  //                  RestaurantDetail.Result restaurantDetailResponse = Objects.requireNonNull(response.body()).getResult();
-//
-  //                  //Manage restaurant information
-  //                  String photo = null;
-  //                  double rating = 0.0;
-  //                  String address = null;
-  //                  RestaurantDetail.Location location = null;
-  //                  String name = restaurantDetailResponse.getName();
-//
-  //                  if (restaurantDetailResponse.getPhotos() != null && restaurantDetailResponse.getPhotos().size() > 0) {
-  //                      photo = getPhoto(restaurantDetailResponse.getPhotos().get(0).getPhotoReference(), 400, key);
-  //                  }
-  //                  if (restaurantDetailResponse.getGeometry().getLocation() != null) {
-  //                      location = restaurantDetailResponse.getGeometry().getLocation();
-  //                  }
-  //                  if (restaurantDetailResponse.getVicinity() != null) {
-  //                      address = restaurantDetailResponse.getVicinity();
-  //                  }
-  //                  if (restaurantDetailResponse.getRating() != null) {
-  //                      rating = restaurantDetailResponse.getRating();
-  //                  }
-//
-  //                  Restaurant restaurant = new Restaurant(
-  //                          restaurantListId, name, address, null, null, null,
-  //                          rating, photo, location, null, 0, null
-  //                  );
-//
-  //                  restaurant.setRestaurantOpeningHours(restaurantDetailResponse.getOpeningHours());
-  //                  restaurant.setRestaurantWebSite(restaurantDetailResponse.getWebsite());
-  //                  restaurant.setRestaurantPhone(restaurantDetailResponse.getFormattedPhoneNumber());
-  //                  restaurantListDetail.add(restaurant);
-  //              }
-  //          }
-//
-  //          @Override
-  //          public void onFailure(@NonNull Call<RestaurantDetail> call, @NonNull Throwable t) {
-  //              Log.e(TAG, ERROR_ON_FAILURE_LISTENER + t.getMessage());
-  //          }
-  //      });
-  //  }
+    public void getGoogleDetailRestaurant(String restaurantListId, int responseSize) {
+        String fields = preferences.getString(PREF_KEY_PLACE_DETAIL_FIELDS, null);
+
+        googlePlacesService = Retrofit.getClient(BASE_URL_GOOGLE).create(GooglePlacesService.class);
+
+        Call<RestaurantDetail> restaurantDetailCall = googlePlacesService.getRestaurantDetail(key,
+                restaurantListId, fields);
+
+        restaurantDetailCall.enqueue(new Callback<RestaurantDetail>() {
+            @Override
+            public void onResponse(@NonNull Call<RestaurantDetail> call, @NonNull Response<RestaurantDetail> response) {
+                if (response.isSuccessful()) {
+                    RestaurantDetail.Result restaurantDetailResponse = Objects.requireNonNull(response.body()).getResult();
+
+                    //Manage restaurant information
+                    String photo = null;
+                    double rating = 0.0;
+                    String address = null;
+                    RestaurantDetail.Location location = null;
+                    String name = restaurantDetailResponse.getName();
+
+                    if (restaurantDetailResponse.getPhotos() != null && restaurantDetailResponse.getPhotos().size() > 0) {
+                        photo = getPhoto(restaurantDetailResponse.getPhotos().get(0).getPhotoReference(), 400, key);
+                    }
+                    if (restaurantDetailResponse.getGeometry().getLocation() != null) {
+                        location = restaurantDetailResponse.getGeometry().getLocation();
+                    }
+                    if (restaurantDetailResponse.getVicinity() != null) {
+                        address = restaurantDetailResponse.getVicinity();
+                    }
+                    if (restaurantDetailResponse.getRating() != null) {
+                        rating = restaurantDetailResponse.getRating();
+                    }
+
+                    Restaurant restaurant = new Restaurant(
+                            restaurantListId, name, address, null, null, null,
+                            rating, photo, location, null, 0, null
+                    );
+
+                    restaurant.setRestaurantOpeningHours(restaurantDetailResponse.getOpeningHours());
+                    restaurant.setRestaurantWebSite(restaurantDetailResponse.getWebsite());
+                    restaurant.setRestaurantPhone(restaurantDetailResponse.getFormattedPhoneNumber());
+                    restaurantListDetail.add(restaurant);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<RestaurantDetail> call, @NonNull Throwable t) {
+                Log.e(TAG, ERROR_ON_FAILURE_LISTENER + t.getMessage());
+            }
+        });
+    }
 
     /**
      * Prepare the restaurant list to be display and send it back to the view model
@@ -365,8 +367,8 @@ public class RestaurantRepository {
 
         if (autocompleteRestaurantList.size() > 0) {
             for (Restaurant autoRestaurant : autocompleteRestaurantList) {
-      //          getGoogleDetailRestaurant(autoRestaurant.getRestaurantPlaceId(),
-                        autocompleteRestaurantList.size();
+                getGoogleDetailRestaurant(autoRestaurant.getRestaurantPlaceId(),
+                        autocompleteRestaurantList.size());
             }
         }
     }

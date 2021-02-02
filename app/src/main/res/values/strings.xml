@@ -85,6 +85,13 @@
     <string name="place_detail_fields" />
     <string name="proximity_radius">150 </string>
     <string name="bound_radius">150 </string>
+    <string name="text_coworker_eating" />
+    <string name="text_coworker_not_decided" />
+    <string name="text_coworker_joining" />
+    <string name="error_saved_failed" />
+    <string name="text_no_web_site" />
+    <string name="text_no_phone_number" />
+    <string name="restaurant_favorite_button">Restaurant Favorite button</string>
 
 
 </resources>
