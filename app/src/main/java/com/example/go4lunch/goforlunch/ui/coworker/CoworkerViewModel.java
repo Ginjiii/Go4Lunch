@@ -17,7 +17,7 @@ public class CoworkerViewModel extends ViewModel {
     }
 
     /**
-     * Get workmate list
+     * Get coworker list
      * @return : list object : Coworker list
      */
     public LiveData<List<Coworker>> getCoworkerList() {

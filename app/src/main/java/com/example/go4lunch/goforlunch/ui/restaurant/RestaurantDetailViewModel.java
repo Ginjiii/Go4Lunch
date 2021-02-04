@@ -23,7 +23,7 @@ public class RestaurantDetailViewModel extends ViewModel {
         }
 
     /**
-     * Get or save the workmate restaurant choice
+     * Get or save the coworker restaurant choice
      * @param actions : enum : action to do
      * @return : enum : result of the action
      */
@@ -32,7 +32,7 @@ public class RestaurantDetailViewModel extends ViewModel {
     }
 
     /**
-     * Get or save the workmate restaurant like
+     * Get or save the coworker restaurant like
      * @param actions : enum : action to do
      * @return : enum : result of the action
      */
@@ -42,8 +42,8 @@ public class RestaurantDetailViewModel extends ViewModel {
 
 
     /**
-     * Get  workmate information
-     * @return : object : workmate
+     * Get  coworker information
+     * @return : object : coworker
      */
     public MutableLiveData<Coworker> getCoworkerData() {
         return coworkerRepo.getCoworkerData();

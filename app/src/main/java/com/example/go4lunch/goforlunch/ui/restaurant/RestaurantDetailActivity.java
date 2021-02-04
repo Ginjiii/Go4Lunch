@@ -26,14 +26,10 @@ import com.go4lunch.R;
 import com.go4lunch.databinding.RestaurantDetailLayoutBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import static com.example.go4lunch.goforlunch.utils.Actions.ADDED;
-import static com.example.go4lunch.goforlunch.utils.Actions.ERROR;
-import static com.example.go4lunch.goforlunch.utils.Actions.REMOVED;
-import static com.example.go4lunch.goforlunch.utils.Actions.SAVED_FAILED;
 
 public class RestaurantDetailActivity extends AppCompatActivity {
 
-    public static final String RESTAURANT_PLACE_ID = "placeid";
+    public static final String RESTAURANT_PLACE_ID = "placeId";
 
     private Restaurant restaurant;
     private String restaurantId;
@@ -58,12 +54,14 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = RestaurantDetailLayoutBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+        setContentView(binding.getRoot());
+        binding.restaurantDetailName.setText(restaurant.getRestaurantName());
+        binding.restaurantDetailInfo.setText(restaurant.getRestaurantDistanceText());
+        binding.restaurantDetailsRate.setNumStars((int) restaurant.getRestaurantRating());
 
-        TextView restaurantNameTextView = binding.restaurantDetailName;
-        TextView restaurantInfoTextView = binding.restaurantDetailInfo;
-        ImageView restaurantPictureImageView = binding.restaurantDetailPicture;
+        //TextView restaurantNameTextView = binding.restaurantDetailName;
+        //TextView restaurantInfoTextView = binding.restaurantDetailInfo;
+        //ImageView restaurantPictureImageView = binding.restaurantDetailPicture;
 
         getIncomingIntent();
         configureViewModel();
@@ -141,37 +139,37 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
         binding.restaurantDetailLikeButton.setOnClickListener(v -> saveLikeRestaurant());
 
-  //      binding.restaurantDetailFab.setOnClickListener(v -> saveChoiceRestaurant());
+        binding.restaurantDetailFab.setOnClickListener(v -> saveChoiceRestaurant());
     }
 
- //   /**
- //    * Save the workmate restaurant choice
- //    */
- //   private void saveChoiceRestaurant() {
- //       restaurantDetailViewModel.getCoworkerChoiceForRestaurant(Actions.SAVED)
- //               .observe(this, actions -> {
- //                   switch (actions) {
- //                       case ADDED:
- //                           changeChoiceStatus(true);
- //                           getRestaurantDetail();
- //                           break;
- //                       case REMOVED:
- //                           changeChoiceStatus(false);
- //                           getRestaurantDetail();
- //                           break;
- //                       case ERROR:
- //                           Toast.makeText(RestaurantDetailActivity.this, getString(R.string.error_unknown_error), Toast.LENGTH_SHORT).show();
- //                           break;
- //                       case SAVED_FAILED:
- //                           Toast.makeText(RestaurantDetailActivity.this, getString(R.string.error_saved_failed), Toast.LENGTH_SHORT).show();
- //                           break;
- //                       default:
- //                   }
- //               });
- //   }
+    /**
+     * Save the coworker restaurant choice
+     */
+    private void saveChoiceRestaurant() {
+        restaurantDetailViewModel.getCoworkerChoiceForRestaurant(Actions.SAVED)
+                .observe(this, actions -> {
+                    switch (actions) {
+                        case ADDED:
+                            changeChoiceStatus(true);
+                            getRestaurantDetail();
+                            break;
+                        case REMOVED:
+                            changeChoiceStatus(false);
+                            getRestaurantDetail();
+                            break;
+                        case ERROR:
+                            Toast.makeText(RestaurantDetailActivity.this, getString(R.string.error_unknown_error), Toast.LENGTH_SHORT).show();
+                            break;
+                        case SAVED_FAILED:
+                            Toast.makeText(RestaurantDetailActivity.this, getString(R.string.error_saved_failed), Toast.LENGTH_SHORT).show();
+                            break;
+                        default:
+                    }
+                });
+    }
 
     /**
-     * Display the status of the workmate choice
+     * Display the status of the coworker choice
      */
     private void displayChoiceStatus() {
         if (restaurantDetailViewModel == null) {
@@ -179,21 +177,17 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         }
         restaurantDetailViewModel.getCoworkerChoiceForRestaurant(Actions.TO_SEARCH)
                 .observe(this, actions -> {
-                    if (actions.equals(Actions.IS_CHOSEN)) {
-                        changeChoiceStatus(true);
-                    } else {
-                        changeChoiceStatus(false);
-                    }
+                    changeChoiceStatus(actions.equals(Actions.IS_CHOSEN));
                 });
     }
 
     /**
-     * Chane the status of the workmate choice
+     * Chane the status of the coworker choice
      *
-     * @param pIsChosen : boolean : the restaurant is chosen or not
+     * @param isChosen : boolean : the restaurant is chosen or not
      */
-    private void changeChoiceStatus(boolean pIsChosen) {
-        if (pIsChosen) {
+    private void changeChoiceStatus(boolean isChosen) {
+        if (isChosen) {
             restaurantFab.setImageResource(R.drawable.ic_baseline_check_circle_24);
             restaurantFab.setTag(Actions.IS_CHOSEN);
         } else {
@@ -203,7 +197,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     }
 
     /**
-     * Display if the restaurant is liked by the workmate
+     * Display if the restaurant is liked by the coworker
      */
     private void displayLikeStatus() {
         if (restaurantDetailViewModel == null) {
@@ -211,16 +205,12 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         }
         restaurantDetailViewModel.getCoworkerLikeForRestaurant(Actions.TO_SEARCH)
                 .observe(this, actions -> {
-                    if (actions.equals(Actions.IS_CHOSEN)) {
-                        changeLikeStatus(true);
-                    } else {
-                        changeLikeStatus(false);
-                    }
+                    changeLikeStatus(actions.equals(Actions.IS_CHOSEN));
                 });
     }
 
     /**
-     * Save the workmate choice if he likes or not the restaurant
+     * Save the coworker choice if he likes or not the restaurant
      */
     private void saveLikeRestaurant() {
         restaurantDetailViewModel.getCoworkerLikeForRestaurant(Actions.TO_SAVE)
@@ -243,16 +233,15 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
                     }
                 });
-
     }
 
     /**
      * Change the display like status
      *
-     * @param pIsChosen : boolean : is liked or not by the workmate
+     * @param isChosen : boolean : is liked or not by the coworker
      */
-    private void changeLikeStatus(boolean pIsChosen) {
-        if (pIsChosen) {
+    private void changeLikeStatus(boolean isChosen) {
+        if (isChosen) {
             restaurantLike.setImageResource(R.drawable.ic_baseline_star_24);
             restaurantLike.setTag(Actions.IS_CHOSEN);
         } else {
@@ -264,12 +253,12 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     /**
      * Open the website
      *
-     * @param pWebSite : string : url to open
+     * @param webSite : string : url to open
      */
-    private void openWebSite(String pWebSite) {
-        if (pWebSite != null) {
-            Intent lIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(pWebSite));
-            startActivity(lIntent);
+    private void openWebSite(String webSite) {
+        if (webSite != null) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(webSite));
+            startActivity(intent);
         } else {
             Toast.makeText(RestaurantDetailActivity.this, getString(R.string.text_no_web_site), Toast.LENGTH_SHORT).show();
         }
@@ -278,12 +267,12 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     /**
      * Open the dialer
      *
-     * @param pPhone : string : phone number to display
+     * @param phone : string : phone number to display
      */
-    private void openDialer(String pPhone) {
-        if ((pPhone != null) && (pPhone.trim().length() > 0)) {
-            Intent lIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + Uri.encode(pPhone)));
-            startActivity(lIntent);
+    private void openDialer(String phone) {
+        if ((phone != null) && (phone.trim().length() > 0)) {
+            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + Uri.encode(phone)));
+            startActivity(intent);
         } else {
             Toast.makeText(RestaurantDetailActivity.this, getString(R.string.text_no_phone_number), Toast.LENGTH_SHORT).show();
         }
@@ -292,11 +281,11 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     /**
      * Display the rating with stars
      *
-     * @param pRating : double : rating of the restaurant
+     * @param rating : double : rating of the restaurant
      */
-    private void displayRating(double pRating) {
-        int lnbStarToDisplay = Go4LunchHelper.ratingNumberOfStarToDisplay(pRating);
-        switch (lnbStarToDisplay) {
+    private void displayRating(double rating) {
+        int numberOfStarToDisplay = Go4LunchHelper.ratingNumberOfStarToDisplay(rating);
+        switch (numberOfStarToDisplay) {
             case 1:
                 restaurantStar2.setVisibility(View.INVISIBLE);
                 restaurantStar3.setVisibility(View.INVISIBLE);

@@ -153,13 +153,33 @@ public class RestaurantRepository {
                     List<com.example.go4lunch.goforlunch.models.places.Restaurant.Result> restaurantResponse = Objects.requireNonNull(response.body()).getResults();
                     Log.d(TAG, "Get_Google_Restaurant_restaurantBody: " + Objects.requireNonNull(response.body()).getResults());
                     for (com.example.go4lunch.goforlunch.models.places.Restaurant.Result restaurant : restaurantResponse) {
+                        //TODO faire une methode pour charger un restaurant
                         Log.d(TAG, "Get a restaurant:" + restaurant.getName());
-                        restoList.add(new Restaurant(restaurant.getPlaceId(),restaurant.getName()));
-                        // getGoogleDetailRestaurant(restaurant.getPlaceId(), restaurantResponse.size());
+                        String photo = null;
+                        double rating = 0.0;
+                        String address = null;
+                        RestaurantDetail.Location location = null;
+
+                        if (restaurant.getPhotos() != null && restaurant.getPhotos().size() > 0) {
+                            photo = getPhoto(restaurant.getPhotos().get(0).getPhotoReference(), 400, key);
+                        }
+                        if (restaurant.getVicinity() != null) {
+                            address = restaurant.getVicinity();
+                        }
+                        if (restaurant.getRating() != null) {
+                            rating = restaurant.getRating();
+                        }
+                        Log.d("BuildRestaurant", "Restaurant :"+ restaurant.getPlaceId()+ restaurant.getName()+ "restaurant.address,"+rating+ photo);
+                        Restaurant r = new Restaurant(
+                                restaurant.getPlaceId(), restaurant.getName(), address, null, null, null,
+                                rating, photo, null, null, 0, null
+                        );
+                        restoList.add(r);
+                         getGoogleDetailRestaurant(restaurant.getPlaceId(), restaurantResponse.size());
                     }
                     Log.d(TAG, "TAG_REPO_RESTAURANT on response:");
                     restaurantList.postValue(restoList);
-                    Log.d(TAG, "TAG_REPO_RESTAURANT on response nbnumùber on list :"+restoList.size());
+                    Log.d(TAG, "TAG_REPO_RESTAURANT on response number on list :" + restoList.size());
 
                 }
             }
@@ -212,15 +232,18 @@ public class RestaurantRepository {
                     if (restaurantDetailResponse.getRating() != null) {
                         rating = restaurantDetailResponse.getRating();
                     }
-
+                    Log.d(TAG, "onResponse: pour voir si on passe ici 1 ");
                     Restaurant restaurant = new Restaurant(
                             restaurantListId, name, address, null, null, null,
                             rating, photo, location, null, 0, null
                     );
-
+                    Log.d(TAG, "onResponse: pour voir si on passe ici");
                     restaurant.setRestaurantOpeningHours(restaurantDetailResponse.getOpeningHours());
                     restaurant.setRestaurantWebSite(restaurantDetailResponse.getWebsite());
                     restaurant.setRestaurantPhone(restaurantDetailResponse.getFormattedPhoneNumber());
+                    if (restaurantDetailResponse.getPhotos() != null && restaurantDetailResponse.getPhotos().size() > 0) {
+                        restaurant.setRestaurantPhotoUrl(getPhoto(restaurantDetailResponse.getPhotos().get(0).getPhotoReference(), 400, key));
+                    }
                     restaurantListDetail.add(restaurant);
                 }
             }

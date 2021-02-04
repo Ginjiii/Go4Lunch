@@ -35,18 +35,18 @@ public class RestaurantDetailCoworkerAdapter extends RecyclerView.Adapter<Restau
 
     @Override
     public void onBindViewHolder(@NonNull CoworkerHolder coworkerHolder, int position) {
-        String lTxtWorkmate ;
+        String lTxtCoworker;
 
         Context lContext = coworkerHolder.itemView.getContext();
 
-        lTxtWorkmate = coworkerList.get(position).getCoworkerName()
+        lTxtCoworker = coworkerList.get(position).getCoworkerName()
                 + " " + lContext.getString(R.string.text_coworker_joining);
-        coworkerHolder.mTxtViewName.setText(lTxtWorkmate);
+        coworkerHolder.mTxtViewName.setText(lTxtCoworker);
 
-        Glide.with(coworkerHolder.mImgViewWorkmate.getContext())
+        Glide.with(coworkerHolder.mImgViewCoworker.getContext())
                 .load(coworkerList.get(position).getCoworkerUrl())
                 .apply(RequestOptions.circleCropTransform())
-                .into(coworkerHolder.mImgViewWorkmate);
+                .into(coworkerHolder.mImgViewCoworker);
     }
 
 
@@ -62,13 +62,13 @@ public class RestaurantDetailCoworkerAdapter extends RecyclerView.Adapter<Restau
     static class CoworkerHolder extends RecyclerView.ViewHolder {
 
         private final TextView mTxtViewName;
-        private final ImageView mImgViewWorkmate;
+        private final ImageView mImgViewCoworker;
 
         public CoworkerHolder(@NonNull View itemView) {
             super(itemView);
 
             mTxtViewName = itemView.findViewById(R.id.recycler_view_coworker_item_text_view);
-            mImgViewWorkmate = itemView.findViewById(R.id.recycler_view_coworker_item_picture_image_view);
+            mImgViewCoworker = itemView.findViewById(R.id.recycler_view_coworker_item_picture_image_view);
         }
     }
 }

@@ -159,7 +159,6 @@ public class RestaurantsFragmentList extends BaseFragment {
     public Location getUserLocation() {
         Location loc = new Location();
         try {
-            //TODO remplacer true par la permission
             if (true) {
                 Log.d(TAG, "Get getUserLocation");
                 mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());

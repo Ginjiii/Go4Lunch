@@ -112,9 +112,9 @@ public class CoworkerRepository {
     }
 
     /**
-     * For the search case, get workmate likes if the restaurant is in
+     * For the search case, get coworker likes if the restaurant is in
      *
-     * @param coworker     : object : workmate who likes
+     * @param coworker     : object : coworker who likes
      * @param restaurant   : object : restaurant which is liked
      * @param actions : enum : status of the action SEARCH or SAVE
      */
@@ -124,9 +124,9 @@ public class CoworkerRepository {
                 .get()
                 .addOnCompleteListener(pTask -> {
                     if (pTask.isSuccessful()) {
-                        Coworker lWorkmate = pTask.getResult().toObject(Coworker.class);
-                        if (lWorkmate != null) {
-                            api.setCoworker(lWorkmate);
+                        Coworker mCoworker = pTask.getResult().toObject(Coworker.class);
+                        if (mCoworker != null) {
+                            api.setCoworker(mCoworker);
                             findRestaurantInLikes(coworker, restaurant, actions);
                         } else {
                             likeStatus.setValue(Actions.ERROR);
@@ -139,9 +139,9 @@ public class CoworkerRepository {
     }
 
     /**
-     * Save the workmate like
+     * Save the coworker like
      *
-     * @param coworker     : object : workmate who likes
+     * @param coworker     : object : coworker who likes
      * @param restaurant   : object : restaurant which is liked
      * @param actions : enum : status of the action SEARCH or SAVE
      */
@@ -164,11 +164,11 @@ public class CoworkerRepository {
     }
 
     /**
-     * Find in the workmate likes if the restaurant is already in
+     * Find in the coworker likes if the restaurant is already in
      * If it's for the search case, mutable live data return IS_CHOSEN or NOT_CHOSEN
      * if it's for the save case, the restaurant is added to the list or removed
      *
-     * @param coworker     : object : workmate who likes
+     * @param coworker     : object : coworker who likes
      * @param restaurant   : object : restaurant which is liked
      * @param actions : enum : status of the action SEARCH or SAVE
      */
@@ -222,7 +222,7 @@ public class CoworkerRepository {
      * Remove the restaurant from the like list
      * set the mutable live data to REMOVED
      *
-     * @param restaurant : object : Workmate.Likes : restaurant informations
+     * @param restaurant : object : Coworker.Likes : restaurant informations
      */
     private void removeRestaurantFromLikes(Coworker.Likes restaurant) {
 
@@ -252,9 +252,9 @@ public class CoworkerRepository {
     }
 
     /**
-     * Save workmate choice
+     * Save coworker choice
      *
-     * @param coworker   : object : workmate
+     * @param coworker   : object : coworker
      * @param restaurant : object : restaurant
      */
     private void saveCoworkerChoice(Coworker coworker, Restaurant restaurant) {
@@ -268,9 +268,9 @@ public class CoworkerRepository {
     }
 
     /**
-     * Add workmate choice to his informations
+     * Add coworker choice to his informations
      *
-     * @param coworker   : object : workmate
+     * @param coworker   : object : coworker
      * @param restaurant : object : restaurant chosen
      */
     private void addChoice(Coworker coworker, Restaurant restaurant) {
@@ -288,26 +288,26 @@ public class CoworkerRepository {
     }
 
     /**
-     * add the workmate in the restaurant list of workmates who comes to eat
+     * add the coworker in the restaurant list of coworkers who comes to eat
      *
-     * @param coworker   : object : workmate
+     * @param coworker   : object : coworker
      * @param restaurant : object : restaurant
      */
     private void addCoworkerToRestaurant(Coworker coworker, Restaurant restaurant) {
 
-        Restaurant.CoworkerList lWorkmatesInRestoList =
+        Restaurant.CoworkerList mcoworkersInRestoList =
                 new Restaurant.CoworkerList(coworker.getCoworkerId(), coworker.getCoworkerName(), coworker.getCoworkerPhotoUrl());
 
         restaurantRef.document(restaurant.getRestaurantPlaceId())
-                .update(String.valueOf(Restaurant.Fields.restaurantWkList), FieldValue.arrayUnion(lWorkmatesInRestoList))
+                .update(String.valueOf(Restaurant.Fields.restaurantWkList), FieldValue.arrayUnion(mcoworkersInRestoList))
                 .addOnSuccessListener(pDocumentReference -> coworkerChoiceStatus.setValue(Actions.ADDED))
                 .addOnFailureListener(pE -> coworkerChoiceStatus.setValue(Actions.SAVED_FAILED));
     }
 
     /**
-     * Remove the workmate choice
+     * Remove the coworker choice
      *
-     * @param coworker   : object : workmate
+     * @param coworker   : object : coworker
      * @param restaurant : object : restaurant
      */
     private void removeChoice(Coworker coworker, Restaurant restaurant) {
@@ -321,44 +321,44 @@ public class CoworkerRepository {
     }
 
     /**
-     * Remove the workmate from the restaurant list of workmates who comes to eat
+     * Remove the coworker from the restaurant list of coworkers who comes to eat
      *
-     * @param coworker   : object: workmate
+     * @param coworker   : object: coworker
      * @param pRestaurant : object : restaurant
      */
     private void removeCoworkerFromRestaurant(Coworker coworker, Restaurant pRestaurant) {
 
-        Restaurant.CoworkerList lWorkmatesInRestoList =
+        Restaurant.CoworkerList mCoworkersInRestoList =
                 new Restaurant.CoworkerList(coworker.getCoworkerId(), coworker.getCoworkerName(), coworker.getCoworkerPhotoUrl());
 
         restaurantRef.document(pRestaurant.getRestaurantPlaceId())
-                .update(String.valueOf(Restaurant.Fields.restaurantWkList), FieldValue.arrayRemove(lWorkmatesInRestoList))
+                .update(String.valueOf(Restaurant.Fields.restaurantWkList), FieldValue.arrayRemove(mCoworkersInRestoList))
                 .addOnSuccessListener(pDocumentReference -> coworkerChoiceStatus.setValue(Actions.REMOVED))
                 .addOnFailureListener(pE -> coworkerChoiceStatus.setValue(Actions.SAVED_FAILED));
     }
 
     /**
-     * If the workmate has already made a choice which is not this restaurant
-     * The workmate is removed from his previous restaurant workmates list
+     * If the coworker has already made a choice which is not this restaurant
+     * The coworker is removed from his previous restaurant coworkers list
      *
-     * @param coworker   : object : workmate
+     * @param coworker   : object : coworker
      * @param pRestaurant :object : restaurant
      */
     private void removeCoworkerFromPreviousRestaurant(Coworker coworker, Restaurant pRestaurant) {
 
-        Restaurant.CoworkerList lWorkmatesInRestoList =
+        Restaurant.CoworkerList mCoworkersInRestoList =
                 new Restaurant.CoworkerList(coworker.getCoworkerId(), coworker.getCoworkerName(), coworker.getCoworkerPhotoUrl());
 
         restaurantRef.document(coworker.getCoworkerRestaurantChosen().getRestaurantId())
-                .update(String.valueOf(Restaurant.Fields.restaurantWkList), FieldValue.arrayRemove(lWorkmatesInRestoList))
+                .update(String.valueOf(Restaurant.Fields.restaurantWkList), FieldValue.arrayRemove(mCoworkersInRestoList))
                 .addOnSuccessListener(pDocumentReference -> addChoice(coworker, pRestaurant))
                 .addOnFailureListener(pE -> coworkerChoiceStatus.setValue(Actions.SAVED_FAILED));
     }
 
     /**
-     * Get the workmate choice
+     * Get the coworker choice
      *
-     * @param coworker   : object : workmate
+     * @param coworker   : object : coworker
      * @param pRestaurant : object : restaurant
      */
     private void getCoworkerChoice(Coworker coworker, Restaurant pRestaurant) {

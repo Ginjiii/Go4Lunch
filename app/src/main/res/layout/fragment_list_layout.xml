@@ -8,9 +8,9 @@
     tools:context="com.example.go4lunch.goforlunch.ui.restaurant.RestaurantsFragmentList">
 
     <TextView
+        android:id="@+id/name_List"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ListView"
         app:layout_constraintEnd_toStartOf="@+id/fragment_list_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="0dp" />
+        tools:layout_editor_absoluteY="0dp"
+        tools:listitem="@layout/restaurant_item_layout"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,7 +3,7 @@
     // BOTTOM NAVIGATION MENU
     <string name="map_button_title">Map</string>
     <string name="list_button_title">List</string>
-    <string name="coworkers_button_title">Workmates</string>
+    <string name="coworkers_button_title">Coworkers</string>
 
     // DRAWER MENU
     <string name="lunch_button_title">YOUR LUNCH</string>
@@ -92,6 +92,7 @@
     <string name="text_no_web_site" />
     <string name="text_no_phone_number" />
     <string name="restaurant_favorite_button">Restaurant Favorite button</string>
+    <string name="restaurantfavoritebutton">RestaurantFavoriteButton</string>
 
 
 </resources>
