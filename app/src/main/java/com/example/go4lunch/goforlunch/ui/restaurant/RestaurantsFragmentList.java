@@ -50,7 +50,6 @@ public class RestaurantsFragmentList extends BaseFragment {
     private FusedLocationProviderClient mFusedLocationClient;
     LocationRequest mLocationRequest;
 
-   SupportMapFragment mapFrag;
     android.location.Location mLastLocation;
     public RestaurantsFragmentList() {}
 
@@ -74,7 +73,7 @@ public class RestaurantsFragmentList extends BaseFragment {
         Log.d(TAG, "configureFragmentOnCreateView");
 
         recyclerView = binding.fragmentListLayout;
-
+        getUserLocation();
         initRecyclerView();
         configureViewModel();
     }
@@ -96,10 +95,6 @@ public class RestaurantsFragmentList extends BaseFragment {
                 == PackageManager.PERMISSION_GRANTED) {
             //Location Permission already granted
             mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-            //mGoogleMap.setMyLocationEnabled(true);
-        } else {
-            //Request Location Permission
-           // checkLocationPermission();
         }
     }
     LocationCallback mLocationCallback = new LocationCallback() {
@@ -137,10 +132,7 @@ public class RestaurantsFragmentList extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         Go4LunchFactory mFactory = Injection.go4LunchFactory();
-        //Location loc = getUserLocation();
-//        Log.d(TAG, "latitude getUserLocation : " + mLastLocation.getLatitude() );
         viewModel = new ViewModelProvider(requireActivity(), mFactory).get(RestaurantsViewModel.class);
-
     }
 
     private void configureViewModel() {
@@ -156,34 +148,31 @@ public class RestaurantsFragmentList extends BaseFragment {
         adapter.setRestaurantList(restaurantList);
         adapter.notifyDataSetChanged();
     }
-    public Location getUserLocation() {
+    public void getUserLocation() {
         Location loc = new Location();
         try {
-            if (true) {
-                Log.d(TAG, "Get getUserLocation");
-                mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+            Log.d(TAG, "Get getUserLocation");
+            mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
-                LocationRequest locationRequest = LocationRequest.create();
-                locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-                mFusedLocationProviderClient.requestLocationUpdates(locationRequest, new LocationCallback() {
+            LocationRequest locationRequest = LocationRequest.create();
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            mFusedLocationProviderClient.requestLocationUpdates(locationRequest, new LocationCallback() {
 
-                    @Override
-                    public void onLocationResult(LocationResult locationResult) {
-                        android.location.Location location = locationResult.getLastLocation();
-                        Log.d(TAG, "Get last location +"+location.toString());
-                        loc.setLat(location.getLatitude());
-                        loc.setLng(location.getLongitude());
-                        latitude = location.getLatitude();
-                        longitude = location.getLongitude();
+                @Override
+                public void onLocationResult(LocationResult locationResult) {
+                    android.location.Location location = locationResult.getLastLocation();
+                    Log.d(TAG, "Get last location +"+location.toString());
+                    loc.setLat(location.getLatitude());
+                    loc.setLng(location.getLongitude());
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
 
-                        mFusedLocationProviderClient.removeLocationUpdates(this);
-                    }
-                }, Looper.getMainLooper());
-            }
+                    mFusedLocationProviderClient.removeLocationUpdates(this);
+                }
+            }, Looper.getMainLooper());
         } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
         }
-        return loc;
     }
     @Override
     public void onResume() {

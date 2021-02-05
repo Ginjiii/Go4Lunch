@@ -5,7 +5,10 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -16,7 +19,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.example.go4lunch.goforlunch.factory.Go4LunchFactory;
+import com.example.go4lunch.goforlunch.injections.Injection;
 import com.example.go4lunch.goforlunch.models.Restaurant;
+import com.example.go4lunch.goforlunch.ui.restaurant.RestaurantDetailActivity;
 import com.go4lunch.R;
 import com.go4lunch.databinding.FragmentMapsBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -46,6 +52,7 @@ import java.util.Objects;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static com.example.go4lunch.goforlunch.ui.restaurant.RestaurantDetailActivity.RESTAURANT_PLACE_ID;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
@@ -84,6 +91,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapView);
         if (supportMapFragment != null) {
             supportMapFragment.getMapAsync(MapsFragment.this);
+        }else {
+            getDeviceLocation();
         }
         return view;
     }
@@ -131,7 +140,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                         latitude = location.getLatitude();
                         longitude = location.getLongitude();
                         position = latitude + "," + longitude;
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                                 new LatLng(latitude,
                                         longitude), 16));
                         mFusedLocationProviderClient.removeLocationUpdates(this);
@@ -147,6 +156,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public void onResume() {
         super.onResume();
         mapView.onResume();
+        configureViewModel();
     }
 
     @Override
@@ -182,6 +192,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         mapView.getMapAsync(this);
     }
 
+    public void configureViewModel() {
+
+        Go4LunchFactory lFactory = Injection.go4LunchFactory();
+        MapsViewModel lMapViewModel = new ViewModelProvider(requireActivity(),lFactory).get(MapsViewModel.class);
+
+        lMapViewModel.getRestaurantList(latitude,longitude).observe(getViewLifecycleOwner(), this::setMapMarkers);
+    }
+
     /**
      * Set the markers on the map
      * @param mRestaurants : list object : restaurant list
@@ -190,25 +208,35 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         BitmapDescriptor mIcon;
         if (googleMap != null) {
             googleMap.clear();
-            for (Restaurant rRestaurant : mRestaurants) {
+            for (Restaurant restaurant : mRestaurants) {
 
-                String lName = rRestaurant.getRestaurantName();
-                if ((rRestaurant.getRestaurantCoworkerList() != null) && (rRestaurant.getRestaurantCoworkerList().size() > 0)) {
+                String name = restaurant.getRestaurantName();
+                if ((restaurant.getRestaurantCoworkerList() != null) && (restaurant.getRestaurantCoworkerList().size() > 0)) {
                     mIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_round_restaurant_24);
                 } else {
                     mIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_round_orange_restaurant_24);
                 }
 
-                if (rRestaurant.getRestaurantLocation()!= null) {
-                    LatLng latLng = new LatLng(rRestaurant.getRestaurantLocation().getLat(),
-                            rRestaurant.getRestaurantLocation().getLng());
-                    Marker lMarker = googleMap.addMarker(new MarkerOptions()
+                if (restaurant.getRestaurantLocation()!= null) {
+                    LatLng latLng = new LatLng(restaurant.getRestaurantLocation().getLat(),
+                            restaurant.getRestaurantLocation().getLng());
+                    Marker marker = googleMap.addMarker(new MarkerOptions()
                             .position(latLng)
-                            .title(lName)
+                            .title(name)
                             .icon(mIcon));
-                    lMarker.setTag(rRestaurant);
+                    marker.setTag(restaurant);
                 }
             }
+        }
+    }
+
+    private void displayRestaurantDetail(Marker marker) {
+        Context context = requireContext();
+        Restaurant restaurant = (Restaurant) marker.getTag();
+        if (restaurant != null) {
+            Intent intentRestaurantDetail = new Intent(context, RestaurantDetailActivity.class);
+            intentRestaurantDetail.putExtra(RESTAURANT_PLACE_ID, restaurant.getRestaurantPlaceId());
+            context.startActivity(intentRestaurantDetail);
         }
     }
 
@@ -216,9 +244,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
         googleMap.setIndoorEnabled(false);
+        googleMap.setOnMarkerClickListener(pMarker -> {
+            displayRestaurantDetail(pMarker);
+            return false;
+        });
 
         getLocationPermission();
         getDeviceLocation();
         updateLocationUI();
+
     }
 }

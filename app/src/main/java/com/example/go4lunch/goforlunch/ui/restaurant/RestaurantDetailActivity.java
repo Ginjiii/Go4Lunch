@@ -56,7 +56,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         binding = RestaurantDetailLayoutBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         binding.restaurantDetailName.setText(restaurant.getRestaurantName());
-        binding.restaurantDetailInfo.setText(restaurant.getRestaurantDistanceText());
+       // binding.restaurantItemListInfo.setText(restaurant.getRestaurantDistanceText());
         binding.restaurantDetailsRate.setNumStars((int) restaurant.getRestaurantRating());
 
         //TextView restaurantNameTextView = binding.restaurantDetailName;

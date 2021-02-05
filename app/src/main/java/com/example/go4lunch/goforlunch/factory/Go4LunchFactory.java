@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.go4lunch.goforlunch.repositories.CoworkerRepository;
 import com.example.go4lunch.goforlunch.repositories.RestaurantRepository;
+import com.example.go4lunch.goforlunch.ui.maps.MapsViewModel;
 import com.example.go4lunch.goforlunch.ui.restaurant.RestaurantDetailViewModel;
 import com.example.go4lunch.goforlunch.ui.restaurant.RestaurantsViewModel;
 import com.example.go4lunch.goforlunch.ui.signin.SignInViewModel;
@@ -27,6 +28,9 @@ public class Go4LunchFactory implements ViewModelProvider.Factory {
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(SignInViewModel.class)) {
             return (T) new SignInViewModel();
+        }
+        if (modelClass.isAssignableFrom(MapsViewModel.class)) {
+            return (T) new MapsViewModel(this.restaurantRepository);
         }
 
         if (modelClass.isAssignableFrom(RestaurantDetailViewModel.class)) {
