@@ -1,5 +1,6 @@
 package com.example.go4lunch.goforlunch.ui.maps;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -13,15 +14,15 @@ public class MapsViewModel extends ViewModel {
     private final RestaurantRepository repository ;
 
     public MapsViewModel(RestaurantRepository restaurantRepository) {
-
         repository = restaurantRepository ;
     }
 
     /**
-     * Get restaurant list
-     * @return : list object : restaurant list
+     * Get restaurant list.
+     *
+     * @return restaurant list.
      */
-    public MutableLiveData<List<Restaurant>> getRestaurantList(double latitude, double longitude) {
-        return repository.getRestaurantList(latitude, longitude);
+    public LiveData<List<Restaurant>> getRestaurantList(double latitude, double longitude) {
+        return repository.getGoogleRestaurantList(latitude, longitude);
     }
 }

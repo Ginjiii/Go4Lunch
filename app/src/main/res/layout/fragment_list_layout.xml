@@ -1,27 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.go4lunch.goforlunch.ui.restaurant.RestaurantsFragmentList">
 
-    <TextView
-        android:id="@+id/name_List"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@+id/fragment_list_layout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fragment_list_layout"
+        android:id="@+id/restaurantRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="0dp"
-        tools:listitem="@layout/restaurant_item_layout"/>
+        tools:listitem="@layout/restaurant_item_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

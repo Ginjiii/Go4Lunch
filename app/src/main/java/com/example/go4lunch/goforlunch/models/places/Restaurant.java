@@ -1,7 +1,6 @@
 package com.example.go4lunch.goforlunch.models.places;
 
-import android.location.Location;
-
+import com.example.go4lunch.goforlunch.models.common.Location;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -81,14 +80,14 @@ public class Restaurant implements Serializable {
 
         @SerializedName("location")
         @Expose
-        private Location location;
+        private com.example.go4lunch.goforlunch.models.common.Location location;
 
         /**
          *
          * @return
          * The location
          */
-        public Location getLocation() {
+        public com.example.go4lunch.goforlunch.models.common.Location getLocation() {
             return location;
         }
 
@@ -515,4 +514,3 @@ public class Restaurant implements Serializable {
 
     }
 }
-

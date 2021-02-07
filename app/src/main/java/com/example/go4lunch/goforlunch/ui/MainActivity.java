@@ -30,7 +30,6 @@ import com.example.go4lunch.goforlunch.ui.signin.SignInActivity;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ActivityMainBinding binding;
-    private FusedLocationProviderClient fusedLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +41,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.configureDrawerLayout();
         this.configureNavigationView();
         this.configureBottomView();
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         //For change title Action Bar
         ActionBar actionBar = getSupportActionBar();
@@ -70,33 +67,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void configureBottomView() {
         binding.mainBottomNavigationView.setOnNavigationItemSelectedListener(item -> onBottomNavigation(item.getItemId()));
     }
-                @SuppressLint("WrongConstant")
-                public boolean onBottomNavigation(int itemId) {
-                    Fragment selectedFragment = null;
 
-                    switch (itemId) {
-                        case R.id.bottom_navigation_menu_map_button:
-                            selectedFragment = new MapsFragment();
-                            break;
-                        case R.id.bottom_navigation_menu_list_button:
-                             selectedFragment = new RestaurantsFragmentList();
-                            break;
-                        case R.id.bottom_navigation_menu_coworkers_button:
-                             selectedFragment = new CoworkersFragment();
-                            break;
-                    }
+    @SuppressLint("WrongConstant")
+    public boolean onBottomNavigation(int itemId) {
+        Fragment selectedFragment = null;
 
-                    if (selectedFragment != null) {
-                        MainActivity.this
-                                .getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.main_frame_layout, selectedFragment)
-                                .commit();
-                    }
-                    return true;
-                }
+        switch (itemId) {
+            case R.id.bottom_navigation_menu_map_button:
+                selectedFragment = new MapsFragment();
+                break;
+            case R.id.bottom_navigation_menu_list_button:
+                selectedFragment = new RestaurantsFragmentList();
+                break;
+            case R.id.bottom_navigation_menu_coworkers_button:
+                selectedFragment = new CoworkersFragment();
+                break;
+        }
 
-    // Navigation Drawer
+        if (selectedFragment != null) {
+            MainActivity.this
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.main_frame_layout, selectedFragment)
+                    .commit();
+        }
+        return true;
+    }
 
     private void configureDrawerLayout() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.mainDrawerLayout, binding.mainToolbar,
@@ -124,9 +120,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-
-
-    //NavigationView
     private void configureNavigationView() {
         binding.mainNavigationView.setNavigationItemSelectedListener(this);
         ImageView imageUser = binding.mainNavigationView.getHeaderView(0).findViewById(R.id.user_navigation_header_image_view_picture);
@@ -135,7 +128,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-
             userNameTextView.setText(user.getDisplayName());
             emailTextView.setText(user.getEmail());
             Glide.with(this)

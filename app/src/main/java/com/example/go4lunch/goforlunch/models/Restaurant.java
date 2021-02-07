@@ -1,5 +1,6 @@
 package com.example.go4lunch.goforlunch.models;
 
+import com.example.go4lunch.goforlunch.models.common.Location;
 import com.example.go4lunch.goforlunch.models.places.RestaurantDetail;
 
 import java.io.Serializable;
@@ -14,7 +15,7 @@ public class Restaurant implements Serializable, Comparable<Restaurant> {
     private String restaurantDistanceText;
     private double restaurantRating;
     private String restaurantPhotoUrl;
-    private RestaurantDetail.Location restaurantLocation;
+    private Location restaurantLocation;
     private RestaurantDetail.OpeningHours restaurantOpeningHours;
     private int restaurantDistance;
     private List<CoworkerList> restaurantCoworkerList;
@@ -28,7 +29,7 @@ public class Restaurant implements Serializable, Comparable<Restaurant> {
 
     public Restaurant(String mRestaurantPlaceId, String mRestaurantName, String mRestaurantAddress,
                       String mRestaurantDistanceText, double mRestaurantRating, String mRestaurantPhotoUrl,
-                      RestaurantDetail.Location mRestaurantLocation, RestaurantDetail.OpeningHours mRestaurantOpeningHours,
+                      Location mRestaurantLocation, RestaurantDetail.OpeningHours mRestaurantOpeningHours,
                       int mRestaurantDistance, List<CoworkerList> mRestaurantCoworkerList) {
         restaurantPlaceId = mRestaurantPlaceId;
         restaurantName = mRestaurantName;
@@ -44,7 +45,7 @@ public class Restaurant implements Serializable, Comparable<Restaurant> {
 
     public Restaurant(String mRestaurantPlaceId, String mRestaurantName, String mRestaurantAddress, String mRestaurantPhone, String mRestaurantWebSite,
                       String mRestaurantDistanceText,  double mRestaurantRating, String mRestaurantPhotoUrl,
-                      RestaurantDetail.Location mRestaurantLocation, RestaurantDetail.OpeningHours mRestaurantOpeningHours,
+                      Location mRestaurantLocation, RestaurantDetail.OpeningHours mRestaurantOpeningHours,
                       int mRestaurantDistance, List<CoworkerList> mRestaurantCoworkerList) {
 
         restaurantPlaceId = mRestaurantPlaceId;
@@ -93,9 +94,9 @@ public class Restaurant implements Serializable, Comparable<Restaurant> {
 
     public void setRestaurantPhotoUrl(String mRestaurantPhotoUrl) { restaurantPhotoUrl = mRestaurantPhotoUrl; }
 
-    public RestaurantDetail.Location getRestaurantLocation() { return restaurantLocation; }
+    public Location getRestaurantLocation() { return restaurantLocation; }
 
-    public void setRestaurantLocation(RestaurantDetail.Location mRestaurantLocation) { restaurantLocation = mRestaurantLocation; }
+    public void setRestaurantLocation(Location mRestaurantLocation) { restaurantLocation = mRestaurantLocation; }
 
     public RestaurantDetail.OpeningHours getRestaurantOpeningHours() { return restaurantOpeningHours; }
 

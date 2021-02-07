@@ -9,7 +9,6 @@ import retrofit2.http.Query;
 public interface GooglePlacesService {
 
     String BASE_URL_GOOGLE = "https://maps.googleapis.com/maps/api/place/";
-// https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=1500&type=restaurant&key=AIzaSyBJwB-MzOX2VpT79du_7e8idBPfaZtfcoA
     String PHOTO_REF_GOOGLE = "photo?photoreference=";
     String MAX_WIDTH_GOOGLE = "&maxwidth=";
     String KEY_GOOGLE = "&key=";
@@ -20,7 +19,6 @@ public interface GooglePlacesService {
             @Query("type") String type,
             @Query("location") String location,
             @Query("radius") int radius);
-
 
     @GET("details/json")
     Call<RestaurantDetail> getRestaurantDetail(

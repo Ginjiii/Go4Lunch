@@ -9,14 +9,6 @@ import java.util.List;
 
 public interface Api {
 
-    void setCoworkerId(String mUserId) ;
-
-    String getCoworkerId();
-
-    void setCoworker(Coworker mCoworker);
-
-    Coworker getCoworker() ;
-
     void setRestaurantId(String mRestaurantId);
 
     String getRestaurantId();
