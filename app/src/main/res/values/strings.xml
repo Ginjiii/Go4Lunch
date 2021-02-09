@@ -63,7 +63,7 @@
     <string name="error_no_internet" />
     <string name="invalid_email_password" />
     <string name="position" />
-    <string name="hungry" />
+    <string name="hungry">I\'m Hungry!</string>>
     <string name="list_restaurants_adapter_open_now" />
     <string name="list_restaurants_adapter_close_now" />
     <string name="autocomplete_toast" />
@@ -92,7 +92,6 @@
     <string name="text_no_web_site" />
     <string name="text_no_phone_number" />
     <string name="restaurant_favorite_button">Restaurant Favorite button</string>
-    <string name="restaurantfavoritebutton">RestaurantFavoriteButton</string>
 
 
 </resources>

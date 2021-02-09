@@ -1,5 +1,8 @@
 package com.example.go4lunch.goforlunch.repositories;
 
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -8,9 +11,14 @@ import androidx.lifecycle.MutableLiveData;
 
 
 import com.example.go4lunch.goforlunch.models.Restaurant;
+
+import com.example.go4lunch.goforlunch.models.places.RestaurantDetail;
 import com.example.go4lunch.goforlunch.service.GooglePlacesService;
 import com.example.go4lunch.goforlunch.service.Retrofit;
 import com.go4lunch.BuildConfig;
+import com.google.firebase.firestore.GeoPoint;
+
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -23,6 +31,7 @@ import static com.example.go4lunch.goforlunch.service.GooglePlacesService.BASE_U
 import static com.example.go4lunch.goforlunch.service.GooglePlacesService.KEY_GOOGLE;
 import static com.example.go4lunch.goforlunch.service.GooglePlacesService.MAX_WIDTH_GOOGLE;
 import static com.example.go4lunch.goforlunch.service.GooglePlacesService.PHOTO_REF_GOOGLE;
+import static com.example.go4lunch.goforlunch.utils.Utils.distFrom;
 
 public class RestaurantRepository {
 
@@ -60,7 +69,7 @@ public class RestaurantRepository {
                         String photo = null;
                         double rating = 0.0;
                         String address = null;
-
+                        RestaurantDetail.OpeningHours openingHours = null;
                         if (restaurant.getPhotos() != null && restaurant.getPhotos().size() > 0) {
                             photo = getPhoto(restaurant.getPhotos().get(0).getPhotoReference(), 400, key);
                         }
@@ -70,6 +79,31 @@ public class RestaurantRepository {
                         if (restaurant.getRating() != null) {
                             rating = restaurant.getRating();
                         }
+
+                        if(restaurant.getOpeningHours() != null)
+                        {
+                            Log.d(TAG, "onResponse: OPENING " + restaurant.getOpeningHours().getOpenNow());
+                            com.example.go4lunch.goforlunch.models.places.Restaurant.OpeningHours apiOpeningHours = restaurant.getOpeningHours();
+
+                            if(apiOpeningHours.getOpenNow())
+                            {
+                                Log.d(TAG, "onResponse: OPENING = true" + restaurant.getOpeningHours().getOpenNow());
+                                openingHours = new RestaurantDetail.OpeningHours(true,null,null);
+                            }
+                        }
+
+                        double longUser = longitude;
+                        double latUser=latitude;
+                        double lonRestaurant=restaurant.getGeometry().getLocation().getLng();
+                        double latRestaurant=restaurant.getGeometry().getLocation().getLat();
+                        float[] distance = new float[1];
+                       Location.distanceBetween(latUser,longUser,latRestaurant,lonRestaurant, distance);
+
+
+                       //restaurant.getGeometry()
+                        Log.d(TAG, "distance " +distance);
+
+
                         Restaurant restaurantToAdd = new Restaurant(
                                 restaurant.getPlaceId(),
                                 restaurant.getName(),
@@ -80,12 +114,13 @@ public class RestaurantRepository {
                                 rating,
                                 photo,
                                 restaurant.getGeometry().getLocation(),
-                                null,
-                                0,
+                                openingHours,
+                                distance[0],
                                 null
                         );
                         restaurants.add(restaurantToAdd);
                     }
+
                     restaurantList.postValue(restaurants);
                 }
             }
@@ -111,4 +146,5 @@ public class RestaurantRepository {
         return BASE_URL_GOOGLE + PHOTO_REF_GOOGLE + photoReference
                 + MAX_WIDTH_GOOGLE + maxWidth + KEY_GOOGLE + key;
     }
+
 }

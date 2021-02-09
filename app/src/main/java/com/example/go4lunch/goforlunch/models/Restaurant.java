@@ -17,7 +17,7 @@ public class Restaurant implements Serializable, Comparable<Restaurant> {
     private String restaurantPhotoUrl;
     private Location restaurantLocation;
     private RestaurantDetail.OpeningHours restaurantOpeningHours;
-    private int restaurantDistance;
+    private float restaurantDistance;
     private List<CoworkerList> restaurantCoworkerList;
 
     public Restaurant () {}
@@ -30,7 +30,7 @@ public class Restaurant implements Serializable, Comparable<Restaurant> {
     public Restaurant(String mRestaurantPlaceId, String mRestaurantName, String mRestaurantAddress,
                       String mRestaurantDistanceText, double mRestaurantRating, String mRestaurantPhotoUrl,
                       Location mRestaurantLocation, RestaurantDetail.OpeningHours mRestaurantOpeningHours,
-                      int mRestaurantDistance, List<CoworkerList> mRestaurantCoworkerList) {
+                      float mRestaurantDistance, List<CoworkerList> mRestaurantCoworkerList) {
         restaurantPlaceId = mRestaurantPlaceId;
         restaurantName = mRestaurantName;
         restaurantAddress = mRestaurantAddress;
@@ -46,7 +46,7 @@ public class Restaurant implements Serializable, Comparable<Restaurant> {
     public Restaurant(String mRestaurantPlaceId, String mRestaurantName, String mRestaurantAddress, String mRestaurantPhone, String mRestaurantWebSite,
                       String mRestaurantDistanceText,  double mRestaurantRating, String mRestaurantPhotoUrl,
                       Location mRestaurantLocation, RestaurantDetail.OpeningHours mRestaurantOpeningHours,
-                      int mRestaurantDistance, List<CoworkerList> mRestaurantCoworkerList) {
+                      float mRestaurantDistance, List<CoworkerList> mRestaurantCoworkerList) {
 
         restaurantPlaceId = mRestaurantPlaceId;
         restaurantName = mRestaurantName;
@@ -102,9 +102,9 @@ public class Restaurant implements Serializable, Comparable<Restaurant> {
 
     public void setRestaurantOpeningHours(RestaurantDetail.OpeningHours mRestaurantOpeningHours) { restaurantOpeningHours = mRestaurantOpeningHours; }
 
-    public int getRestaurantDistance() { return restaurantDistance; }
+    public float getRestaurantDistance() { return restaurantDistance; }
 
-    public void setRestaurantDistance(int mRestaurantDistance) { restaurantDistance = mRestaurantDistance; }
+    public void setRestaurantDistance(float mRestaurantDistance) { restaurantDistance = mRestaurantDistance; }
 
     public List<CoworkerList> getRestaurantCoworkerList() {
         return restaurantCoworkerList;
@@ -115,7 +115,7 @@ public class Restaurant implements Serializable, Comparable<Restaurant> {
     }
 
     @Override
-    public int compareTo(Restaurant mRestaurant) { return mRestaurant.restaurantDistance - this.restaurantDistance; }
+    public int compareTo(Restaurant mRestaurant) { return (int)mRestaurant.restaurantDistance - (int)this.restaurantDistance; }
 
     public static class CoworkerList {
         public String coworkerId;

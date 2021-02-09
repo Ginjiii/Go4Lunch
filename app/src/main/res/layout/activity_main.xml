@@ -16,12 +16,14 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/main_app_bar_layout"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        app:titleTextColor="@color/colorWhite">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/main_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:titleTextColor="@color/colorWhite"
             android:theme="@style/ToolbarStyle"
             app:popupTheme="@style/PopupMenuStyle" />
 
@@ -56,6 +58,16 @@
         app:itemIconTint="@color/colorWhite"
         app:itemTextColor="@color/colorWhite"
         app:headerLayout="@layout/header_layout"
-        app:menu="@menu/drawer_menu" />
+        app:menu="@menu/drawer_menu" >
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="104dp"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            app:srcCompat="@drawable/ic_logo_go4lunch" />
+    </com.google.android.material.navigation.NavigationView>
 
         </androidx.drawerlayout.widget.DrawerLayout>

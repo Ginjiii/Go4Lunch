@@ -1103,8 +1103,6 @@ public class RestaurantDetail implements Serializable {
         @Expose
         private List<String> weekdayText = null;
 
-        public OpeningHours() {}
-
         public OpeningHours(Boolean openNow, List<Period> periods, List<String> weekdayText) {
             openNow = openNow;
             periods = periods;
