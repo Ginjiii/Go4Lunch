@@ -104,7 +104,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         switch (lNbStarToDisplay) {
             case 1:
                 restaurantViewHolder.binding.restaurantItemListRate.setVisibility(View.INVISIBLE);
-       //         restaurantViewHolder.mRestoNote3.setVisibility(View.INVISIBLE);
+       //         restaurantViewHolder.binding.restaurantItemListRate.setVisibility(View.INVISIBLE);
                 break;
             case 2:
                 restaurantViewHolder.binding.restaurantItemListRate.setVisibility(View.INVISIBLE);
@@ -112,9 +112,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
       //      case 3:
       //          break;
       //      default:
-      //          restaurantViewHolder.mRestoNote1.setVisibility(View.INVISIBLE);
-      //          restaurantViewHolder.mRestoNote2.setVisibility(View.INVISIBLE);
-      //          restaurantViewHolder.mRestoNote3.setVisibility(View.INVISIBLE);
+      //          restaurantViewHolder.binding.restaurantItemListRate.setVisibility(View.INVISIBLE);
+      //          restaurantViewHolder.binding.restaurantItemListRate.setVisibility(View.INVISIBLE);
+      //          restaurantViewHolder.binding.restaurantItemListRate.setVisibility(View.INVISIBLE);
        //         break;
         }
     }
