@@ -1,7 +1,5 @@
 package com.example.go4lunch.goforlunch.repositories;
 
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.util.Log;
 
@@ -15,8 +13,8 @@ import com.example.go4lunch.goforlunch.models.Restaurant;
 import com.example.go4lunch.goforlunch.models.places.RestaurantDetail;
 import com.example.go4lunch.goforlunch.service.GooglePlacesService;
 import com.example.go4lunch.goforlunch.service.Retrofit;
+import com.example.go4lunch.goforlunch.ui.restaurantDetail.RestaurantDetailViewModel;
 import com.go4lunch.BuildConfig;
-import com.google.firebase.firestore.GeoPoint;
 
 
 import java.util.ArrayList;
@@ -27,18 +25,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.go4lunch.goforlunch.service.Go4Lunch.api;
 import static com.example.go4lunch.goforlunch.service.GooglePlacesService.BASE_URL_GOOGLE;
 import static com.example.go4lunch.goforlunch.service.GooglePlacesService.KEY_GOOGLE;
 import static com.example.go4lunch.goforlunch.service.GooglePlacesService.MAX_WIDTH_GOOGLE;
 import static com.example.go4lunch.goforlunch.service.GooglePlacesService.PHOTO_REF_GOOGLE;
-import static com.example.go4lunch.goforlunch.utils.Utils.distFrom;
 
 public class RestaurantRepository {
 
     public static final String TAG = RestaurantRepository.class.getSimpleName();
 
     private final String type = "restaurant";
-    private final int proximityRadius = 2000;
+    private final int proximityRadius = 300;
+    RestaurantDetailViewModel restaurantDetailViewModel;
 
     // Google / Retrofit declarations
     private final String key = BuildConfig.MAPS_API_KEY;
@@ -46,6 +45,10 @@ public class RestaurantRepository {
 
     // MutableLiveData Declarations
     private final MutableLiveData<List<Restaurant>> restaurantList = new MutableLiveData<>();
+    private final MutableLiveData<Restaurant> restaurantDetailList = new MutableLiveData<>();
+
+    private List<Restaurant> mRestaurantList = new ArrayList<>();
+    private List<Restaurant> mRestaurantListDetail = new ArrayList<>();
 
     /**
      * Get the restaurant list from Google
@@ -66,6 +69,7 @@ public class RestaurantRepository {
                     List<com.example.go4lunch.goforlunch.models.places.Restaurant.Result> restaurantResponse = Objects.requireNonNull(response.body()).getResults();
                     Log.d(TAG, "onResponse: " + response.body().getResults());
                     for (com.example.go4lunch.goforlunch.models.places.Restaurant.Result restaurant : restaurantResponse) {
+
                         String photo = null;
                         double rating = 0.0;
                         String address = null;
@@ -80,29 +84,12 @@ public class RestaurantRepository {
                             rating = restaurant.getRating();
                         }
 
-                        if(restaurant.getOpeningHours() != null)
-                        {
-                            Log.d(TAG, "onResponse: OPENING " + restaurant.getOpeningHours().getOpenNow());
-                            com.example.go4lunch.goforlunch.models.places.Restaurant.OpeningHours apiOpeningHours = restaurant.getOpeningHours();
-
-                            if(apiOpeningHours.getOpenNow())
-                            {
-                                Log.d(TAG, "onResponse: OPENING = true" + restaurant.getOpeningHours().getOpenNow());
-                                openingHours = new RestaurantDetail.OpeningHours(true,null,null);
-                            }
-                        }
-
                         double longUser = longitude;
                         double latUser=latitude;
                         double lonRestaurant=restaurant.getGeometry().getLocation().getLng();
                         double latRestaurant=restaurant.getGeometry().getLocation().getLat();
                         float[] distance = new float[1];
-                       Location.distanceBetween(latUser,longUser,latRestaurant,lonRestaurant, distance);
-
-
-                       //restaurant.getGeometry()
-                        Log.d(TAG, "distance " +distance);
-
+                        Location.distanceBetween(latUser,longUser,latRestaurant,lonRestaurant, distance);
 
                         Restaurant restaurantToAdd = new Restaurant(
                                 restaurant.getPlaceId(),
@@ -114,14 +101,18 @@ public class RestaurantRepository {
                                 rating,
                                 photo,
                                 restaurant.getGeometry().getLocation(),
-                                openingHours,
+                                null,
                                 distance[0],
                                 null
                         );
+                        RestaurantDetail detailRestaurant = getGoogleRestaurantDetailList(restaurant.getPlaceId(), restaurants,restaurantToAdd);
+                        if (detailRestaurant != null && detailRestaurant.getResult() != null ){
+                            restaurantToAdd.setRestaurantOpeningHours(detailRestaurant.getResult().getOpeningHours());
+                            Log.d(TAG, "onResponse: detailresto"+detailRestaurant.getResult().getName());
+                        }
                         restaurants.add(restaurantToAdd);
-                    }
 
-                    restaurantList.postValue(restaurants);
+                    }
                 }
             }
 
@@ -133,6 +124,94 @@ public class RestaurantRepository {
 
         return restaurantList;
     }
+
+    public RestaurantDetail getGoogleRestaurantDetailList(String placeId, List<Restaurant> restaurants, Restaurant restaurantToAdd)  {
+
+        GooglePlacesService googlePlacesService = Retrofit.getClient(BASE_URL_GOOGLE).create(GooglePlacesService.class);
+        String fields = "name,address_components,adr_address,formatted_address,formatted_phone_number,geometry,icon,id,international_phone_number,rating,website,utc_offset,opening_hours,photo,vicinity,place_id";
+        List<Restaurant> restaurantDetail = new ArrayList<>();
+        Call<RestaurantDetail> restaurantDetailCall = googlePlacesService.getRestaurantDetail(key, placeId, fields);
+        Log.d(TAG, "getGoogleRestaurantDetailList: ");
+
+        restaurantDetailCall.enqueue(new Callback<RestaurantDetail>() {
+            @Override
+            public void onResponse(Call<RestaurantDetail> call, Response<RestaurantDetail> response) {
+                Log.d(TAG, "onResponse:  restaurantDetailList");
+                Log.d(TAG, "restauranlist start "+mRestaurantList.size());
+
+                if (response.isSuccessful()) {
+                    RestaurantDetail.Result restaurantDetailResponse = Objects.requireNonNull(response.body().getResult());
+
+                    String photo = null;
+                    double rating = 0.0;
+                    String address = null;
+                    com.example.go4lunch.goforlunch.models.common.Location mLocation = null;
+                    RestaurantDetail.OpeningHours openingHours = null;
+                    if (restaurantDetailResponse.getPhotos() != null && restaurantDetailResponse.getPhotos().size() > 0) {
+                        photo = getPhoto(restaurantDetailResponse.getPhotos().get(0).getPhotoReference(), 400, key);
+                    }
+
+                    if (restaurantDetailResponse.getGeometry().getLocation() != null) {
+                        mLocation = new com.example.go4lunch.goforlunch.models.common.Location();
+                        if (restaurantDetailResponse.getGeometry().getLocation().getLat() != null)
+                        {
+                            mLocation.setLat(restaurantDetailResponse.getGeometry().getLocation().getLat());
+                        }
+                        if (restaurantDetailResponse.getGeometry().getLocation().getLng() != null)
+                        {
+                            mLocation.setLng(restaurantDetailResponse.getGeometry().getLocation().getLng());
+                        }
+                    }
+
+                    if (restaurantDetailResponse.getVicinity() != null) {
+                        address = restaurantDetailResponse.getVicinity();
+                    }
+                    if (restaurantDetailResponse.getRating() != null) {
+                        rating = restaurantDetailResponse.getRating();
+                    }
+                    if(restaurantDetailResponse.getOpeningHours() != null)
+                    {
+                        Log.d(TAG, "onResponse: getOpeningHours"+restaurantDetailResponse.getOpeningHours());
+                        openingHours = restaurantDetailResponse.getOpeningHours();
+                    }
+                    Log.d(TAG, "onResponse de ndetail: "+restaurantDetailResponse.getName());
+                    Restaurant modelRestaurant = new Restaurant(
+                            restaurantDetailResponse.getPlaceId(),
+                            restaurantDetailResponse.getName(),
+                            address,
+                            restaurantDetailResponse.getFormattedPhoneNumber(),
+                            restaurantDetailResponse.getWebsite(),
+                            null,
+                            rating,
+                            photo,
+                            mLocation,
+                            openingHours,
+                            0,
+                            null
+                    );
+
+                    restaurantToAdd.setRestaurantOpeningHours(restaurantDetailResponse.getOpeningHours());
+                    Log.d(TAG, "restaurantList "+mRestaurantList.size());
+
+                    int index = restaurants.indexOf(restaurantToAdd);
+                    restaurants.set(index,modelRestaurant);
+                }
+                restaurantList.postValue(restaurants);
+            }
+            @Override
+            public void onFailure(Call<RestaurantDetail> call, Throwable t) {
+
+            }
+        });
+        return null;
+    }
+
+            private void displayRestaurantList(List<Restaurant> mRestaurantListDetail) {
+                Log.d(TAG, "displayRestaurantList: ");
+                api.setRestaurantList(mRestaurantList);
+
+                restaurantList.postValue(mRestaurantListDetail);
+            }
 
     /**
      * Get the photo from Google
@@ -146,5 +225,4 @@ public class RestaurantRepository {
         return BASE_URL_GOOGLE + PHOTO_REF_GOOGLE + photoReference
                 + MAX_WIDTH_GOOGLE + maxWidth + KEY_GOOGLE + key;
     }
-
 }

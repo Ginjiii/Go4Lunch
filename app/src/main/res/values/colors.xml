@@ -11,4 +11,6 @@
     <color name="colorLightGrey">#F6F6F6</color>
     <color name="colorYellow">#F8E71C</color>
     <color name="colorBlack">#000000</color>
+    <color name="colorTextBlack">#000000</color>
+    <color name="colorTextRed">#D93644</color>
 </resources>

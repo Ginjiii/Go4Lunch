@@ -110,6 +110,7 @@
             android:layout_height="wrap_content"
             android:visibility="visible"
             android:numStars="5"
+            android:progressTint="@color/colorYellow"
             android:theme="?android:attr/ratingBarStyleSmall"
             app:layout_constraintStart_toEndOf="@id/center_guideline"
             app:layout_constraintEnd_toStartOf="@id/right_guideline"

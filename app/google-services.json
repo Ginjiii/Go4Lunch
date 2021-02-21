@@ -8,18 +8,18 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:217556717868:android:677b3c5aeb46e1f334dc89",
+        "mobilesdk_app_id": "1:217556717868:android:543f449d1ec9e23034dc89",
         "android_client_info": {
           "package_name": "com.go4lunch"
         }
       },
       "oauth_client": [
         {
-          "client_id": "217556717868-ttj5bslerdei7ut19hk8ukte0g9fo57a.apps.googleusercontent.com",
+          "client_id": "217556717868-pad52a4b0q9po21nlhb2248v7u2tp1ua.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.go4lunch",
-            "certificate_hash": "7eb1bc3f3eaaa796c56f653db03ab00a838d7fe4"
+            "certificate_hash": "0a766b17b68384f2a8d79a27bbd630ce57bd3ab0"
           }
         },
         {

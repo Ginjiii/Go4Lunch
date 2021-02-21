@@ -92,6 +92,13 @@
     <string name="text_no_web_site" />
     <string name="text_no_phone_number" />
     <string name="restaurant_favorite_button">Restaurant Favorite button</string>
+    <string name="text_restaurant_closed_open_at_on">on</string>
+    <string name="restaurant_closed_today">Closed today. Open at</string>
+    <string name="restaurant_closed_open_at">Closed. Open at</string>
+    <string name="restaurant_open_until">Open until</string>
+    <string name="restaurant_closing_soon">Closing soon</string>
+    <string name="restaurant_on">on</string>
+    <string name="restaurant_open_h24">Open 24/7</string>
 
 
 </resources>
