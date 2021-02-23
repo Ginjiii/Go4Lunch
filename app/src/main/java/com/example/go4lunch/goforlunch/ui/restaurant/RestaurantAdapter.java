@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 
 import androidx.annotation.NonNull;
 
@@ -35,6 +36,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
 
     private static final String TAG = "TAG";
     private List<Restaurant> restaurantList;
+    RatingBar ratingBar;
     private TheOpeningHours theOpeningHours;
     private Context context;
 
@@ -85,10 +87,10 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
 
         displayOpeningHour(restaurantViewHolder, position);
         displayRestaurantImage(restaurantViewHolder, position);
-        displayRatingBar(restaurantViewHolder, position);
 
-        int nbStar = (int) restaurant.getRestaurantRating();
-        restaurantViewHolder.binding.restaurantItemListRate.setNumStars(nbStar);
+        restaurantViewHolder.binding.restaurantItemListRate.setRating((float) restaurant.getRestaurantRating());
+        Log.d(TAG, "onBindViewHolder:restaurantViewHolder.binding.restaurantItemListRate.getRating() ");
+        restaurantViewHolder.binding.restaurantItemListRate.getNumStars();
         displayRestaurantImage(restaurantViewHolder, position);
 
         restaurantViewHolder.itemView.setOnClickListener(v -> {
@@ -96,27 +98,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             intent.putExtra(RESTAURANT_PLACE_ID, restaurantList.get(position).getRestaurantPlaceId());
             context.startActivity(intent);
         });
-    }
-
-    private void displayRatingBar(RestaurantViewHolder restaurantViewHolder, int position) {
-
-        int lNbStarToDisplay = Go4LunchHelper.ratingNumberOfStarToDisplay(restaurantList.get(position).getRestaurantRating());
-        switch (lNbStarToDisplay) {
-            case 1:
-                restaurantViewHolder.binding.restaurantItemListRate.setVisibility(View.INVISIBLE);
-       //         restaurantViewHolder.binding.restaurantItemListRate.setVisibility(View.INVISIBLE);
-                break;
-            case 2:
-                restaurantViewHolder.binding.restaurantItemListRate.setVisibility(View.INVISIBLE);
-                break;
-      //      case 3:
-      //          break;
-      //      default:
-      //          restaurantViewHolder.binding.restaurantItemListRate.setVisibility(View.INVISIBLE);
-      //          restaurantViewHolder.binding.restaurantItemListRate.setVisibility(View.INVISIBLE);
-      //          restaurantViewHolder.binding.restaurantItemListRate.setVisibility(View.INVISIBLE);
-       //         break;
-        }
     }
 
     private void displayOpeningHour(RestaurantViewHolder restaurantViewHolder, int position) {

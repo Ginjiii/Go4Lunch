@@ -18,29 +18,6 @@ import java.util.Date;
 public class Go4LunchHelper {
 
     public static final String TXT_PROVIDER = "fusedLocationProvider";
-    public static final double MAX_LEVEL_ONE_STAR = 1.67;
-    public static final double MAX_LEVEL_TWO_STAR = 3.34;
-
-    /**
-     * Indicates the number of star note to display in function of the rating note
-     * @param note : double : rating note
-     * @return int : number of star to display
-     */
-    public static int ratingNumberOfStarToDisplay(double note) {
-
-        int numberOfStarToDisplay;
-
-        if (note == 0) {
-            numberOfStarToDisplay = 0;
-        } else if (note > 0 && note <= MAX_LEVEL_ONE_STAR) {
-            numberOfStarToDisplay = 1;
-        } else if (note > MAX_LEVEL_ONE_STAR && note <= MAX_LEVEL_TWO_STAR) {
-            numberOfStarToDisplay = 2;
-        } else {
-            numberOfStarToDisplay = 3;
-        }
-        return numberOfStarToDisplay;
-    }
 
     /**
      * Calculate the distance between the current location and the restaurant
