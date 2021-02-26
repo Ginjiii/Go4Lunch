@@ -45,7 +45,7 @@ public class RestaurantRepository {
 
     // MutableLiveData Declarations
     private final MutableLiveData<List<Restaurant>> restaurantList = new MutableLiveData<>();
-    private final MutableLiveData<List<Restaurant>> restaurantListDetail = new MutableLiveData<>();
+    private final MutableLiveData<Restaurant> restaurantListDetail = new MutableLiveData<>();
 
     private List<Restaurant> mRestaurantList = new ArrayList<>();
     private List<Restaurant> mRestaurantListDetail = new ArrayList<>();
@@ -213,7 +213,7 @@ public class RestaurantRepository {
         });
         return null;
     }
-    public LiveData<Restaurant> getGoogleRestaurantDetail(String placeId)  {
+    public MutableLiveData<Restaurant> getGoogleRestaurantDetail(String placeId)  {
 
         GooglePlacesService googlePlacesService = Retrofit.getClient(BASE_URL_GOOGLE).create(GooglePlacesService.class);
         String fields = "name,address_components,adr_address,formatted_address,formatted_phone_number,geometry,icon,id,international_phone_number,rating,website,utc_offset,opening_hours,photo,vicinity,place_id";
@@ -280,14 +280,9 @@ public class RestaurantRepository {
 
                     //restaurantToAdd.setRestaurantOpeningHours(restaurantDetailResponse.getOpeningHours());
                     Log.d(TAG, "restaurantList "+mRestaurantListDetail.size());
-
-                   int index = mRestaurantListDetail.indexOf(modelRestaurant);
-                    if (index > 0){
-                        mRestaurantListDetail.set(index,modelRestaurant);
-                    }
+                    restaurantListDetail.postValue(modelRestaurant);
 
                 }
-                restaurantListDetail.postValue(mRestaurantListDetail);
 
             }
             @Override
@@ -295,7 +290,7 @@ public class RestaurantRepository {
 
             }
         });
-        return null;
+        return restaurantListDetail;
     }
             private void displayRestaurantList(List<Restaurant> mRestaurantListDetail) {
                 Log.d(TAG, "displayRestaurantList: ");

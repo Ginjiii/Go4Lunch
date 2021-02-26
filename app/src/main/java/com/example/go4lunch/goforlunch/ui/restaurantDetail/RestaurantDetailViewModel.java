@@ -25,7 +25,7 @@ public class RestaurantDetailViewModel extends ViewModel {
         coworkerRepository = mCoworkerRepository;
     }
 
-    public LiveData<Restaurant> getRestaurantDetail(String placeId) {
+    public MutableLiveData<Restaurant> getRestaurantDetail(String placeId) {
 
         return restaurantRepository.getGoogleRestaurantDetail(placeId);
     }

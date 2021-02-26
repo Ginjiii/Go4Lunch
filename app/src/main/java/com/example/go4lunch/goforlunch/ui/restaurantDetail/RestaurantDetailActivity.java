@@ -38,7 +38,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
     private Restaurant restaurant;
     private String restaurantId;
-    private RestaurantDetailAdapter adapter;
+
 
 
     RestaurantDetailLayoutBinding binding;
@@ -82,18 +82,9 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         private void getRestaurantDetail(String placeId, Restaurant rest) {
             Go4LunchFactory factory = Injection.go4LunchFactory();
 
-
-
             restaurantDetailViewModel = new ViewModelProvider(this, factory).get(RestaurantDetailViewModel.class);
 
-            restaurantDetailViewModel.getRestaurantDetail(placeId).observe(this, new Observer<Restaurant>() {
-                        @Override
-                        public void onChanged(Restaurant restaurant) {
-                            displayInfoRestaurant(restaurant);
-
-                        }
-                    });
-
+            restaurantDetailViewModel.getRestaurantDetail(placeId).observe(this, restaurant -> displayInfoRestaurant(restaurant));
             //displayInfoRestaurant(restaurant);
         }
 
@@ -159,7 +150,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     }
 
     private void displayRating(double restaurantRating) {
-        binding.restaurantDetailsRate.setRating((float) restaurant.getRestaurantRating());
+ //       binding.restaurantDetailsRate.setRating((float) restaurant.getRestaurantRating());
     }
 }
 
