@@ -45,7 +45,7 @@ public class RestaurantRepository {
 
     // MutableLiveData Declarations
     private final MutableLiveData<List<Restaurant>> restaurantList = new MutableLiveData<>();
-    private final MutableLiveData<Restaurant> restaurantDetailList = new MutableLiveData<>();
+    private final MutableLiveData<List<Restaurant>> restaurantListDetail = new MutableLiveData<>();
 
     private List<Restaurant> mRestaurantList = new ArrayList<>();
     private List<Restaurant> mRestaurantListDetail = new ArrayList<>();
@@ -105,12 +105,17 @@ public class RestaurantRepository {
                                 distance[0],
                                 null
                         );
-                        RestaurantDetail detailRestaurant = getGoogleRestaurantDetailList(restaurant.getPlaceId(), restaurants,restaurantToAdd);
-                        if (detailRestaurant != null && detailRestaurant.getResult() != null ){
-                            restaurantToAdd.setRestaurantOpeningHours(detailRestaurant.getResult().getOpeningHours());
-                            Log.d(TAG, "onResponse: detailresto"+detailRestaurant.getResult().getName());
-                        }
-                        restaurants.add(restaurantToAdd);
+                        RestaurantDetail dRestaurant = getGoogleRestaurantDetailList(restaurant.getPlaceId(), restaurants, restaurantToAdd);
+                        //if (dRestaurant!= null && dRestaurant. != null)
+                        //{
+                            RestaurantDetail detailRestaurant =dRestaurant;
+                            if (detailRestaurant != null && detailRestaurant.getResult() != null ){
+                                restaurantToAdd.setRestaurantOpeningHours(detailRestaurant.getResult().getOpeningHours());
+                                Log.d(TAG, "onResponse: detailresto"+detailRestaurant.getResult().getName());
+                            }
+                            restaurants.add(restaurantToAdd);
+                        //}
+
 
                     }
                 }
@@ -129,7 +134,7 @@ public class RestaurantRepository {
 
         GooglePlacesService googlePlacesService = Retrofit.getClient(BASE_URL_GOOGLE).create(GooglePlacesService.class);
         String fields = "name,address_components,adr_address,formatted_address,formatted_phone_number,geometry,icon,id,international_phone_number,rating,website,utc_offset,opening_hours,photo,vicinity,place_id";
-        List<Restaurant> restaurantDetail = new ArrayList<>();
+
         Call<RestaurantDetail> restaurantDetailCall = googlePlacesService.getRestaurantDetail(key, placeId, fields);
         Log.d(TAG, "getGoogleRestaurantDetailList: ");
 
@@ -194,7 +199,10 @@ public class RestaurantRepository {
                     Log.d(TAG, "restaurantList "+mRestaurantList.size());
 
                     int index = restaurants.indexOf(restaurantToAdd);
-                    restaurants.set(index,modelRestaurant);
+                    if (index > 0){
+                        restaurants.set(index,modelRestaurant);
+                    }
+
                 }
                 restaurantList.postValue(restaurants);
             }
@@ -205,7 +213,90 @@ public class RestaurantRepository {
         });
         return null;
     }
+    public LiveData<Restaurant> getGoogleRestaurantDetail(String placeId)  {
 
+        GooglePlacesService googlePlacesService = Retrofit.getClient(BASE_URL_GOOGLE).create(GooglePlacesService.class);
+        String fields = "name,address_components,adr_address,formatted_address,formatted_phone_number,geometry,icon,id,international_phone_number,rating,website,utc_offset,opening_hours,photo,vicinity,place_id";
+
+        Call<RestaurantDetail> restaurantDetailCall = googlePlacesService.getRestaurantDetail(key, placeId, fields);
+        Log.d(TAG, "getGoogleRestaurantDetailList: ");
+
+        restaurantDetailCall.enqueue(new Callback<RestaurantDetail>() {
+            @Override
+            public void onResponse(Call<RestaurantDetail> call, Response<RestaurantDetail> response) {
+                Log.d(TAG, "onResponse:  restaurantDetailList");
+                Log.d(TAG, "restauranlist start "+mRestaurantList.size());
+
+                if (response.isSuccessful()) {
+                    RestaurantDetail.Result restaurantDetailResponse = Objects.requireNonNull(response.body().getResult());
+
+                    String photo = null;
+                    double rating = 0.0;
+                    String address = null;
+                    com.example.go4lunch.goforlunch.models.common.Location mLocation = null;
+                    RestaurantDetail.OpeningHours openingHours = null;
+                    if (restaurantDetailResponse.getPhotos() != null && restaurantDetailResponse.getPhotos().size() > 0) {
+                        photo = getPhoto(restaurantDetailResponse.getPhotos().get(0).getPhotoReference(), 400, key);
+                    }
+
+                    if (restaurantDetailResponse.getGeometry().getLocation() != null) {
+                        mLocation = new com.example.go4lunch.goforlunch.models.common.Location();
+                        if (restaurantDetailResponse.getGeometry().getLocation().getLat() != null)
+                        {
+                            mLocation.setLat(restaurantDetailResponse.getGeometry().getLocation().getLat());
+                        }
+                        if (restaurantDetailResponse.getGeometry().getLocation().getLng() != null)
+                        {
+                            mLocation.setLng(restaurantDetailResponse.getGeometry().getLocation().getLng());
+                        }
+                    }
+
+                    if (restaurantDetailResponse.getVicinity() != null) {
+                        address = restaurantDetailResponse.getVicinity();
+                    }
+                    if (restaurantDetailResponse.getRating() != null) {
+                        rating = restaurantDetailResponse.getRating();
+                    }
+                    if(restaurantDetailResponse.getOpeningHours() != null)
+                    {
+                        Log.d(TAG, "onResponse: getOpeningHours"+restaurantDetailResponse.getOpeningHours());
+                        openingHours = restaurantDetailResponse.getOpeningHours();
+                    }
+                    Log.d(TAG, "onResponse de ndetail: "+restaurantDetailResponse.getName());
+                    Restaurant modelRestaurant = new Restaurant(
+                            restaurantDetailResponse.getPlaceId(),
+                            restaurantDetailResponse.getName(),
+                            address,
+                            restaurantDetailResponse.getFormattedPhoneNumber(),
+                            restaurantDetailResponse.getWebsite(),
+                            null,
+                            rating,
+                            photo,
+                            mLocation,
+                            openingHours,
+                            0,
+                            null
+                    );
+
+                    //restaurantToAdd.setRestaurantOpeningHours(restaurantDetailResponse.getOpeningHours());
+                    Log.d(TAG, "restaurantList "+mRestaurantListDetail.size());
+
+                   int index = mRestaurantListDetail.indexOf(modelRestaurant);
+                    if (index > 0){
+                        mRestaurantListDetail.set(index,modelRestaurant);
+                    }
+
+                }
+                restaurantListDetail.postValue(mRestaurantListDetail);
+
+            }
+            @Override
+            public void onFailure(Call<RestaurantDetail> call, Throwable t) {
+
+            }
+        });
+        return null;
+    }
             private void displayRestaurantList(List<Restaurant> mRestaurantListDetail) {
                 Log.d(TAG, "displayRestaurantList: ");
                 api.setRestaurantList(mRestaurantList);

@@ -30,13 +30,13 @@ import com.go4lunch.databinding.RestaurantItemLayoutBinding;
 import java.util.List;
 import java.util.Objects;
 
+import static com.example.go4lunch.goforlunch.ui.restaurantDetail.RestaurantDetailActivity.RESTAURANT_DETAIL;
 import static com.example.go4lunch.goforlunch.ui.restaurantDetail.RestaurantDetailActivity.RESTAURANT_PLACE_ID;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder> {
 
     private static final String TAG = "TAG";
     private List<Restaurant> restaurantList;
-    RatingBar ratingBar;
     private TheOpeningHours theOpeningHours;
     private Context context;
 
@@ -95,7 +95,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
 
         restaurantViewHolder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, RestaurantDetailActivity.class);
-            intent.putExtra(RESTAURANT_PLACE_ID, restaurantList.get(position).getRestaurantPlaceId());
+            Restaurant restaurantToActivity = restaurantList.get(position);
+            intent.putExtra(RESTAURANT_PLACE_ID, restaurantToActivity.getRestaurantPlaceId());
             context.startActivity(intent);
         });
     }
@@ -256,28 +257,28 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         int info = 0;
         int infoCloseTime = 0;
         int infoPreviousDay;
-        for (int lIndex = 0; lIndex < restaurantHours.getPeriods().size(); lIndex++) {
-            int lOpenDay = restaurantHours.getPeriods().get(lIndex).getOpen().getDay();
-            int lCloseDay = restaurantHours.getPeriods().get(lIndex).getClose().getDay();
-            if (lOpenDay == day) {
+        for (int index = 0; index < restaurantHours.getPeriods().size(); index++) {
+            int openDay = restaurantHours.getPeriods().get(index).getOpen().getDay();
+            int closeDay = restaurantHours.getPeriods().get(index).getClose().getDay();
+            if (openDay == day) {
                 info++;
-                int lOpenTime = Integer.parseInt(restaurantHours.getPeriods().get(lIndex).getOpen().getTime());
-                int lCloseTime = Integer.parseInt(restaurantHours.getPeriods().get(lIndex).getClose().getTime());
+                int openTime = Integer.parseInt(restaurantHours.getPeriods().get(index).getOpen().getTime());
+                int closeTime = Integer.parseInt(restaurantHours.getPeriods().get(index).getClose().getTime());
                 theOpeningHours.setCurrentOpenDay(day);
                 if (info == 2) {
-                    infoCloseTime = Integer.parseInt(restaurantHours.getPeriods().get(lIndex - 1).getClose().getTime());
+                    infoCloseTime = Integer.parseInt(restaurantHours.getPeriods().get(index - 1).getClose().getTime());
                 }
                 if (day == 0) {
                     infoPreviousDay = 6;
                 } else {
                     infoPreviousDay = day - 1;
                 }
-                if (lOpenDay != lCloseDay) {
+                if (openDay != closeDay) {
                     theOpeningHours.setLastCloseHour(searchPreviousDay(restaurantHours, infoPreviousDay));
                 }
 
                 if (theOpeningHours.getOpeningDayCase() < 2) {
-                    defineCase(lOpenTime, lCloseTime, infoCloseTime);
+                    defineCase(openTime, closeTime, infoCloseTime);
                 }
             }
         }

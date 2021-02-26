@@ -33,6 +33,7 @@
         android:layout_height="wrap_content"
         android:text="RestaurantName"
         android:layout_marginBottom="5dp"
+        android:layout_marginStart="8dp"
         android:ellipsize="end"
         android:singleLine="true"
         android:textColor="@color/colorBlack"
@@ -48,6 +49,7 @@
         android:layout_height="wrap_content"
         android:text="RestaurantAddress"
         android:layout_marginTop="6dp"
+        android:layout_marginStart="8dp"
         android:textSize="14sp"
         android:textColor="#6E6B6B"
         android:textStyle="bold"
@@ -61,6 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/restaurant_item_list_address"
         android:layout_marginTop="6dp"
+        android:layout_marginStart="8dp"
         android:text="openingHours"
         android:textColor="#6E6B6B"
         android:textSize="12sp"
@@ -127,6 +130,7 @@
                 android:id="@+id/restaurant_image_photo_item"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginEnd="8dp"
                 android:contentDescription="@string/restaurant_picture"/>
 
         </androidx.cardview.widget.CardView>

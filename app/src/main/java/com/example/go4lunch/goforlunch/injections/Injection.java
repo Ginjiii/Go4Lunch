@@ -15,6 +15,6 @@ public class Injection {
     }
 
     public static Go4LunchFactory go4LunchFactory() {
-        return new Go4LunchFactory(createRestaurantRepository());
+        return new Go4LunchFactory(createRestaurantRepository(), createCoworkerRepository());
     }
 }
