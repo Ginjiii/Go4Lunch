@@ -1,4 +1,4 @@
-package com.example.go4lunch.goforlunch.ui;
+package com.example.go4lunch.goforlunch.ui.setting;
 
 import android.os.Bundle;
 

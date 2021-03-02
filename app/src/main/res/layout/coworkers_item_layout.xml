@@ -15,6 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_margin="@dimen/default_margin"
+        android:background="@drawable/ic_baseline_account_circle_24"
         android:contentDescription="@string/coworkers_picture" />
 
     <TextView

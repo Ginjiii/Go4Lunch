@@ -85,12 +85,9 @@
     <string name="place_detail_fields" />
     <string name="proximity_radius">150 </string>
     <string name="bound_radius">150 </string>
-    <string name="text_coworker_eating" />
-    <string name="text_coworker_not_decided" />
-    <string name="text_coworker_joining" />
     <string name="error_saved_failed" />
-    <string name="text_no_web_site" />
-    <string name="text_no_phone_number" />
+    <string name="text_no_web_site">No Website</string>
+    <string name="text_no_phone_number">No phone number</string>
     <string name="restaurant_favorite_button">Restaurant Favorite button</string>
     <string name="text_restaurant_closed_open_at_on">on</string>
     <string name="restaurant_closed_today">Closed today. Open at</string>
@@ -99,7 +96,9 @@
     <string name="restaurant_closing_soon">Closing soon</string>
     <string name="restaurant_on">on</string>
     <string name="restaurant_open_h24">Open 24/7</string>
-    <string name="is_joining" />
+    <string name="is_joining">is joining</string>
+    <string name="is_eating">is eating</string>
+    <string name="has_not_decided_yet">has not decided yet</string>
 
 
 </resources>

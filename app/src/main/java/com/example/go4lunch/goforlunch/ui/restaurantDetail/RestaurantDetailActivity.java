@@ -3,16 +3,12 @@ package com.example.go4lunch.goforlunch.ui.restaurantDetail;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
@@ -20,13 +16,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.goforlunch.factory.Go4LunchFactory;
 import com.example.go4lunch.goforlunch.injections.Injection;
 import com.example.go4lunch.goforlunch.models.Restaurant;
-import com.example.go4lunch.goforlunch.models.places.RestaurantDetail;
-import com.example.go4lunch.goforlunch.ui.restaurant.RestaurantAdapter;
 import com.go4lunch.R;
-import com.go4lunch.databinding.ActivityMainBinding;
 import com.go4lunch.databinding.RestaurantDetailLayoutBinding;
-
-import java.util.List;
 
 import static com.example.go4lunch.goforlunch.service.Go4Lunch.api;
 
@@ -88,11 +79,6 @@ public class RestaurantDetailActivity extends AppCompatActivity {
             //displayInfoRestaurant(restaurant);
         }
 
-    private void changeAndNotifyAdapterChange(Restaurant rest) {
-        //displayInfoRestaurant(rest);
-        //adapter.setRestaurantDetailList(restaurants);
-        //adapter.notifyDataSetChanged();
-    }
     private void displayInfoRestaurant(Restaurant restaurant) {
         binding.restaurantDetailName.setText(restaurant.getRestaurantName());
         binding.restaurantDetailAddress.setText(restaurant.getRestaurantAddress());

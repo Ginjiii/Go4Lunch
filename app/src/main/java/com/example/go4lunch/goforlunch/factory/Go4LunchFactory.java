@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.go4lunch.goforlunch.repositories.CoworkerRepository;
 import com.example.go4lunch.goforlunch.repositories.RestaurantRepository;
+import com.example.go4lunch.goforlunch.ui.coworker.CoworkerViewModel;
 import com.example.go4lunch.goforlunch.ui.maps.MapsViewModel;
 import com.example.go4lunch.goforlunch.ui.restaurant.RestaurantsViewModel;
 import com.example.go4lunch.goforlunch.ui.restaurantDetail.RestaurantDetailViewModel;
@@ -36,6 +37,9 @@ public class Go4LunchFactory implements ViewModelProvider.Factory {
         }
         if (modelClass.isAssignableFrom(RestaurantDetailViewModel.class)) {
             return (T) new RestaurantDetailViewModel(this.restaurantRepository, this.coWorkerRepository);
+        }
+        if (modelClass.isAssignableFrom(CoworkerViewModel.class)) {
+            return (T) new CoworkerViewModel(this.coWorkerRepository);
         }
         throw new IllegalArgumentException("Problem with ViewModelFactory");
     }
