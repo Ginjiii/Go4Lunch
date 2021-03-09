@@ -55,7 +55,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .replace(R.id.main_frame_layout, new MapsFragment())
                 .commit();
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+    }
     // --------------------
     // UI
     // --------------------

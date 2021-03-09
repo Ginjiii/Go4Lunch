@@ -25,32 +25,6 @@ public class RestaurantDetailViewModel extends ViewModel {
         coworkerRepository = mCoworkerRepository;
     }
 
-    /**
-     * Get or save the coworker restaurant choice
-     * @param actions : enum : action to do
-     * @return : enum : result of the action
-     */
-    public MutableLiveData<Actions> getOrSaveCoworkerRestaurantChoice(Actions actions) {
-        return coworkerRepository.getOrSaveCoworkerRestaurantChoice(actions);
-    }
-
-    /**
-     * Get or save the coworker restaurant like
-     * @param actions : enum : action to do
-     * @return : enum : result of the action
-     */
-    public MutableLiveData<Actions> getOrSaveCoworkerLikeRestaurant(Actions actions) {
-        return coworkerRepository.getOrSaveCoworkerLikeRestaurant(actions);
-    }
-
-    /**
-     * Get  coworker information
-     * @return : object : coworker
-     */
-    public MutableLiveData<Coworker> getCoworkerData() {
-        return coworkerRepository.getCoworkerData();
-    }
-
     public MutableLiveData<Restaurant> getRestaurantDetail(String placeId) {
 
         return restaurantRepository.getGoogleRestaurantDetail(placeId);

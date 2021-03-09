@@ -28,7 +28,11 @@ public class SignInActivity extends AppCompatActivity {
         checkSessionUser();
         viewModel = new ViewModelProvider(this).get(SignInViewModel.class);
     }
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        viewModel.checkIfUserIsLogged();
+    }
     private void initView() {
         binding = ActivitySignInBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();

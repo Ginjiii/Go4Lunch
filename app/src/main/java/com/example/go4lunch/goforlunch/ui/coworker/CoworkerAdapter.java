@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.goforlunch.models.Coworker;
 import com.example.go4lunch.goforlunch.ui.restaurantDetail.RestaurantDetailActivity;
@@ -24,6 +25,9 @@ public class CoworkerAdapter extends RecyclerView.Adapter<CoworkerAdapter.Cowork
 
     private List<Coworker> coworkerList;
     private Coworker.CoworkerRestaurantChoice restaurantChoice;
+
+    public CoworkerAdapter(List<Coworker> coworker, RequestManager with) {
+    }
 
     public void setCoworkerList(List<Coworker> mCoworkerList) {
         coworkerList = mCoworkerList;
@@ -72,6 +76,15 @@ public class CoworkerAdapter extends RecyclerView.Adapter<CoworkerAdapter.Cowork
             return coworkerList.size();
         }
         return 0;
+    }
+
+    void update(List<Coworker> coworkers) {
+        this.coworkerList = coworkers;
+        notifyDataSetChanged();
+    }
+
+    Coworker getCoworker(int position){
+        return coworkerList.get(position);
     }
 
     static class CoworkerViewHolder extends RecyclerView.ViewHolder{

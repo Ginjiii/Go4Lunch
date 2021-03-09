@@ -14,21 +14,4 @@ public class SettingViewModel extends ViewModel {
     public SettingViewModel(CoworkerRepository mCoworkerRepository) {
         coworkerRepository = mCoworkerRepository;
     }
-
-    /**
-     * Retrieve coworker information from Firestore
-     * @return : object : coworker
-     */
-    public LiveData<Coworker> getCoworkerData() {
-        return coworkerRepository.getCoworkerData();
-    }
-
-    /**
-     * Update the coworker user name in Firestore
-     * @param coworkerName : string : new user name
-     * @return : enum : result of the action
-     */
-    public LiveData<Actions> updateCoworkerName(String coworkerName) {
-        return coworkerRepository.updateCoworkerName(coworkerName);
-    }
 }

@@ -37,6 +37,8 @@ public class RestaurantRepository {
 
     private final String type = "restaurant";
     private final int proximityRadius = 300;
+    private String restaurantSelected;
+
     RestaurantDetailViewModel restaurantDetailViewModel;
 
     // Google / Retrofit declarations
@@ -50,6 +52,15 @@ public class RestaurantRepository {
     private List<Restaurant> mRestaurantList = new ArrayList<>();
     private List<Restaurant> mRestaurantListDetail = new ArrayList<>();
 
+    private static volatile RestaurantRepository INSTANCE;
+
+
+    public static RestaurantRepository getInstance(){
+        if(INSTANCE == null){
+            INSTANCE = new RestaurantRepository();
+        }
+        return INSTANCE;
+    }
     /**
      * Get the restaurant list from Google
      *
@@ -310,5 +321,9 @@ public class RestaurantRepository {
     public static String getPhoto(String photoReference, int maxWidth, String key) {
         return BASE_URL_GOOGLE + PHOTO_REF_GOOGLE + photoReference
                 + MAX_WIDTH_GOOGLE + maxWidth + KEY_GOOGLE + key;
+    }
+
+    public void setRestaurantSelected(String restaurantUid){
+        this.restaurantSelected = restaurantUid;
     }
 }

@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.goforlunch.factory.Go4LunchFactory;
 import com.example.go4lunch.goforlunch.injections.Injection;
+import com.example.go4lunch.goforlunch.models.Coworker;
 import com.example.go4lunch.goforlunch.models.Restaurant;
 import com.go4lunch.R;
 import com.go4lunch.databinding.RestaurantDetailLayoutBinding;
@@ -26,12 +27,8 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     public static final String RESTAURANT_PLACE_ID = "placeId";
     public static final String RESTAURANT_DETAIL = "restaurantDetail";
     private LifecycleRegistry mLifecycleRegistry;
-
     private Restaurant restaurant;
     private String restaurantId;
-
-
-
     RestaurantDetailLayoutBinding binding;
     RestaurantDetailViewModel restaurantDetailViewModel;
 
@@ -64,26 +61,18 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
     private void initViewModel() {
         Go4LunchFactory factory = Injection.go4LunchFactory();
-
         restaurantDetailViewModel = new ViewModelProvider(this, factory).get(RestaurantDetailViewModel.class);
-
-        //getRestaurantDetail(restaurant);
         }
 
         private void getRestaurantDetail(String placeId, Restaurant rest) {
             Go4LunchFactory factory = Injection.go4LunchFactory();
-
             restaurantDetailViewModel = new ViewModelProvider(this, factory).get(RestaurantDetailViewModel.class);
-
             restaurantDetailViewModel.getRestaurantDetail(placeId).observe(this, restaurant -> displayInfoRestaurant(restaurant));
-            //displayInfoRestaurant(restaurant);
         }
 
     private void displayInfoRestaurant(Restaurant restaurant) {
         binding.restaurantDetailName.setText(restaurant.getRestaurantName());
         binding.restaurantDetailAddress.setText(restaurant.getRestaurantAddress());
-
-        displayRating(restaurant.getRestaurantRating());
 
         if (restaurant.getRestaurantPhotoUrl() != null) {
             Glide.with(RestaurantDetailActivity.this)
@@ -98,8 +87,9 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
         binding.restaurantDetailWebsiteButton.setOnClickListener(v -> openWebSite(restaurant.getRestaurantWebSite()));
 
-    }
+//        binding.restaurantDetailFab.setOnClickListener(v -> restaurantDetailViewModel());
 
+    }
 
     /**
      * Open the website
@@ -133,10 +123,6 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         if (restaurantDetailViewModel == null) {
             initViewModel();
         }
-    }
-
-    private void displayRating(double restaurantRating) {
- //       binding.restaurantDetailsRate.setRating((float) restaurant.getRestaurantRating());
     }
 }
 

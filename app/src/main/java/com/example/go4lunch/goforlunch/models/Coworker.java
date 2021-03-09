@@ -7,46 +7,59 @@ import com.google.firebase.Timestamp;
 import java.util.List;
 
 public class Coworker {
-
-    private String coworkerId;
-    private String coworkerName;
-    private String coworkerEmail;
-    private String coworkerPhotoUrl;
-    private CoworkerRestaurantChoice coworkerRestaurantChosen;
-    private List<Likes> coworkerLikes;
-
-    public Coworker() {}
+    private String uid;
+     private String coworkerName;
+    @Nullable private String coworkerEmail;
+    @Nullable private String coworkerPhotoUrl;
+    @Nullable private CoworkerRestaurantChoice coworkerRestaurantChosen;
+    @Nullable private List<Likes> coworkerLikes;
+    public Coworker() { }
+    public Coworker(String uid, String username, String urlPicture) {
+        this.uid = uid;
+        this.coworkerName = username;
+        this.coworkerPhotoUrl = urlPicture;
+    }
 
     public Coworker(String coworkerId, List<Likes> coworkerLikes) {
-        this.coworkerId = coworkerId;
+        this.uid = coworkerId;
         this.coworkerLikes = coworkerLikes;
     }
 
-    public Coworker(String coworkerId, String coworkerName) {
-        coworkerId = coworkerId;
-        coworkerName = coworkerName;
+    public Coworker(String mCoworkerId, String mCoworkerName) {
+        uid = mCoworkerId;
+        coworkerName = mCoworkerName;
     }
 
-
-    public Coworker(String coworkerId,String coworkerName, String coworkerEmail, String coworkerPhotoUrl) {
-        this.coworkerId = coworkerId;
-        this.coworkerName = coworkerName;
-        this.coworkerEmail = coworkerEmail;
-        this.coworkerPhotoUrl = coworkerPhotoUrl;
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid='" + uid + '\'' +
+                ", username='" + this.coworkerName + '\'' +
+                ", email='" + this.coworkerEmail + '\'' +
+                ", urlPicture='" + this.coworkerPhotoUrl + '\'' +
+                ", restaurantUid='" + this.coworkerRestaurantChosen.getRestaurantId() + '\'' +
+                ", likedRestaurants=" + this.coworkerLikes +
+                '}';
+    }
+    public Coworker(String mCoworkerId,String mCoworkerName, String mCoworkerEmail, String mCoworkerPhotoUrl) {
+        this.uid = mCoworkerId;
+        this.coworkerName = mCoworkerName;
+        this.coworkerEmail = mCoworkerEmail;
+        this.coworkerPhotoUrl = mCoworkerPhotoUrl;
     }
 
-    public Coworker(String coworkerId, String coworkerName, String coworkerEmail, String coworkerPhotoUrl,
-                    CoworkerRestaurantChoice coworkerRestaurantChosen) {
-        this.coworkerId = coworkerId;
-        this.coworkerName = coworkerName;
-        this.coworkerEmail = coworkerEmail;
-        this.coworkerPhotoUrl = coworkerPhotoUrl;
-        this.coworkerRestaurantChosen = coworkerRestaurantChosen;
+    public Coworker(String mCoworkerId, String mCoworkerName, String mCoworkerEmail, String mCoworkerPhotoUrl,
+                    CoworkerRestaurantChoice mCoworkerRestaurantChosen) {
+        this.uid = mCoworkerId;
+        this.coworkerName = mCoworkerName;
+        this.coworkerEmail = mCoworkerEmail;
+        this.coworkerPhotoUrl = mCoworkerPhotoUrl;
+        this.coworkerRestaurantChosen = mCoworkerRestaurantChosen;
     }
 
     public Coworker(String mCoworkerId, String mCoworkerName, String mCoworkerEmail, String mCoworkerPhotoUrl,
                     CoworkerRestaurantChoice mCoworkerRestaurantChosen, List<Likes> mCoworkerLikes) {
-        coworkerId = mCoworkerId;
+        uid = mCoworkerId;
         coworkerName = mCoworkerName;
         coworkerEmail = mCoworkerEmail;
         coworkerPhotoUrl = mCoworkerPhotoUrl;
@@ -70,9 +83,11 @@ public class Coworker {
 
     public void setCoworkerRestaurantChosen(CoworkerRestaurantChoice mCoworkerRestaurantChosen) { coworkerRestaurantChosen = mCoworkerRestaurantChosen; }
 
-    public String getCoworkerId() { return coworkerId; }
+    public String getUid() { return uid; }
 
-    public void setCoworkerId(String mCoworkerId) { coworkerId = mCoworkerId; }
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public List<Likes> getCoworkerLikes() { return coworkerLikes; }
 
@@ -134,6 +149,7 @@ public class Coworker {
         public void setRestaurantDateChoice(Timestamp mRestaurantDateChoice) {
             restaurantDateChoice = mRestaurantDateChoice;
         }
+
     }
 
     public enum Fields {
@@ -145,4 +161,5 @@ public class Coworker {
         coworkerRestaurantChosen,
         coworkerLikes
     }
+
 }

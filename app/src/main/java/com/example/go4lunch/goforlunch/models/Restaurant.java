@@ -117,6 +117,10 @@ public class Restaurant implements Serializable, Comparable<Restaurant> {
     @Override
     public int compareTo(Restaurant mRestaurant) { return (int)mRestaurant.restaurantDistance - (int)this.restaurantDistance; }
 
+  // public String SetChoisenRestaurant() {
+  //
+  // }
+
     public static class CoworkerList {
         public String coworkerId;
         public String coworkerName;

@@ -1,10 +1,12 @@
 package com.example.go4lunch.goforlunch.ui.restaurant;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.go4lunch.goforlunch.models.Restaurant;
 import com.example.go4lunch.goforlunch.repositories.RestaurantRepository;
+import com.example.go4lunch.goforlunch.utils.Event;
 
 import java.util.List;
 
