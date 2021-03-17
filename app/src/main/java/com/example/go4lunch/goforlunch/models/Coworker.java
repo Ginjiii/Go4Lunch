@@ -4,15 +4,17 @@ import androidx.annotation.Nullable;
 
 import com.google.firebase.Timestamp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Coworker {
     private String uid;
-     private String coworkerName;
+    private String coworkerName;
     @Nullable private String coworkerEmail;
     @Nullable private String coworkerPhotoUrl;
     @Nullable private CoworkerRestaurantChoice coworkerRestaurantChosen;
-    @Nullable private List<Likes> coworkerLikes;
+    @Nullable private List<String> coworkerLikes;
+    private List<String> likedRestaurants;
     public Coworker() { }
     public Coworker(String uid, String username, String urlPicture) {
         this.uid = uid;
@@ -20,7 +22,7 @@ public class Coworker {
         this.coworkerPhotoUrl = urlPicture;
     }
 
-    public Coworker(String coworkerId, List<Likes> coworkerLikes) {
+    public Coworker(String coworkerId, List<String> coworkerLikes) {
         this.uid = coworkerId;
         this.coworkerLikes = coworkerLikes;
     }
@@ -58,7 +60,7 @@ public class Coworker {
     }
 
     public Coworker(String mCoworkerId, String mCoworkerName, String mCoworkerEmail, String mCoworkerPhotoUrl,
-                    CoworkerRestaurantChoice mCoworkerRestaurantChosen, List<Likes> mCoworkerLikes) {
+                    CoworkerRestaurantChoice mCoworkerRestaurantChosen, List<String> mCoworkerLikes) {
         uid = mCoworkerId;
         coworkerName = mCoworkerName;
         coworkerEmail = mCoworkerEmail;
@@ -81,7 +83,7 @@ public class Coworker {
 
     public CoworkerRestaurantChoice getCoworkerRestaurantChosen() { return coworkerRestaurantChosen; }
 
-    public void setCoworkerRestaurantChosen(CoworkerRestaurantChoice mCoworkerRestaurantChosen) { coworkerRestaurantChosen = mCoworkerRestaurantChosen; }
+    public void  setCoworkerRestaurantChosen(CoworkerRestaurantChoice mCoworkerRestaurantChosen) { coworkerRestaurantChosen = mCoworkerRestaurantChosen; }
 
     public String getUid() { return uid; }
 
@@ -89,9 +91,31 @@ public class Coworker {
         this.uid = uid;
     }
 
-    public List<Likes> getCoworkerLikes() { return coworkerLikes; }
+    public List<String> getCoworkerLikes() { return coworkerLikes; }
 
-    public void setCoworkerLikes(List<Likes> mCoworkerLikes) { coworkerLikes = mCoworkerLikes; }
+    public void setCoworkerLikes(List<String> mCoworkerLikes) { coworkerLikes = mCoworkerLikes; }
+
+    public List<String> getLikedRestaurants() {
+        return likedRestaurants;
+    }
+
+    public void addLikedRestaurant(String restaurantUid){
+        if(coworkerLikes == null) {
+            this.likedRestaurants = new ArrayList<>();
+        }
+        this.likedRestaurants.add(restaurantUid);
+    }
+
+    public void removeLikedRestaurant(String restaurantUid){
+        if(likedRestaurants != null) {
+            int position = 0;
+            for (String uid : likedRestaurants) {
+                if (uid.equals(restaurantUid)) likedRestaurants.remove(position);
+                position += 1;
+            }
+        }
+    }
+
 
     public static class Likes {
         public String restaurantId;
@@ -116,13 +140,15 @@ public class Coworker {
     public static class CoworkerRestaurantChoice {
         public String restaurantId;
         public String restaurantName;
+        public String restaurantAddress;
         public Timestamp restaurantDateChoice;
 
         public CoworkerRestaurantChoice() {}
 
-        public CoworkerRestaurantChoice(String mRestaurantId, String mRestaurantName, Timestamp mRestaurantDateChoice) {
+        public CoworkerRestaurantChoice(String mRestaurantId, String mRestaurantName, String mRestaurantAddress ,Timestamp mRestaurantDateChoice) {
             restaurantId = mRestaurantId;
             restaurantName = mRestaurantName;
+            restaurantAddress = mRestaurantAddress;
             restaurantDateChoice = mRestaurantDateChoice;
         }
 
@@ -140,6 +166,14 @@ public class Coworker {
 
         public void setRestaurantName(String mRestaurantName) {
             restaurantName = mRestaurantName;
+        }
+
+        public String getRestaurantAddress() {
+            return restaurantAddress;
+        }
+
+        public void setRestaurantAddress(String restaurantAddress) {
+            this.restaurantAddress = restaurantAddress;
         }
 
         public Timestamp getRestaurantDateChoice() {

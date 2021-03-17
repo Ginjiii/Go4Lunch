@@ -3,6 +3,7 @@ package com.example.go4lunch.goforlunch.ui.restaurantDetail;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -15,10 +16,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.goforlunch.factory.Go4LunchFactory;
 import com.example.go4lunch.goforlunch.injections.Injection;
-import com.example.go4lunch.goforlunch.models.Coworker;
 import com.example.go4lunch.goforlunch.models.Restaurant;
+import com.example.go4lunch.goforlunch.utils.Actions;
 import com.go4lunch.R;
 import com.go4lunch.databinding.RestaurantDetailLayoutBinding;
+
+import java.util.ArrayList;
 
 import static com.example.go4lunch.goforlunch.service.Go4Lunch.api;
 
@@ -40,13 +43,13 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         setContentView(view);
         mLifecycleRegistry = new LifecycleRegistry(this);
         mLifecycleRegistry.markState(Lifecycle.State.CREATED);
-       String placeId = getRestaurantPlaceId();
-       Restaurant dene = (Restaurant)getIntent().getSerializableExtra(RESTAURANT_DETAIL);
+        String placeId = getRestaurantPlaceId();
 
-       if (placeId != null)
-       {
-           getRestaurantDetail(placeId, dene);
-       }
+
+        if (placeId != null)
+        {
+            getRestaurantDetail(placeId);
+        }
     }
 
     private String getRestaurantPlaceId() {
@@ -62,13 +65,14 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     private void initViewModel() {
         Go4LunchFactory factory = Injection.go4LunchFactory();
         restaurantDetailViewModel = new ViewModelProvider(this, factory).get(RestaurantDetailViewModel.class);
-        }
+    }
 
-        private void getRestaurantDetail(String placeId, Restaurant rest) {
-            Go4LunchFactory factory = Injection.go4LunchFactory();
-            restaurantDetailViewModel = new ViewModelProvider(this, factory).get(RestaurantDetailViewModel.class);
-            restaurantDetailViewModel.getRestaurantDetail(placeId).observe(this, restaurant -> displayInfoRestaurant(restaurant));
-        }
+    private void getRestaurantDetail(String placeId) {
+        Go4LunchFactory factory = Injection.go4LunchFactory();
+        restaurantDetailViewModel = new ViewModelProvider(this, factory).get(RestaurantDetailViewModel.class);
+        restaurantDetailViewModel.getRestaurantDetail(placeId).observe(this, this::displayInfoRestaurant);
+        displayChoiceStatus();
+    }
 
     private void displayInfoRestaurant(Restaurant restaurant) {
         binding.restaurantDetailName.setText(restaurant.getRestaurantName());
@@ -83,12 +87,14 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
         displayChoiceStatus();
 
+
         binding.restaurantDetailCallButton.setOnClickListener(v -> openDialer(restaurant.getRestaurantPhone()));
-
         binding.restaurantDetailWebsiteButton.setOnClickListener(v -> openWebSite(restaurant.getRestaurantWebSite()));
-
-//        binding.restaurantDetailFab.setOnClickListener(v -> restaurantDetailViewModel());
-
+        binding.restaurantDetailLikeButton.setOnClickListener(v -> restaurantDetailViewModel.updateRestaurantLiked(restaurant));
+        binding.restaurantDetailFab.setOnClickListener(v -> {
+            Log.d("isRestaurantPicked", "displayInfoRestaurant: LetsGo ");
+            restaurantDetailViewModel.updatePickedRestaurant(restaurant);
+        });
     }
 
     /**
@@ -123,6 +129,20 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         if (restaurantDetailViewModel == null) {
             initViewModel();
         }
+    }
+
+    /**
+     * Change the coworker choice status
+     *
+     * @param isChosen : boolean : the restaurant is chosen or not
+     */
+    private void changeChoiceStatus(boolean isChosen) {
+        if (isChosen) {
+            binding.restaurantDetailFab.setImageResource(R.drawable.ic_baseline_check_circle_24_ok);
+            binding.restaurantDetailFab.setTag(Actions.IS_CHOSEN);
+        } else {
+            binding.restaurantDetailFab.setImageResource(R.drawable.ic_baseline_uncheck_circle_24);
+            binding.restaurantDetailFab.setTag(Actions.NOT_CHOSEN);}
     }
 }
 

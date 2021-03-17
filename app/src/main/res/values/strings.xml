@@ -99,6 +99,7 @@
     <string name="is_joining">is joining</string>
     <string name="is_eating">is eating</string>
     <string name="has_not_decided_yet">has not decided yet</string>
+    <string name="eating_here_today" />
 
 
 </resources>

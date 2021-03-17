@@ -20,7 +20,11 @@ import com.go4lunch.BuildConfig;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -119,12 +123,12 @@ public class RestaurantRepository {
                         RestaurantDetail dRestaurant = getGoogleRestaurantDetailList(restaurant.getPlaceId(), restaurants, restaurantToAdd);
                         //if (dRestaurant!= null && dRestaurant. != null)
                         //{
-                            RestaurantDetail detailRestaurant =dRestaurant;
-                            if (detailRestaurant != null && detailRestaurant.getResult() != null ){
-                                restaurantToAdd.setRestaurantOpeningHours(detailRestaurant.getResult().getOpeningHours());
-                                Log.d(TAG, "onResponse: detailresto"+detailRestaurant.getResult().getName());
-                            }
-                            restaurants.add(restaurantToAdd);
+                        RestaurantDetail detailRestaurant =dRestaurant;
+                        if (detailRestaurant != null && detailRestaurant.getResult() != null ){
+                            restaurantToAdd.setRestaurantOpeningHours(detailRestaurant.getResult().getOpeningHours());
+                            Log.d(TAG, "onResponse: detailresto"+detailRestaurant.getResult().getName());
+                        }
+                        restaurants.add(restaurantToAdd);
                         //}
 
 
@@ -303,12 +307,13 @@ public class RestaurantRepository {
         });
         return restaurantListDetail;
     }
-            private void displayRestaurantList(List<Restaurant> mRestaurantListDetail) {
-                Log.d(TAG, "displayRestaurantList: ");
-                api.setRestaurantList(mRestaurantList);
 
-                restaurantList.postValue(mRestaurantListDetail);
-            }
+    private void displayRestaurantList(List<Restaurant> mRestaurantListDetail) {
+        Log.d(TAG, "displayRestaurantList: ");
+        api.setRestaurantList(mRestaurantList);
+
+        restaurantList.postValue(mRestaurantListDetail);
+    }
 
     /**
      * Get the photo from Google

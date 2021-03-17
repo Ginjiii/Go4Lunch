@@ -4,6 +4,7 @@ import com.example.go4lunch.goforlunch.models.common.Location;
 import com.example.go4lunch.goforlunch.models.places.RestaurantDetail;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Restaurant implements Serializable, Comparable<Restaurant> {
@@ -19,6 +20,7 @@ public class Restaurant implements Serializable, Comparable<Restaurant> {
     private RestaurantDetail.OpeningHours restaurantOpeningHours;
     private float restaurantDistance;
     private List<CoworkerList> restaurantCoworkerList;
+    private List<Coworker> coworkersEatingHere;
 
     public Restaurant () {}
 
@@ -60,6 +62,7 @@ public class Restaurant implements Serializable, Comparable<Restaurant> {
         restaurantOpeningHours = mRestaurantOpeningHours;
         restaurantDistance = mRestaurantDistance;
         restaurantCoworkerList = mRestaurantCoworkerList;
+        coworkersEatingHere = new ArrayList<>();
     }
 
     public String getRestaurantPlaceId() { return restaurantPlaceId; }
@@ -85,6 +88,15 @@ public class Restaurant implements Serializable, Comparable<Restaurant> {
     public String getRestaurantDistanceText() { return restaurantDistanceText; }
 
     public void setRestaurantDistanceText(String mRestaurantDistanceText) { restaurantDistanceText = mRestaurantDistanceText; }
+
+    public void setCoworkerChoice(List<Coworker> coworkers){
+        coworkersEatingHere = coworkers;
+
+    }
+
+    public List<Coworker> getCoworkerChoice(){
+        return coworkersEatingHere;
+    }
 
     public double getRestaurantRating() { return restaurantRating; }
 
@@ -117,7 +129,7 @@ public class Restaurant implements Serializable, Comparable<Restaurant> {
     @Override
     public int compareTo(Restaurant mRestaurant) { return (int)mRestaurant.restaurantDistance - (int)this.restaurantDistance; }
 
-  // public String SetChoisenRestaurant() {
+  // public String SetChosenRestaurant() {
   //
   // }
 
