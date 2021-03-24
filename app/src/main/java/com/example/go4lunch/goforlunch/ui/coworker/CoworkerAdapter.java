@@ -23,10 +23,14 @@ import static com.example.go4lunch.goforlunch.ui.restaurantDetail.RestaurantDeta
 
 public class CoworkerAdapter extends RecyclerView.Adapter<CoworkerAdapter.CoworkerViewHolder> {
 
+    private RequestManager with;
     private List<Coworker> coworkerList;
     private Coworker.CoworkerRestaurantChoice restaurantChoice;
 
-    public CoworkerAdapter(List<Coworker> coworker, RequestManager with) {
+    public CoworkerAdapter(List<Coworker> coworkerList, RequestManager with) {
+
+        this.coworkerList = coworkerList;
+        this.with = with;
     }
 
     public void setCoworkerList(List<Coworker> mCoworkerList) {

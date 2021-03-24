@@ -1,6 +1,9 @@
 package com.example.go4lunch.goforlunch.ui.restaurantDetail;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,8 +23,6 @@ import com.example.go4lunch.goforlunch.models.Restaurant;
 import com.example.go4lunch.goforlunch.utils.Actions;
 import com.go4lunch.R;
 import com.go4lunch.databinding.RestaurantDetailLayoutBinding;
-
-import java.util.ArrayList;
 
 import static com.example.go4lunch.goforlunch.service.Go4Lunch.api;
 
@@ -45,9 +46,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         mLifecycleRegistry.markState(Lifecycle.State.CREATED);
         String placeId = getRestaurantPlaceId();
 
-
-        if (placeId != null)
-        {
+        if (placeId != null) {
             getRestaurantDetail(placeId);
         }
     }
@@ -72,6 +71,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         restaurantDetailViewModel = new ViewModelProvider(this, factory).get(RestaurantDetailViewModel.class);
         restaurantDetailViewModel.getRestaurantDetail(placeId).observe(this, this::displayInfoRestaurant);
         displayChoiceStatus();
+
     }
 
     private void displayInfoRestaurant(Restaurant restaurant) {
@@ -84,8 +84,8 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                     .apply(RequestOptions.centerCropTransform())
                     .into(this.binding.restaurantDetailPicture);
         }
-
         displayChoiceStatus();
+
 
 
         binding.restaurantDetailCallButton.setOnClickListener(v -> openDialer(restaurant.getRestaurantPhone()));
@@ -95,7 +95,21 @@ public class RestaurantDetailActivity extends AppCompatActivity {
             Log.d("isRestaurantPicked", "displayInfoRestaurant: LetsGo ");
             restaurantDetailViewModel.updatePickedRestaurant(restaurant);
         });
+        binding.restaurantDetailFab.setOnClickListener(v1 -> changeChoiceStatus());
+        restaurantDetailViewModel.checkIfRestaurantIsChosen(restaurant).observe(this, this::changeChoiceStatus);
+
+
     }
+
+   private void changeChoiceStatus(Boolean aBoolean) {
+
+       Drawable checkButton = getResources().getDrawable(R.drawable.ic_baseline_check_circle_24_ok);
+       //  //set the color filter, you can use also Mode.SRC_ATOP
+       checkButton.mutate().setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY);
+       //set it to your fab button initialized before
+       binding.restaurantDetailFab.setImageDrawable(checkButton);
+       binding.restaurantDetailFab.setTag(Actions.IS_CHOSEN);
+   }
 
     /**
      * Open the website
@@ -134,15 +148,27 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     /**
      * Change the coworker choice status
      *
-     * @param isChosen : boolean : the restaurant is chosen or not
      */
-    private void changeChoiceStatus(boolean isChosen) {
-        if (isChosen) {
-            binding.restaurantDetailFab.setImageResource(R.drawable.ic_baseline_check_circle_24_ok);
+    private void changeChoiceStatus() {
+        if (true) {
+            //      binding.restaurantDetailFab.setImageResource(R.drawable.ic_baseline_uncheck_circle_24);
+            //      binding.restaurantDetailFab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.checkButton)));
+            //      binding.restaurantDetailFab.setTag(Actions.IS_CHOSEN);
+            //  } else {
+            //      binding.restaurantDetailFab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorGrey)));
+            //      binding.restaurantDetailFab.setTag(Actions.NOT_CHOSEN);
+            //      binding.restaurantDetailFab.setImageResource(R.drawable.ic_baseline_check_circle_24_ok);
+            //get the drawable
+            Drawable checkButton = getResources().getDrawable(R.drawable.ic_baseline_check_circle_24_ok);
+            //  //set the color filter, you can use also Mode.SRC_ATOP
+            checkButton.mutate().setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY);
+            //set it to your fab button initialized before
+            binding.restaurantDetailFab.setImageDrawable(checkButton);
             binding.restaurantDetailFab.setTag(Actions.IS_CHOSEN);
         } else {
             binding.restaurantDetailFab.setImageResource(R.drawable.ic_baseline_uncheck_circle_24);
-            binding.restaurantDetailFab.setTag(Actions.NOT_CHOSEN);}
+            binding.restaurantDetailFab.setTag(Actions.NOT_CHOSEN);
+        }
     }
 }
 

@@ -39,15 +39,15 @@ public class CoworkerViewModel extends ViewModel {
 
     void fetchListUsersFromFirebase() {
         CoworkerRepository.getAllCoworker().addOnSuccessListener(queryDocumentSnapshots -> {
-                    List<Coworker> fetchedUsers = new ArrayList<>();
-                    Log.d("FireBAse", "fetchListUsersFromFirebase: "+queryDocumentSnapshots.getDocuments().size());
-                    for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()){
-                        Coworker userFetched = documentSnapshot.toObject(Coworker.class);
-                            fetchedUsers.add(userFetched);
-                    }
-                    coworkers.setValue(fetchedUsers);
-                    isLoading.setValue(false);
-                })
+            List<Coworker> fetchedUsers = new ArrayList<>();
+            Log.d("FireBAse", "fetchListUsersFromFirebase: "+queryDocumentSnapshots.getDocuments().size());
+            for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()){
+                Coworker userFetched = documentSnapshot.toObject(Coworker.class);
+                fetchedUsers.add(userFetched);
+            }
+            coworkers.setValue(fetchedUsers);
+            isLoading.setValue(false);
+        })
                 .addOnFailureListener(this.onFailureListener());
     }
 

@@ -8,9 +8,11 @@ import com.example.go4lunch.goforlunch.models.Coworker;
 import com.example.go4lunch.goforlunch.models.Restaurant;
 import com.example.go4lunch.goforlunch.utils.Actions;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.List;
@@ -21,8 +23,10 @@ public class CoworkerRepository {
 
     private static final String COLLECTION_NAME = "coworker";
     private CollectionReference coworkerCollection;
-    private Coworker coworker;
+    private DocumentReference coworkerDocumentReference;
 
+    private Coworker coworker;
+    private final MutableLiveData<Actions> coworkerChoiceStatus = new MutableLiveData<>();
     private Coworker.CoworkerRestaurantChoice coworkerRestaurantChoice;
 
     private static volatile CoworkerRepository INSTANCE;

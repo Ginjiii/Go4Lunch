@@ -37,6 +37,7 @@ public class CoworkersFragment extends Fragment {
         View view = binding.getRoot();
         initRecyclerView();
         configureFragmentOnCreateView();
+        setupOpenDetailRestaurant();
         //coworkerViewModel.createUser();
         return view;
     }
@@ -71,7 +72,7 @@ public class CoworkersFragment extends Fragment {
     }
 
     private void setupOpenDetailRestaurant(){
-        coworkerViewModel.getOpenDetailRestaurant().observe(this, openEvent -> {
+        coworkerViewModel.getOpenDetailRestaurant().observe(getViewLifecycleOwner(), openEvent -> {
             if(openEvent.getContentIfNotHandle() != null) {
                 displayRestaurantDetail();
             }
@@ -95,7 +96,7 @@ public class CoworkersFragment extends Fragment {
     private void showUsers(List<Coworker> coworkers) {
         this.coworker = coworkers;
         coworkerAdapter.update(this.coworker);
- //       this.configureOnClickRecyclerView();
+        this.configureOnClickRecyclerView();
     }
 
     @Override

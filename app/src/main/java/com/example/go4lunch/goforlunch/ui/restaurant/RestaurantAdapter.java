@@ -107,7 +107,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
                 restaurantViewHolder.binding.restaurantItemListInfo.setTextColor(context.getResources().getColor(R.color.colorTextRed));
                 restaurantViewHolder.binding.restaurantItemListInfo.setTypeface(null, Typeface.BOLD);
             }
-            } else {
+        } else {
             restaurantViewHolder.binding.restaurantItemListInfo.setText("");
         }
     }
