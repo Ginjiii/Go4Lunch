@@ -112,7 +112,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Ea
     @Override
     public void getLocationUser(Location location) {
         userLocation = location;
-        viewModel.getRestaurantList(location.getLatitude(), location.getLongitude()).observe(getViewLifecycleOwner(), this::setMapMarkers);
+        viewModel.getRestaurantList(location.getLatitude(), location.getLongitude()).observe(this, this::setMapMarkers);
         if (googleMap != null) {
             googleMap.animateCamera(CameraUpdateFactory
                     .newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16));

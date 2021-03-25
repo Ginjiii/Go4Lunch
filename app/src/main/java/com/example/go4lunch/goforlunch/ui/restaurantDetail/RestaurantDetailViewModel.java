@@ -1,15 +1,12 @@
 package com.example.go4lunch.goforlunch.ui.restaurantDetail;
 import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-
 import com.example.go4lunch.goforlunch.base.BaseViewModel;
 import com.example.go4lunch.goforlunch.models.Coworker;
 import com.example.go4lunch.goforlunch.models.Restaurant;
 import com.example.go4lunch.goforlunch.repositories.CoworkerRepository;
 import com.example.go4lunch.goforlunch.repositories.RestaurantRepository;
 import com.example.go4lunch.goforlunch.utils.Actions;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -28,6 +25,7 @@ public class RestaurantDetailViewModel extends BaseViewModel {
     private Coworker coworker;
 
 
+    public final MutableLiveData<List<Restaurant.CoworkerList>> mCoworkerList = new MutableLiveData<>();
     public final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     public MutableLiveData<Boolean> isRestaurantLiked = new MutableLiveData<>();
     public MutableLiveData<Boolean> isRestaurantPicked = new MutableLiveData<>();
@@ -111,19 +109,26 @@ public class RestaurantDetailViewModel extends BaseViewModel {
 
     public void fetchCoworkerChoice(Restaurant restaurant) {
         List<Coworker> userToAdd = new ArrayList<>();
+        //On init le mcoworkerlist en faisant un erase
+        ArrayList<Restaurant.CoworkerList> coworkerList = new ArrayList<Restaurant.CoworkerList>();
+        mCoworkerList.setValue(coworkerList);
+
         CoworkerRepository.getAllCoworker()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()){
                         Coworker coworker = documentSnapshot.toObject(Coworker.class);
                         if(coworker != null && coworker.getUid() != null){
-                            String restaurantUid = coworker.getUid();
-                            if(restaurantUid.equals(restaurant.getRestaurantPlaceId())){
+                            String restaurantUid = coworker.getRestaurantUid();
+                            if(restaurantUid!= null && restaurantUid.equals(restaurant.getRestaurantPlaceId())){
                                 userToAdd.add(coworker);
+                                coworkerList.add(new Restaurant.CoworkerList(coworker.getUid(), coworker.getCoworkerName(), coworker.getCoworkerPhotoUrl()));
                             }
                         }
                     }
                     restaurant.setCoworkerChoice(userToAdd);
+                    mCoworkerList.setValue(coworkerList);
                     configureInfoRestaurant(restaurant);
+
                 });
     }
 
@@ -133,9 +138,9 @@ public class RestaurantDetailViewModel extends BaseViewModel {
         coworker = coworkerRepository.getActualUser();
         coworkerRepository.getCoworker(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener(doc -> {
                     coworker = doc.getResult().toObject(Coworker.class);
-                    String coworkerResuid = coworker.getRestaurantUid();
+                    String coworkerResUid = coworker.getRestaurantUid();
                     String restaurantUid = restaurant.getRestaurantPlaceId();
-                    if (coworkerResuid.equals(restaurantUid)) {
+                    if (coworkerResUid!= null && restaurantUid != null && coworkerResUid.equals(restaurantUid)) {
                         isRestaurantPicked.setValue(true);
                     }
                 });

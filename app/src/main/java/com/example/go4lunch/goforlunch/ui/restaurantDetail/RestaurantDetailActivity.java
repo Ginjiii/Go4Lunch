@@ -14,15 +14,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleRegistry;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.goforlunch.factory.Go4LunchFactory;
 import com.example.go4lunch.goforlunch.injections.Injection;
+import com.example.go4lunch.goforlunch.models.Coworker;
 import com.example.go4lunch.goforlunch.models.Restaurant;
+import com.example.go4lunch.goforlunch.ui.coworker.CoworkerDetailAdapter;
 import com.example.go4lunch.goforlunch.utils.Actions;
 import com.go4lunch.R;
 import com.go4lunch.databinding.RestaurantDetailLayoutBinding;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.go4lunch.goforlunch.service.Go4Lunch.api;
 
@@ -33,8 +40,11 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     private LifecycleRegistry mLifecycleRegistry;
     private Restaurant restaurant;
     private String restaurantId;
+    private RecyclerView recyclerView;
     RestaurantDetailLayoutBinding binding;
     RestaurantDetailViewModel restaurantDetailViewModel;
+    CoworkerDetailAdapter coworkerDetailAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +59,8 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         if (placeId != null) {
             getRestaurantDetail(placeId);
         }
+
+
     }
 
     private String getRestaurantPlaceId() {
@@ -63,11 +75,16 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
     private void initViewModel() {
         Go4LunchFactory factory = Injection.go4LunchFactory();
+
         restaurantDetailViewModel = new ViewModelProvider(this, factory).get(RestaurantDetailViewModel.class);
     }
 
     private void getRestaurantDetail(String placeId) {
         Go4LunchFactory factory = Injection.go4LunchFactory();
+ //      restaurantDetailViewModel.getRestaurantDetail(placeId).observe(this, restaurant1 -> {
+ //          coworkerDetailAdapter.setCoworkerLists(restaurant1.getRestaurantCoworkerList());
+ //          coworkerDetailAdapter.notifyDataSetChanged();
+ //       });
         restaurantDetailViewModel = new ViewModelProvider(this, factory).get(RestaurantDetailViewModel.class);
         restaurantDetailViewModel.getRestaurantDetail(placeId).observe(this, this::displayInfoRestaurant);
 
@@ -89,6 +106,22 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
 
         restaurantDetailViewModel.fetchCoworkerChoice(restaurant);
+
+        recyclerView = binding.restaurantDetailCoworkerList;
+
+
+        List<Restaurant.CoworkerList> list = new ArrayList<Restaurant.CoworkerList>();
+
+        coworkerDetailAdapter = new CoworkerDetailAdapter();
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(coworkerDetailAdapter);
+
+        restaurantDetailViewModel.mCoworkerList.observe(this, t -> {
+            coworkerDetailAdapter.setCoworkerLists(restaurantDetailViewModel.mCoworkerList.getValue());
+            recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+            recyclerView.setAdapter(coworkerDetailAdapter);
+        });
 
         binding.restaurantDetailCallButton.setOnClickListener(v -> openDialer(restaurant.getRestaurantPhone()));
         binding.restaurantDetailWebsiteButton.setOnClickListener(v -> openWebSite(restaurant.getRestaurantWebSite()));
