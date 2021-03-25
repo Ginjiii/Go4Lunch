@@ -88,9 +88,7 @@ public class CoworkerRepository {
         }
 
         if (coworker.getCoworkerRestaurantChosen() == null){
-
             coworkerRestaurantChoice = new Coworker.CoworkerRestaurantChoice();
-
         }else{
             coworkerRestaurantChoice = coworker.getCoworkerRestaurantChosen();
         }
@@ -101,12 +99,12 @@ public class CoworkerRepository {
         coworkerCollection.document(coworker.getUid()).update(
                 "restaurantUid", mRestaurantId,
                 "restaurantName", restaurantName,
-                "restaurantAddress", restaurantAddress);
+                "restaurantAddress", restaurantAddress,"coworkerRestaurantChosen",coworker.getCoworkerRestaurantChosen() );
 
         return  coworkerCollection.document(coworker.getUid()).update(
                 "restaurantUid", mRestaurantId,
                 "restaurantName", restaurantName,
-                "restaurantAddress", restaurantAddress);
+                "restaurantAddress", restaurantAddress,"coworkerRestaurantChosen",coworker.getCoworkerRestaurantChosen());
     }
 
     public Task<Void> addLikedRestaurant(String likedRestaurant, String uid){
