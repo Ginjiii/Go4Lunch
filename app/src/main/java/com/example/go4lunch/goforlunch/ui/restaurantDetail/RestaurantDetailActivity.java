@@ -70,6 +70,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         Go4LunchFactory factory = Injection.go4LunchFactory();
         restaurantDetailViewModel = new ViewModelProvider(this, factory).get(RestaurantDetailViewModel.class);
         restaurantDetailViewModel.getRestaurantDetail(placeId).observe(this, this::displayInfoRestaurant);
+
         displayChoiceStatus();
 
     }
@@ -84,9 +85,10 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                     .apply(RequestOptions.centerCropTransform())
                     .into(this.binding.restaurantDetailPicture);
         }
-        //displayChoiceStatus();
 
 
+
+        restaurantDetailViewModel.fetchCoworkerChoice(restaurant);
 
         binding.restaurantDetailCallButton.setOnClickListener(v -> openDialer(restaurant.getRestaurantPhone()));
         binding.restaurantDetailWebsiteButton.setOnClickListener(v -> openWebSite(restaurant.getRestaurantWebSite()));

@@ -13,8 +13,9 @@ public class Coworker {
     @Nullable private String coworkerEmail;
     @Nullable private String coworkerPhotoUrl;
     @Nullable private CoworkerRestaurantChoice coworkerRestaurantChosen;
-    private boolean restaurantChoice;
+    @Nullable private boolean restaurantChoice;
     @Nullable private List<String> coworkerLikes;
+    @Nullable private String restaurantUid;
     private List<String> likedRestaurants;
     public Coworker() { }
     public Coworker(String uid, String username, String urlPicture) {
@@ -78,7 +79,12 @@ public class Coworker {
 
     public String getCoworkerEmail() { return coworkerEmail; }
 
+    public String getRestaurantUid() { return restaurantUid; }
+
+
     public void setCoworkerEmail(String mCoworkerEmail) { coworkerEmail = mCoworkerEmail; }
+    public void setRestaurantUid(String mRestaurantUid) { restaurantUid = mRestaurantUid; }
+
 
     public String getCoworkerPhotoUrl() { return coworkerPhotoUrl; }
 

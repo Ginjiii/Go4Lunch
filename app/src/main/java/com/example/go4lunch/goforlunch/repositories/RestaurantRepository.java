@@ -29,6 +29,7 @@ public class RestaurantRepository {
 
     private final String type = "restaurant";
     private final int proximityRadius = 300;
+    private List<Restaurant> restaurants;
     private String restaurantSelected;
 
     RestaurantDetailViewModel restaurantDetailViewModel;
@@ -303,6 +304,10 @@ public class RestaurantRepository {
         restaurantList.postValue(mRestaurantListDetail);
     }
 
+    public List<Restaurant> getRestaurantsLoaded(){
+        return restaurants;
+    }
+
     /**
      * Get the photo from Google
      *
@@ -318,5 +323,9 @@ public class RestaurantRepository {
 
     public void setRestaurantSelected(String restaurantUid){
         this.restaurantSelected = restaurantUid;
+    }
+
+    public String getRestaurantSelected(){
+        return restaurantSelected;
     }
 }
