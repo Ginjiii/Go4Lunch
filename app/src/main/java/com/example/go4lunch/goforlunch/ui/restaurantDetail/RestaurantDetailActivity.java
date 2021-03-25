@@ -84,31 +84,47 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                     .apply(RequestOptions.centerCropTransform())
                     .into(this.binding.restaurantDetailPicture);
         }
-        displayChoiceStatus();
+        //displayChoiceStatus();
 
 
 
         binding.restaurantDetailCallButton.setOnClickListener(v -> openDialer(restaurant.getRestaurantPhone()));
         binding.restaurantDetailWebsiteButton.setOnClickListener(v -> openWebSite(restaurant.getRestaurantWebSite()));
         binding.restaurantDetailLikeButton.setOnClickListener(v -> restaurantDetailViewModel.updateRestaurantLiked(restaurant));
-        binding.restaurantDetailFab.setOnClickListener(v -> {
-            Log.d("isRestaurantPicked", "displayInfoRestaurant: LetsGo ");
+        //binding.restaurantDetailFab.setOnClickListener(v -> {
+         //   Log.d("isRestaurantPicked", "displayInfoRestaurant: LetsGo ");
+          //  restaurantDetailViewModel.updatePickedRestaurant(restaurant);
+
+        //});
+        //Initiation à la vue de l'affichage
+
+
+        //binding.restaurantDetailFab.setOnClickListener(v1 -> changeChoiceStatus());
+        restaurantDetailViewModel.isRestaurantPicked.observe(this, this::displayChoiceStatus);
+        //restaurantDetailViewModel.checkIfRestaurantIsChosen(restaurant).observe(this, this::changeChoiceStatus);
+        binding.restaurantDetailFab.setOnClickListener(v1 -> {
             restaurantDetailViewModel.updatePickedRestaurant(restaurant);
         });
-        binding.restaurantDetailFab.setOnClickListener(v1 -> changeChoiceStatus());
-        restaurantDetailViewModel.checkIfRestaurantIsChosen(restaurant).observe(this, this::changeChoiceStatus);
-
 
     }
 
-   private void changeChoiceStatus(Boolean aBoolean) {
 
-       Drawable checkButton = getResources().getDrawable(R.drawable.ic_baseline_check_circle_24_ok);
-       //  //set the color filter, you can use also Mode.SRC_ATOP
-       checkButton.mutate().setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY);
-       //set it to your fab button initialized before
-       binding.restaurantDetailFab.setImageDrawable(checkButton);
-       binding.restaurantDetailFab.setTag(Actions.IS_CHOSEN);
+    private void displayChoiceStatus(Boolean aBoolean) {
+        if(aBoolean)
+        {
+            Drawable checkButton = getResources().getDrawable(R.drawable.ic_baseline_check_circle_24_ok);
+            //  //set the color filter, you can use also Mode.SRC_ATOP
+            checkButton.mutate().setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY);
+            //set it to your fab button initialized before
+            binding.restaurantDetailFab.setImageDrawable(checkButton);
+
+        }else{
+            Drawable checkButton = getResources().getDrawable(R.drawable.ic_baseline_uncheck_circle_24);
+            //  //set the color filter, you can use also Mode.SRC_ATOP
+            checkButton.mutate().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+            //set it to your fab button initialized before
+            binding.restaurantDetailFab.setImageDrawable(checkButton);
+        }
    }
 
     /**
@@ -150,14 +166,9 @@ public class RestaurantDetailActivity extends AppCompatActivity {
      *
      */
     private void changeChoiceStatus() {
+        Log.d("change choice", "changeChoiceStatus: test");
         if (true) {
-            //      binding.restaurantDetailFab.setImageResource(R.drawable.ic_baseline_uncheck_circle_24);
-            //      binding.restaurantDetailFab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.checkButton)));
-            //      binding.restaurantDetailFab.setTag(Actions.IS_CHOSEN);
-            //  } else {
-            //      binding.restaurantDetailFab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorGrey)));
-            //      binding.restaurantDetailFab.setTag(Actions.NOT_CHOSEN);
-            //      binding.restaurantDetailFab.setImageResource(R.drawable.ic_baseline_check_circle_24_ok);
+
             //get the drawable
             Drawable checkButton = getResources().getDrawable(R.drawable.ic_baseline_check_circle_24_ok);
             //  //set the color filter, you can use also Mode.SRC_ATOP

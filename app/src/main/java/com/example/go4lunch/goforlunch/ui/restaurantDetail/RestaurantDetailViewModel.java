@@ -57,14 +57,14 @@ public class RestaurantDetailViewModel extends ViewModel {
             coworker = doc.getResult().toObject(Coworker.class);
             if(isRestaurantPicked != null && isRestaurantPicked.getValue() != null && isRestaurantPicked.getValue()){
                 coworkerRepository.updateRestaurantPicked(null, null, null, coworker)
-                        .addOnSuccessListener(onSuccessListener(REMOVED_PICKED, res))
-                        .addOnFailureListener(this.onFailureListener(UPDATE_PICKED));
+                        .addOnSuccessListener(onSuccessListener(REMOVED_PICKED, res));
+                        //.addOnFailureListener(this.onFailureListener(UPDATE_PICKED));
             } else {
                 isRestaurantPicked.setValue(true);
                 coworkerRepository.updateRestaurantPicked(res.getRestaurantPlaceId(), res.getRestaurantName(),
                         res.getRestaurantAddress(), coworker)
-                        .addOnSuccessListener(onSuccessListener(UPDATE_PICKED, res))
-                        .addOnFailureListener(this.onFailureListener(UPDATE_PICKED));
+                        .addOnSuccessListener(onSuccessListener(UPDATE_PICKED, res));
+                        //.addOnFailureListener(this.onFailureListener(UPDATE_PICKED));
             }
         });
     }
@@ -89,11 +89,9 @@ public class RestaurantDetailViewModel extends ViewModel {
 
     private void configureInfoRestaurant(Restaurant restaurant){
         isRestaurantLiked.setValue(checkIfRestaurantIsLiked(restaurant));
-        if(coworker.getUid() != null) {
-            isRestaurantPicked.setValue(coworker.getUid().equals(restaurant.getRestaurantPlaceId()));
-        } else {
-            isRestaurantPicked.setValue(false);
-        }
+
+        
+
         isLoading.setValue(false);
     }
 
@@ -114,20 +112,20 @@ public class RestaurantDetailViewModel extends ViewModel {
 //            if (restaurantChoosen.getRestaurantId().equals(restaurant.getRestaurantPlaceId())) return true;
 //        }
 //        return false;
-        coworkerRepository.getCoworker(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener(doc -> {
-            coworker = doc.getResult().toObject(Coworker.class);
-            if(isRestaurantPicked != null && isRestaurantPicked.getValue() != null && isRestaurantPicked.getValue()){
-                coworkerRepository.updateRestaurantPicked(null, null, null, coworker)
-                        .addOnSuccessListener(onSuccessListener(REMOVED_PICKED, restaurant))
-                        .addOnFailureListener(this.onFailureListener(UPDATE_PICKED));
-            } else {
-                isRestaurantPicked.setValue(true);
-                coworkerRepository.updateRestaurantPicked(restaurant.getRestaurantPlaceId(), restaurant.getRestaurantName(),
-                        restaurant.getRestaurantAddress(), coworker)
-                        .addOnSuccessListener(onSuccessListener(UPDATE_PICKED, restaurant))
-                        .addOnFailureListener(this.onFailureListener(UPDATE_PICKED));
-            }
-        });
+//        coworkerRepository.getCoworker(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener(doc -> {
+//            coworker = doc.getResult().toObject(Coworker.class);
+//            if(isRestaurantPicked != null && isRestaurantPicked.getValue() != null && isRestaurantPicked.getValue()){
+//                coworkerRepository.updateRestaurantPicked(null, null, null, coworker)
+//                        .addOnSuccessListener(onSuccessListener(REMOVED_PICKED, restaurant))
+//                        .addOnFailureListener(this.onFailureListener(UPDATE_PICKED));
+//            } else {
+//                isRestaurantPicked.setValue(true);
+//                coworkerRepository.updateRestaurantPicked(restaurant.getRestaurantPlaceId(), restaurant.getRestaurantName(),
+//                        restaurant.getRestaurantAddress(), coworker)
+//                        .addOnSuccessListener(onSuccessListener(UPDATE_PICKED, restaurant))
+//                        .addOnFailureListener(this.onFailureListener(UPDATE_PICKED));
+//            }
+       // });
 return isRestaurantPicked;
     }
 

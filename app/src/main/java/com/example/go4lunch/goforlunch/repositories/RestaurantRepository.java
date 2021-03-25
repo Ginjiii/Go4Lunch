@@ -2,33 +2,21 @@ package com.example.go4lunch.goforlunch.repositories;
 
 import android.location.Location;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-
-
 import com.example.go4lunch.goforlunch.models.Restaurant;
-
 import com.example.go4lunch.goforlunch.models.places.RestaurantDetail;
 import com.example.go4lunch.goforlunch.service.GooglePlacesService;
 import com.example.go4lunch.goforlunch.service.Retrofit;
 import com.example.go4lunch.goforlunch.ui.restaurantDetail.RestaurantDetailViewModel;
 import com.go4lunch.BuildConfig;
-
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 import static com.example.go4lunch.goforlunch.service.Go4Lunch.api;
 import static com.example.go4lunch.goforlunch.service.GooglePlacesService.BASE_URL_GOOGLE;
 import static com.example.go4lunch.goforlunch.service.GooglePlacesService.KEY_GOOGLE;

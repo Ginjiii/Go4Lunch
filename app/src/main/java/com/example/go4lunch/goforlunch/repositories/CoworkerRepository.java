@@ -102,7 +102,7 @@ public class CoworkerRepository {
                 "restaurantUid", mRestaurantId,
                 "restaurantName", restaurantName,
                 "restaurantAddress", restaurantAddress);
-        Log.d("isrestaurantpicked", "Update truuueeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee ");
+
         return  coworkerCollection.document(coworker.getUid()).update(
                 "restaurantUid", mRestaurantId,
                 "restaurantName", restaurantName,
