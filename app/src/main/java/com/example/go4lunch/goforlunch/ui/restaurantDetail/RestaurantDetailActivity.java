@@ -59,15 +59,12 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         if (placeId != null) {
             getRestaurantDetail(placeId);
         }
-
-
     }
 
     private String getRestaurantPlaceId() {
         if (getIntent().hasExtra(RESTAURANT_PLACE_ID)) {
             restaurantId = getIntent().getStringExtra(RESTAURANT_PLACE_ID);
             api.setRestaurantId(restaurantId);
-
             return restaurantId;
         }
         return null;
@@ -75,16 +72,11 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
     private void initViewModel() {
         Go4LunchFactory factory = Injection.go4LunchFactory();
-
         restaurantDetailViewModel = new ViewModelProvider(this, factory).get(RestaurantDetailViewModel.class);
     }
 
     private void getRestaurantDetail(String placeId) {
         Go4LunchFactory factory = Injection.go4LunchFactory();
- //      restaurantDetailViewModel.getRestaurantDetail(placeId).observe(this, restaurant1 -> {
- //          coworkerDetailAdapter.setCoworkerLists(restaurant1.getRestaurantCoworkerList());
- //          coworkerDetailAdapter.notifyDataSetChanged();
- //       });
         restaurantDetailViewModel = new ViewModelProvider(this, factory).get(RestaurantDetailViewModel.class);
         restaurantDetailViewModel.getRestaurantDetail(placeId).observe(this, this::displayInfoRestaurant);
 
@@ -102,7 +94,6 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                     .apply(RequestOptions.centerCropTransform())
                     .into(this.binding.restaurantDetailPicture);
         }
-
 
 
         restaurantDetailViewModel.fetchCoworkerChoice(restaurant);
@@ -126,17 +117,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         binding.restaurantDetailCallButton.setOnClickListener(v -> openDialer(restaurant.getRestaurantPhone()));
         binding.restaurantDetailWebsiteButton.setOnClickListener(v -> openWebSite(restaurant.getRestaurantWebSite()));
         binding.restaurantDetailLikeButton.setOnClickListener(v -> restaurantDetailViewModel.updateRestaurantLiked(restaurant));
-        //binding.restaurantDetailFab.setOnClickListener(v -> {
-         //   Log.d("isRestaurantPicked", "displayInfoRestaurant: LetsGo ");
-          //  restaurantDetailViewModel.updatePickedRestaurant(restaurant);
-
-        //});
-        //Initiation à la vue de l'affichage
-
-
-        //binding.restaurantDetailFab.setOnClickListener(v1 -> changeChoiceStatus());
         restaurantDetailViewModel.isRestaurantPicked.observe(this, this::displayChoiceStatus);
-        //restaurantDetailViewModel.checkIfRestaurantIsChosen(restaurant).observe(this, this::changeChoiceStatus);
         binding.restaurantDetailFab.setOnClickListener(v1 -> {
             restaurantDetailViewModel.updatePickedRestaurant(restaurant);
         });
@@ -145,22 +126,21 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
 
     private void displayChoiceStatus(Boolean aBoolean) {
-        if(aBoolean)
-        {
+        if (aBoolean) {
             Drawable checkButton = getResources().getDrawable(R.drawable.ic_baseline_check_circle_24_ok);
             //  //set the color filter, you can use also Mode.SRC_ATOP
             checkButton.mutate().setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY);
             //set it to your fab button initialized before
             binding.restaurantDetailFab.setImageDrawable(checkButton);
 
-        }else{
+        } else {
             Drawable checkButton = getResources().getDrawable(R.drawable.ic_baseline_uncheck_circle_24);
             //  //set the color filter, you can use also Mode.SRC_ATOP
             checkButton.mutate().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
             //set it to your fab button initialized before
             binding.restaurantDetailFab.setImageDrawable(checkButton);
         }
-   }
+    }
 
     /**
      * Open the website
@@ -198,7 +178,6 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
     /**
      * Change the coworker choice status
-     *
      */
     private void changeChoiceStatus() {
         Log.d("change choice", "changeChoiceStatus: test");

@@ -107,7 +107,6 @@ public class RestaurantDetailViewModel extends BaseViewModel {
                 fetchInfoRestaurant();
                 break;
         }
-
     }
 
     public void fetchCoworkerChoice(Restaurant restaurant) {
@@ -130,7 +129,6 @@ public class RestaurantDetailViewModel extends BaseViewModel {
                     restaurant.setCoworkerChoice(userToAdd);
                     mCoworkerList.setValue(coworkerList);
                     configureInfoRestaurant(restaurant);
-
                 });
     }
 
@@ -147,8 +145,6 @@ public class RestaurantDetailViewModel extends BaseViewModel {
                 isRestaurantPicked.setValue(true);
             }
         });
-
-
         isLoading.setValue(false);
     }
 
@@ -160,10 +156,6 @@ public class RestaurantDetailViewModel extends BaseViewModel {
             }
         }
         return false;
-    }
-
-    public MutableLiveData<Boolean> checkIfRestaurantIsChosen(Restaurant restaurant) {
-        return isRestaurantPicked;
     }
 
     private OnSuccessListener<Void> onSuccessListener(final Actions actions, Restaurant restaurant) {

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
@@ -29,7 +30,8 @@ public class CoworkersFragment extends Fragment {
     private CoworkerViewModel coworkerViewModel;
     private RecyclerView recyclerView;
 
-    public CoworkersFragment() {}
+    public CoworkersFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,7 +63,7 @@ public class CoworkersFragment extends Fragment {
         coworkerViewModel = getViewModel();
     }
 
-    private void setupCoworkersList(){
+    private void setupCoworkersList() {
         coworkerViewModel.getCoworkers().observe(getViewLifecycleOwner(), this::showUsers);
     }
 
@@ -71,9 +73,9 @@ public class CoworkersFragment extends Fragment {
                 .get(CoworkerViewModel.class);
     }
 
-    private void setupOpenDetailRestaurant(){
+    private void setupOpenDetailRestaurant() {
         coworkerViewModel.getOpenDetailRestaurant().observe(getViewLifecycleOwner(), openEvent -> {
-            if(openEvent.getContentIfNotHandle() != null) {
+            if (openEvent.getContentIfNotHandle() != null) {
                 displayRestaurantDetail();
             }
         });
@@ -86,7 +88,7 @@ public class CoworkersFragment extends Fragment {
         binding.restaurantRecyclerView.setAdapter(coworkerAdapter);
     }
 
-    private void configureOnClickRecyclerView(){
+    private void configureOnClickRecyclerView() {
         ItemClickSupport.addTo(recyclerView, binding.restaurantRecyclerView.getId())
                 .setOnItemClickListener((recyclerView, position, v)
                         -> coworkerViewModel.updateRestaurantToDisplay(coworkerAdapter.getCoworker(position)));

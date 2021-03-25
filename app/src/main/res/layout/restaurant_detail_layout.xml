@@ -109,7 +109,7 @@
             <Button
                 android:id="@+id/restaurant_detail_like_button"
                 style="@style/RestaurantDetailsButton"
-                android:drawableTop="@drawable/ic_baseline_star_border_24"
+                android:drawableTop="@drawable/ic_baseline_menu_star_border_24"
                 android:layout_marginHorizontal="60dp"
                 android:text="@string/like_button"
                 app:layout_constraintStart_toEndOf="@id/restaurant_detail_call_button"

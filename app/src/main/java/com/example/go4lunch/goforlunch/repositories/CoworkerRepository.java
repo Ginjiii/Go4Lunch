@@ -15,6 +15,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.List;
 
 import static com.example.go4lunch.goforlunch.service.Go4Lunch.api;
@@ -31,30 +32,30 @@ public class CoworkerRepository {
 
     private static volatile CoworkerRepository INSTANCE;
 
-    public static CoworkerRepository getInstance(){
-        if(INSTANCE == null){
+    public static CoworkerRepository getInstance() {
+        if (INSTANCE == null) {
             INSTANCE = new CoworkerRepository();
         }
         return INSTANCE;
     }
 
-    public CoworkerRepository(){
+    public CoworkerRepository() {
         this.coworkerCollection = getUsersCollection();
 
     }
 
-    public Coworker getActualUser  (){
+    public Coworker getActualUser() {
         return coworker;
     }
     // --- COLLECTION REFERENCE ---
 
-    public static CollectionReference getUsersCollection(){
+    public static CollectionReference getUsersCollection() {
         return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
     }
 
     // --- CREATE ---
 
-    public  Task<Void> createCoworker(String uid, String username, String urlPicture) {
+    public Task<Void> createCoworker(String uid, String username, String urlPicture) {
         Coworker userToCreate = new Coworker(uid, username, urlPicture);
         this.coworker = userToCreate;
         return CoworkerRepository.getUsersCollection().document(uid).set(userToCreate);
@@ -62,15 +63,17 @@ public class CoworkerRepository {
 
     // --- GET ---
 
-    public Coworker getCoworker() { return coworker;}
+    public Coworker getCoworker() {
+        return coworker;
+    }
 
-    public static Task<DocumentSnapshot> getCoworker(String uid){
+    public static Task<DocumentSnapshot> getCoworker(String uid) {
         return CoworkerRepository.getUsersCollection().document(uid).get();
     }
 
     // --- GET ---
 
-    public static Task<QuerySnapshot> getAllCoworker(){
+    public static Task<QuerySnapshot> getAllCoworker() {
         return CoworkerRepository.getUsersCollection().get();
     }
 
@@ -80,16 +83,15 @@ public class CoworkerRepository {
         return CoworkerRepository.getUsersCollection().document(uid).update("username", username);
     }
 
-    public Task<Void> updateRestaurantPicked(String mRestaurantId, String restaurantName, String restaurantAddress,Coworker coworker){
+    public Task<Void> updateRestaurantPicked(String mRestaurantId, String restaurantName, String restaurantAddress, Coworker coworker) {
         Log.d("updateRestaurantPicked", "updateRestaurantPicked: pickedup3");
-        if(coworker == null)
-        {
+        if (coworker == null) {
             coworker = getActualUser();
         }
 
-        if (coworker.getCoworkerRestaurantChosen() == null){
+        if (coworker.getCoworkerRestaurantChosen() == null) {
             coworkerRestaurantChoice = new Coworker.CoworkerRestaurantChoice();
-        }else{
+        } else {
             coworkerRestaurantChoice = coworker.getCoworkerRestaurantChosen();
         }
         coworkerRestaurantChoice.setRestaurantId(mRestaurantId);
@@ -99,25 +101,25 @@ public class CoworkerRepository {
         coworkerCollection.document(coworker.getUid()).update(
                 "restaurantUid", mRestaurantId,
                 "restaurantName", restaurantName,
-                "restaurantAddress", restaurantAddress,"coworkerRestaurantChosen",coworker.getCoworkerRestaurantChosen() );
+                "restaurantAddress", restaurantAddress, "coworkerRestaurantChosen", coworker.getCoworkerRestaurantChosen());
 
-        return  coworkerCollection.document(coworker.getUid()).update(
+        return coworkerCollection.document(coworker.getUid()).update(
                 "restaurantUid", mRestaurantId,
                 "restaurantName", restaurantName,
-                "restaurantAddress", restaurantAddress,"coworkerRestaurantChosen",coworker.getCoworkerRestaurantChosen());
+                "restaurantAddress", restaurantAddress, "coworkerRestaurantChosen", coworker.getCoworkerRestaurantChosen());
     }
 
-    public Task<Void> addLikedRestaurant(String likedRestaurant, String uid){
+    public Task<Void> addLikedRestaurant(String likedRestaurant, String uid) {
         coworker.addLikedRestaurant(likedRestaurant);
         return updateLikedRestaurants(uid);
     }
 
-    public Task<Void> removeLikedRestaurant(String likedRestaurant, String uid){
+    public Task<Void> removeLikedRestaurant(String likedRestaurant, String uid) {
         coworker.removeLikedRestaurant(likedRestaurant);
         return updateLikedRestaurants(uid);
     }
 
-    private Task<Void> updateLikedRestaurants(String uid){
+    private Task<Void> updateLikedRestaurants(String uid) {
         List<String> likedRestaurantsList = coworker.getLikedRestaurants();
         return coworkerCollection.document(uid).update("likedRestaurants", likedRestaurantsList);
     }
@@ -128,7 +130,7 @@ public class CoworkerRepository {
         return CoworkerRepository.getUsersCollection().document(uid).delete();
     }
 
-    public void updateCoworkerRepository( Coworker coworker) {
+    public void updateCoworkerRepository(Coworker coworker) {
         this.coworker = coworker;
     }
 
