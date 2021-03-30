@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.go4lunch.goforlunch.models.Coworker;
+import com.example.go4lunch.goforlunch.models.Restaurant;
 import com.example.go4lunch.goforlunch.repositories.CoworkerRepository;
 import com.example.go4lunch.goforlunch.utils.Actions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -26,4 +27,5 @@ public abstract class BaseViewModel extends ViewModel {
             isLoading.setValue(false);
         };
     }
+
 }

@@ -1,7 +1,6 @@
 package com.example.go4lunch.goforlunch.ui.restaurantDetail;
 
 import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.go4lunch.goforlunch.base.BaseViewModel;
@@ -67,16 +66,17 @@ public class RestaurantDetailViewModel extends BaseViewModel {
     }
 
     public void updateRestaurantLiked(Restaurant restaurant) {
-        isLoading.setValue(true);
-        if (isRestaurantLiked != null && isRestaurantLiked.getValue() != null && isRestaurantLiked.getValue()) {
-            coworkerRepository.removeLikedRestaurant(restaurant.getRestaurantPlaceId(), coworker.getUid())
-                    .addOnSuccessListener(onSuccessListener(REMOVED_LIKED, restaurant))
-                    .addOnFailureListener(this.onFailureListener(UPDATE_LIKED));
-        } else {
-            coworkerRepository.addLikedRestaurant(restaurant.getRestaurantPlaceId(), coworker.getUid())
-                    .addOnSuccessListener(onSuccessListener(UPDATE_LIKED, restaurant))
-                    .addOnFailureListener(this.onFailureListener(UPDATE_LIKED));
-        }
+        coworkerRepository.getCoworker(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener(doc -> {
+            coworker = doc.getResult().toObject(Coworker.class);
+            if (isRestaurantLiked != null && isRestaurantLiked.getValue() != null && isRestaurantLiked.getValue()) {
+                coworkerRepository.removeLikedRestaurant(restaurant.getRestaurantPlaceId(), coworker)
+                        .addOnSuccessListener(onSuccessListener(REMOVED_LIKED, restaurant));
+            } else {
+                isRestaurantLiked.setValue(true);
+                coworkerRepository.addLikedRestaurant(restaurant.getRestaurantPlaceId(), coworker)
+                        .addOnSuccessListener(onSuccessListener(UPDATE_LIKED, restaurant));
+            }
+        });
     }
 
     public void updatePickedRestaurant(Restaurant restaurant) {
@@ -109,6 +109,21 @@ public class RestaurantDetailViewModel extends BaseViewModel {
         }
     }
 
+    public void fetchCoworkerLike(Restaurant restaurant)
+    {
+        coworker = coworkerRepository.getActualUser();
+        coworkerRepository.getCoworker(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener(doc -> {
+            coworker = doc.getResult().toObject(Coworker.class);
+            List<String> likedRestaurant = coworker.getLikedRestaurants();
+            String restaurantUid = restaurant.getRestaurantPlaceId();
+            //           isRestaurantLiked.setValue(checkIfRestaurantIsLiked(restaurant));
+            if (likedRestaurant != null && restaurantUid != null && likedRestaurant.contains(restaurantUid)) {
+                isRestaurantLiked.setValue(true);
+            }
+        });
+        isLoading.setValue(false);
+    }
+
     public void fetchCoworkerChoice(Restaurant restaurant) {
         List<Coworker> userToAdd = new ArrayList<>();
         ArrayList<Restaurant.CoworkerList> coworkerList = new ArrayList<Restaurant.CoworkerList>();
@@ -133,29 +148,18 @@ public class RestaurantDetailViewModel extends BaseViewModel {
     }
 
     private void configureInfoRestaurant(Restaurant restaurant) {
-        // isRestaurantLiked.setValue(checkIfRestaurantIsLiked(restaurant));
 
         coworker = coworkerRepository.getActualUser();
         coworkerRepository.getCoworker(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener(doc -> {
             coworker = doc.getResult().toObject(Coworker.class);
-            String coworkerResUid = coworker.getRestaurantUid();
+            String coworkerRestaurantUid = coworker.getRestaurantUid();
             String restaurantUid = restaurant.getRestaurantPlaceId();
-            isRestaurantLiked.setValue(checkIfRestaurantIsLiked(restaurant));
-            if (coworkerResUid != null && restaurantUid != null && coworkerResUid.equals(restaurantUid)) {
+
+            if (coworkerRestaurantUid != null && coworkerRestaurantUid.equals(restaurantUid)) {
                 isRestaurantPicked.setValue(true);
             }
         });
         isLoading.setValue(false);
-    }
-
-    public Boolean checkIfRestaurantIsLiked(Restaurant restaurant) {
-        List<String> restaurantLiked = coworker.getCoworkerLikes();
-        if (restaurantLiked != null && restaurantLiked.size() > 0) {
-            for (String uid : restaurantLiked) {
-                if (uid.equals(restaurant.getRestaurantPlaceId())) return true;
-            }
-        }
-        return false;
     }
 
     private OnSuccessListener<Void> onSuccessListener(final Actions actions, Restaurant restaurant) {

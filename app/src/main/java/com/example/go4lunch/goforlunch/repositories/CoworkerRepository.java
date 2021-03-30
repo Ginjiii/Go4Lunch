@@ -5,20 +5,15 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.go4lunch.goforlunch.models.Coworker;
-import com.example.go4lunch.goforlunch.models.Restaurant;
 import com.example.go4lunch.goforlunch.utils.Actions;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
-
-import static com.example.go4lunch.goforlunch.service.Go4Lunch.api;
 
 public class CoworkerRepository {
 
@@ -109,19 +104,25 @@ public class CoworkerRepository {
                 "restaurantAddress", restaurantAddress, "coworkerRestaurantChosen", coworker.getCoworkerRestaurantChosen());
     }
 
-    public Task<Void> addLikedRestaurant(String likedRestaurant, String uid) {
+    public Task<Void> addLikedRestaurant(String likedRestaurant, Coworker coworker) {
+        if (coworker == null) {
+            coworker = getActualUser();
+        }
         coworker.addLikedRestaurant(likedRestaurant);
-        return updateLikedRestaurants(uid);
+        return updateLikedRestaurants(coworker);
     }
 
-    public Task<Void> removeLikedRestaurant(String likedRestaurant, String uid) {
+    public Task<Void> removeLikedRestaurant(String likedRestaurant, Coworker coworker) {
+        if (coworker == null) {
+            coworker = getActualUser();
+        }
         coworker.removeLikedRestaurant(likedRestaurant);
-        return updateLikedRestaurants(uid);
+        return updateLikedRestaurants(coworker);
     }
 
-    private Task<Void> updateLikedRestaurants(String uid) {
+    private Task<Void> updateLikedRestaurants(Coworker coworker) {
         List<String> likedRestaurantsList = coworker.getLikedRestaurants();
-        return coworkerCollection.document(uid).update("likedRestaurants", likedRestaurantsList);
+        return coworkerCollection.document(coworker.getUid()).update("likedRestaurants", likedRestaurantsList);
     }
 
     // --- DELETE ---
@@ -133,5 +134,4 @@ public class CoworkerRepository {
     public void updateCoworkerRepository(Coworker coworker) {
         this.coworker = coworker;
     }
-
 }

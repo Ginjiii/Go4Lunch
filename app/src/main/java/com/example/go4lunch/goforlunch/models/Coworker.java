@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import com.google.firebase.Timestamp;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Coworker {
@@ -14,37 +15,17 @@ public class Coworker {
     @Nullable private String coworkerPhotoUrl;
     @Nullable private CoworkerRestaurantChoice coworkerRestaurantChosen;
     @Nullable private boolean restaurantChoice;
-    @Nullable private List<String> coworkerLikes;
+//    @Nullable private List<String> coworkerLikes;
     @Nullable private String restaurantUid;
     private List<String> likedRestaurants;
     public Coworker() { }
+
     public Coworker(String uid, String username, String urlPicture) {
         this.uid = uid;
         this.coworkerName = username;
         this.coworkerPhotoUrl = urlPicture;
     }
 
-    public Coworker(String coworkerId, List<String> coworkerLikes) {
-        this.uid = coworkerId;
-        this.coworkerLikes = coworkerLikes;
-    }
-
-    public Coworker(String mCoworkerId, String mCoworkerName) {
-        uid = mCoworkerId;
-        coworkerName = mCoworkerName;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "uid='" + uid + '\'' +
-                ", username='" + this.coworkerName + '\'' +
-                ", email='" + this.coworkerEmail + '\'' +
-                ", urlPicture='" + this.coworkerPhotoUrl + '\'' +
-                ", restaurantUid='" + this.coworkerRestaurantChosen.getRestaurantId() + '\'' +
-                ", likedRestaurants=" + this.coworkerLikes +
-                '}';
-    }
     public Coworker(String mCoworkerId,String mCoworkerName, String mCoworkerEmail, String mCoworkerPhotoUrl) {
         this.uid = mCoworkerId;
         this.coworkerName = mCoworkerName;
@@ -63,15 +44,14 @@ public class Coworker {
         this.coworkerRestaurantChosen = mCoworkerRestaurantChosen;
     }
 
-    public Coworker(String mCoworkerId, String mCoworkerName, String mCoworkerEmail, String mCoworkerPhotoUrl,
-                    CoworkerRestaurantChoice mCoworkerRestaurantChosen, List<String> mCoworkerLikes) {
-        uid = mCoworkerId;
-        coworkerName = mCoworkerName;
-        coworkerEmail = mCoworkerEmail;
-        coworkerPhotoUrl = mCoworkerPhotoUrl;
-        coworkerRestaurantChosen = mCoworkerRestaurantChosen;
-        coworkerLikes = mCoworkerLikes;
-    }
+   // public Coworker(String mCoworkerId, String mCoworkerName, String mCoworkerEmail, String mCoworkerPhotoUrl,
+   //                 CoworkerRestaurantChoice mCoworkerRestaurantChosen) {
+   //     uid = mCoworkerId;
+   //     coworkerName = mCoworkerName;
+   //     coworkerEmail = mCoworkerEmail;
+   //     coworkerPhotoUrl = mCoworkerPhotoUrl;
+   //     coworkerRestaurantChosen = mCoworkerRestaurantChosen;
+   // }
 
     public String getCoworkerName() { return coworkerName; }
 
@@ -102,16 +82,12 @@ public class Coworker {
         this.uid = uid;
     }
 
-    public List<String> getCoworkerLikes() { return coworkerLikes; }
-
-    public void setCoworkerLikes(List<String> mCoworkerLikes) { coworkerLikes = mCoworkerLikes; }
-
     public List<String> getLikedRestaurants() {
         return likedRestaurants;
     }
 
     public void addLikedRestaurant(String restaurantUid){
-        if(coworkerLikes == null) {
+        if(likedRestaurants == null) {
             this.likedRestaurants = new ArrayList<>();
         }
         this.likedRestaurants.add(restaurantUid);
@@ -119,33 +95,14 @@ public class Coworker {
 
     public void removeLikedRestaurant(String restaurantUid){
         if(likedRestaurants != null) {
-            int position = 0;
-            for (String uid : likedRestaurants) {
-                if (uid.equals(restaurantUid)) likedRestaurants.remove(position);
-                position += 1;
+            List<String> likeToRemove = new ArrayList<String>();
+            for (String like : likedRestaurants) {
+                if (like.equals(restaurantUid)) {
+                    likeToRemove.add(like);
+                }
             }
+            likedRestaurants.removeAll(likeToRemove);
         }
-    }
-
-
-    public static class Likes {
-        public String restaurantId;
-        public String restaurantName;
-
-        public Likes() {}
-
-        public Likes(String mRestaurantId, String mRestaurantName) {
-            restaurantId = mRestaurantId;
-            restaurantName = mRestaurantName;
-        }
-
-        public String getRestaurantId() { return restaurantId; }
-
-        public void setRestaurantId(String mRestaurantId) { restaurantId = mRestaurantId; }
-
-        public String getRestaurantName() { return restaurantName; }
-
-        public void setRestaurantName(String mRestaurantName) { restaurantName = mRestaurantName; }
     }
 
     public static class CoworkerRestaurantChoice {
@@ -198,6 +155,18 @@ public class Coworker {
             restaurantDateChoice = mRestaurantDateChoice;
         }
 
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid='" + uid + '\'' +
+                ", username='" + this.coworkerName + '\'' +
+                ", email='" + this.coworkerEmail + '\'' +
+                ", urlPicture='" + this.coworkerPhotoUrl + '\'' +
+                ", restaurantUid='" + this.coworkerRestaurantChosen.getRestaurantId() + '\'' +
+                ", likedRestaurants=" + this.likedRestaurants +
+                '}';
     }
 
     public enum Fields {

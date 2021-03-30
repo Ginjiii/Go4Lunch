@@ -20,19 +20,6 @@ public class Go4LunchHelper {
     public static final String TXT_PROVIDER = "fusedLocationProvider";
 
     /**
-     * Calculate the distance between the current location and the restaurant
-     * @param mCurrentLocation : object : current location
-     * @param mRestaurantLocation : object : restaurant location
-     * @return int : return the distance
-     */
-    public static int getRestaurantDistanceToCurrentLocation(Location mCurrentLocation, RestaurantDetail.Location mRestaurantLocation) {
-        Location rRestaurantLocation = new Location(TXT_PROVIDER);
-        mRestaurantLocation.setLat(mRestaurantLocation.getLat());
-        mRestaurantLocation.setLng(mRestaurantLocation.getLng());
-        return (int) mCurrentLocation.distanceTo(rRestaurantLocation);
-    }
-
-    /**
      * Convert a latitude and a longitude into a location
      * @param mLat : double : latitude
      * @param mLng: double : longitude
@@ -43,27 +30,6 @@ public class Go4LunchHelper {
         mFusedLocationProvider.setLatitude(mLat);
         mFusedLocationProvider.setLongitude(mLng);
         return mFusedLocationProvider;
-    }
-
-    /**
-     * Convert the distance in a text format for the display
-     * @param mDistance : int : distance
-     * @return : string : distance with the indicator meters or kilometers
-     */
-    public static String convertDistance(int mDistance) {
-        String mNewDistance = String.valueOf(mDistance);
-        double dDistance = mDistance*0.001;
-
-        DecimalFormat lDecimalFormat = new DecimalFormat("##.#");
-        lDecimalFormat.setRoundingMode(RoundingMode.UP);
-
-        if(mDistance<1000) {
-            mNewDistance = mNewDistance + "m";
-        } else {
-            mNewDistance = lDecimalFormat.format(dDistance) + "km";
-        }
-
-        return mNewDistance;
     }
 
     /**
@@ -127,33 +93,5 @@ public class Go4LunchHelper {
         int mHourIntoMin = (mTime/100)*60;
         int mMinutes = mTime % 100;
         return (mHourIntoMin + mMinutes);
-    }
-
-    /**
-     * Format the address
-     * @param mAddress : string : address
-     * @return : string : address
-     */
-    public static String formatAddress(String mAddress) {
-        String aAddress = null;
-        if(mAddress.indexOf(",")>0) {
-            aAddress = mAddress.substring(0, mAddress.indexOf(","));
-        }
-        return aAddress;
-    }
-
-    /**
-     * Define a perimeter for the autocomplete prediction request
-     * @param center : object : LatLng center of the perimeter
-     * @param radiusInMeters : double : radius in meters of the perimeter
-     * @return : object : LatLngBounds : return the new position
-     */
-    public static LatLngBounds toBounds(LatLng center, double radiusInMeters) {
-        double distanceFromCenterToCorner = radiusInMeters * Math.sqrt(2.0);
-        LatLng southwestCorner =
-                SphericalUtil.computeOffset(center, distanceFromCenterToCorner, 225.0);
-        LatLng northeastCorner =
-                SphericalUtil.computeOffset(center, distanceFromCenterToCorner, 45.0);
-        return new LatLngBounds(southwestCorner, northeastCorner);
     }
 }

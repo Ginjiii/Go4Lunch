@@ -8,6 +8,7 @@ import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +21,7 @@ import com.example.go4lunch.goforlunch.models.TheOpeningHours;
 import com.example.go4lunch.goforlunch.models.places.RestaurantDetail;
 import com.example.go4lunch.goforlunch.ui.restaurantDetail.RestaurantDetailActivity;
 import com.example.go4lunch.goforlunch.utils.Go4LunchHelper;
+import com.example.go4lunch.goforlunch.utils.Utils;
 import com.go4lunch.R;
 import com.go4lunch.databinding.RestaurantItemLayoutBinding;
 
@@ -80,6 +82,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
 
         displayOpeningHour(restaurantViewHolder, position);
         displayRestaurantImage(restaurantViewHolder, position);
+        displayRating(restaurantViewHolder, position);
 
         restaurantViewHolder.binding.restaurantItemListRate.setRating((float) restaurant.getRestaurantRating());
         Log.d(TAG, "onBindViewHolder:restaurantViewHolder.binding.restaurantItemListRate.getRating() ");
@@ -93,6 +96,14 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             context.startActivity(intent);
         });
     }
+
+    private void displayRating(RestaurantViewHolder restaurantViewHolder, int position){
+        float rating = restaurantViewHolder.binding.restaurantItemListRate.getRating();
+        restaurantViewHolder.binding.restaurantItemListRate.setNumStars(position);
+
+//
+    }
+
 
     private void displayOpeningHour(RestaurantViewHolder restaurantViewHolder, int position) {
         if (restaurantList.get(position).getRestaurantOpeningHours() != null) {

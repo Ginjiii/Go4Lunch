@@ -97,6 +97,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
 
         restaurantDetailViewModel.fetchCoworkerChoice(restaurant);
+        restaurantDetailViewModel.fetchCoworkerLike(restaurant);
 
         recyclerView = binding.restaurantDetailCoworkerList;
 
@@ -116,16 +117,35 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
         binding.restaurantDetailCallButton.setOnClickListener(v -> openDialer(restaurant.getRestaurantPhone()));
         binding.restaurantDetailWebsiteButton.setOnClickListener(v -> openWebSite(restaurant.getRestaurantWebSite()));
+
+
+        restaurantDetailViewModel.isRestaurantLiked.observe(this, this::changeLikeStatus);
         binding.restaurantDetailLikeButton.setOnClickListener(v -> restaurantDetailViewModel.updateRestaurantLiked(restaurant));
-        restaurantDetailViewModel.isRestaurantPicked.observe(this, this::displayChoiceStatus);
+        restaurantDetailViewModel.isRestaurantPicked.observe(this, this::changeChoiceStatus);
         binding.restaurantDetailFab.setOnClickListener(v1 -> {
             restaurantDetailViewModel.updatePickedRestaurant(restaurant);
         });
+    }
 
+    /**
+     * Display if the restaurant is liked by the workmate
+     */
+    private void changeLikeStatus(Boolean aBoolean) {
+        if(aBoolean) {
+            Drawable fullStar = getResources().getDrawable(R.drawable.ic_baseline_star_rate_24);
+            fullStar.setBounds(0,0, fullStar.getMinimumWidth(),60);
+            binding.restaurantDetailLikeButton.setCompoundDrawables(null,fullStar,null,null);
+            binding.restaurantDetailLikeButton.setTag(Actions.IS_CHOSEN);
+        } else {
+            Drawable likeButton = getResources().getDrawable(R.drawable.ic_baseline_star_border_24);
+            likeButton.setBounds(0,0, likeButton.getIntrinsicWidth(),60);
+            binding.restaurantDetailLikeButton.setCompoundDrawables(null,likeButton,null,null);
+            binding.restaurantDetailLikeButton.setTag(Actions.NOT_CHOSEN);
+        }
     }
 
 
-    private void displayChoiceStatus(Boolean aBoolean) {
+    private void changeChoiceStatus(Boolean aBoolean) {
         if (aBoolean) {
             Drawable checkButton = getResources().getDrawable(R.drawable.ic_baseline_check_circle_24_ok);
             //  //set the color filter, you can use also Mode.SRC_ATOP
@@ -173,26 +193,6 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     private void displayChoiceStatus() {
         if (restaurantDetailViewModel == null) {
             initViewModel();
-        }
-    }
-
-    /**
-     * Change the coworker choice status
-     */
-    private void changeChoiceStatus() {
-        Log.d("change choice", "changeChoiceStatus: test");
-        if (true) {
-
-            //get the drawable
-            Drawable checkButton = getResources().getDrawable(R.drawable.ic_baseline_check_circle_24_ok);
-            //  //set the color filter, you can use also Mode.SRC_ATOP
-            checkButton.mutate().setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY);
-            //set it to your fab button initialized before
-            binding.restaurantDetailFab.setImageDrawable(checkButton);
-            binding.restaurantDetailFab.setTag(Actions.IS_CHOSEN);
-        } else {
-            binding.restaurantDetailFab.setImageResource(R.drawable.ic_baseline_uncheck_circle_24);
-            binding.restaurantDetailFab.setTag(Actions.NOT_CHOSEN);
         }
     }
 }
