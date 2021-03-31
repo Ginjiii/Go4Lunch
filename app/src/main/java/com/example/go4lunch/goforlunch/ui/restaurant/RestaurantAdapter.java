@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.goforlunch.models.Restaurant;
 import com.example.go4lunch.goforlunch.models.TheOpeningHours;
@@ -35,6 +36,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     private TheOpeningHours theOpeningHours;
     private Context context;
 
+    private List<Restaurant> restaurants;
+    private RequestManager glide;
+
     /**
      * Declarations for the opening hours display
      */
@@ -46,6 +50,11 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     public static final int CASE_5_CLOSED_TODAY_OPEN_AT_ON = 5;
     public static final int CASE_6_OPEN_24_7 = 6;
     public static final int CASE_7_OPEN_UNTIL_CLOSING_AM = 7;
+
+    public RestaurantAdapter(List<Restaurant> restaurants, RequestManager glide) {
+        this.restaurants = restaurants;
+        this.glide = glide;
+    }
 
     public void setRestaurantList(List<Restaurant> mRestaurantList) {
         restaurantList = mRestaurantList;
@@ -74,15 +83,14 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             restaurantViewHolder.binding.restaurantItemListAddress.setText(restaurant.getRestaurantAddress());
         }
 
-        if (restaurant.getRestaurantCoworkerList() != null) {
-            numberOfCoworker =restaurant.getRestaurantCoworkerList().size();
+        if (restaurantList.get(position).getRestaurantCoworkerList() != null) {
+            numberOfCoworker = restaurantList.get(position).getRestaurantCoworkerList().size();
         }
 
-        restaurantViewHolder.binding.restaurantItemListParticipantsNumber.setText(String.valueOf(numberOfCoworker));
+        restaurantViewHolder.binding.restaurantItemListParticipantsNumber.setText(String.format("(%d)", restaurant.getCoworkerChoice().size()));
 
         displayOpeningHour(restaurantViewHolder, position);
         displayRestaurantImage(restaurantViewHolder, position);
-        displayRating(restaurantViewHolder, position);
 
         restaurantViewHolder.binding.restaurantItemListRate.setRating((float) restaurant.getRestaurantRating());
         Log.d(TAG, "onBindViewHolder:restaurantViewHolder.binding.restaurantItemListRate.getRating() ");
@@ -91,18 +99,11 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
 
         restaurantViewHolder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, RestaurantDetailActivity.class);
-            Restaurant restaurantToActivity = restaurantList.get(position);
-            intent.putExtra(RESTAURANT_PLACE_ID, restaurantToActivity.getRestaurantPlaceId());
+            intent.putExtra(RESTAURANT_PLACE_ID, restaurantList.get(position).getRestaurantPlaceId());
             context.startActivity(intent);
         });
     }
 
-    private void displayRating(RestaurantViewHolder restaurantViewHolder, int position){
-        float rating = restaurantViewHolder.binding.restaurantItemListRate.getRating();
-        restaurantViewHolder.binding.restaurantItemListRate.setNumStars(position);
-
-//
-    }
 
 
     private void displayOpeningHour(RestaurantViewHolder restaurantViewHolder, int position) {
@@ -395,6 +396,15 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         if (restaurantList != null)
             return restaurantList.size();
         return 0;
+    }
+
+    void update(List<Restaurant> restaurants){
+        this.restaurants = restaurants;
+        notifyDataSetChanged();
+    }
+
+    Restaurant getRestaurant(int position) {
+        return this.restaurants.get(position);
     }
 
     public static class RestaurantViewHolder extends RecyclerView.ViewHolder {

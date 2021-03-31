@@ -110,9 +110,7 @@ public class RestaurantRepository {
                                 null
                         );
                         RestaurantDetail restaurantDetail = getGoogleRestaurantDetailList(restaurant.getPlaceId(), restaurants, restaurantToAdd);
-                        //if (dRestaurant!= null && dRestaurant. != null)
-                        //{
-                        RestaurantDetail mRestaurantDetail =restaurantDetail;
+                        RestaurantDetail mRestaurantDetail = restaurantDetail;
                         if (mRestaurantDetail != null && mRestaurantDetail.getResult() != null ){
                             restaurantToAdd.setRestaurantOpeningHours(mRestaurantDetail.getResult().getOpeningHours());
                             Log.d(TAG, "onResponse: detailRestaurant"+mRestaurantDetail.getResult().getName());

@@ -16,6 +16,7 @@ import com.example.go4lunch.goforlunch.factory.Go4LunchFactory;
 import com.example.go4lunch.goforlunch.injections.Injection;
 import com.example.go4lunch.goforlunch.models.Restaurant;
 
+import com.go4lunch.R;
 import com.go4lunch.databinding.FragmentMapsBinding;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -121,23 +122,36 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Ea
     }
 
     private void setMapMarkers(List<Restaurant> restaurants) {
-        BitmapDescriptor bitmapDescriptor;
+ //       BitmapDescriptor bitmapDescriptor;
         if (googleMap != null) {
             googleMap.clear();
             for (Restaurant restaurant : restaurants) {
-                if ((restaurant.getRestaurantCoworkerList() != null) && (restaurant.getRestaurantCoworkerList().size() > 0)) {
-                    bitmapDescriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
-                } else {
-                    bitmapDescriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
-                }
-                if (restaurant.getRestaurantLocation() != null) {
-                    LatLng latLng = new LatLng(restaurant.getRestaurantLocation().getLat(),
-                            restaurant.getRestaurantLocation().getLng());
+                Double latitude = restaurant.getRestaurantLocation().getLat();
+                Double longitude = restaurant.getRestaurantLocation().getLng();
+                LatLng restaurantPosition = new LatLng(latitude, longitude);
+                if ((restaurant.getCoworkerChoice() != null) && (restaurant.getCoworkerChoice().size() > 0)) {
                     Marker marker = googleMap.addMarker(new MarkerOptions()
-                            .position(latLng)
-                            .icon(bitmapDescriptor));
-                    marker.setTag(restaurant);
+                    .position(restaurantPosition)
+                    .title(restaurant.getRestaurantName())
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_location_selected)));
+                    marker.setTag(restaurant.getRestaurantPlaceId());
+ //                   bitmapDescriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
+                } else {
+                    Marker marker = googleMap.addMarker(new MarkerOptions()
+                            .position(restaurantPosition)
+                            .title(restaurant.getRestaurantName())
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_location_normal)));
+                    marker.setTag(restaurant.getRestaurantPlaceId());
+ //                   bitmapDescriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
                 }
+          //      if (restaurant.getRestaurantLocation() != null) {
+          //          LatLng latLng = new LatLng(restaurant.getRestaurantLocation().getLat(),
+          //                  restaurant.getRestaurantLocation().getLng());
+          //          Marker marker = googleMap.addMarker(new MarkerOptions()
+          //                  .position(latLng)
+          //                  .icon(bitmapDescriptor));
+          //          marker.setTag(restaurant);
+          //      }
             }
         }
     }

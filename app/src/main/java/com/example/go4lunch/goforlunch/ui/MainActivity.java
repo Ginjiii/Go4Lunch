@@ -1,34 +1,60 @@
 package com.example.go4lunch.goforlunch.ui;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.example.go4lunch.goforlunch.factory.Go4LunchFactory;
+import com.example.go4lunch.goforlunch.injections.Injection;
 import com.example.go4lunch.goforlunch.ui.coworker.CoworkersFragment;
 import com.example.go4lunch.goforlunch.ui.maps.MapsFragment;
 import com.example.go4lunch.goforlunch.ui.restaurant.RestaurantsFragmentList;
 import com.example.go4lunch.goforlunch.ui.setting.SettingActivity;
+import com.example.go4lunch.goforlunch.utils.Utils;
 import com.go4lunch.R;
 import com.go4lunch.databinding.ActivityMainBinding;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.RectangularBounds;
+import com.google.android.libraries.places.api.model.TypeFilter;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.example.go4lunch.goforlunch.ui.signin.SignInActivity;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ActivityMainBinding binding;
+
+    private int AUTOCOMPLETE_REQUEST_CODE = 1;
+    private List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
+    private Intent autoCompleteIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        this.configureToolbar();
-        this.configureDrawerLayout();
-        this.configureNavigationView();
-        this.configureBottomView();
+        this.configureUI();
 
         //For change title Action Bar
         ActionBar actionBar = getSupportActionBar();
@@ -53,13 +76,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .replace(R.id.main_frame_layout, new MapsFragment())
                 .commit();
     }
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
+
     // --------------------
     // UI
     // --------------------
+
+    private void configureUI(){
+        this.configureToolbar();
+        this.configureBottomView();
+        this.configureDrawerLayout();
+        this.configureNavigationView();
+    }
 
     protected void configureToolbar() {
         setSupportActionBar(binding.mainToolbar);
@@ -96,30 +123,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_search_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id  = item.getItemId();
+        if(id == R.id.search_menu ){
+            AutocompleteIntent();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
+
     private void configureDrawerLayout() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.mainDrawerLayout, binding.mainToolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         binding.mainDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.drawer_menu_lunch_button:
-                break;
-            case R.id.drawer_menu_settings_button:
-                startActivity(new Intent(this, SettingActivity.class));
-                break;
-            case R.id.drawer_menu_logout_button:
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(this, SignInActivity.class));
-                finish();
-                break;
-        }
-        binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
-        return true;
     }
 
     private void configureNavigationView() {
@@ -137,5 +162,60 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .transform(new CircleCrop())
                     .into(imageUser);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(this.binding.mainDrawerLayout.isDrawerOpen(GravityCompat.START)){
+            this.binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.drawer_menu_lunch_button:
+                break;
+            case R.id.drawer_menu_settings_button:
+                startActivity(new Intent(this, SettingActivity.class));
+                break;
+            case R.id.drawer_menu_logout_button:
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(this, SignInActivity.class));
+                finish();
+                break;
+        }
+        this.binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    // -----------------
+    // AUTOCOMPLETE CLICK
+    // -----------------
+    public void  AutocompleteIntent() {
+        Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                .build(this);
+        startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = Autocomplete.getPlaceFromIntent(data);
+                Log.i("TAG", "Place: " + place.getName() + ", " + place.getId());
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                // TODO: Handle the error.
+                Status status = Autocomplete.getStatusFromIntent(data);
+                Log.i("TAG", status.getStatusMessage());
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
