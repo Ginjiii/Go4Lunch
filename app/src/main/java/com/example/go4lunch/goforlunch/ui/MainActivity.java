@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private int AUTOCOMPLETE_REQUEST_CODE = 1;
     private List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
-    private Intent autoCompleteIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
