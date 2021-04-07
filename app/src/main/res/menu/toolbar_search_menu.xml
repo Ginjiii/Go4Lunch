@@ -5,9 +5,9 @@
 
     <item
         android:id="@+id/search_menu"
+        android:text="Find a Place"
         android:icon="@drawable/ic_baseline_search_24"
         android:title="@string/search_button_title"
-        app:showAsAction="ifRoom"
-        app:actionViewClass="android.widget.SearchView" />
+        app:showAsAction="always" />
 
 </menu>

@@ -55,6 +55,13 @@
     <string name="twitter_api_secret">DYCP3VXbQItam2VPIqGEvdWVoebM6Lp9dWSypZ79BOIq791kHl</string>
     <string name="yes" />
     <string name="alert_dialog_notifications_message" />
+    <string name="notificationChannel" translatable="false">notificationChannel</string>
+    <string name="notification_message">You are eating at %s with %s on %s</string>
+    <string name="message_notification_alone">You are eating at %s on %s</string>
+    <string name="title_notification">Your lunch today</string>
+    <string name="subtitle_notification">You have a lunch setup for today</string>
+    <string name="name_channel" translatable="false">Go4Lunch channel</string>
+    <string name="description_channel" translatable="false">Notification channel</string>
     <string name="no" />
     <string name="no_restaurant_message" />
     <string name="auth_error" />
@@ -100,6 +107,7 @@
     <string name="is_eating">is eating</string>
     <string name="has_not_decided_yet">has not decided yet</string>
     <string name="eating_here_today" />
+    <string name="cancel_download">cancel</string>
 
 
 </resources>

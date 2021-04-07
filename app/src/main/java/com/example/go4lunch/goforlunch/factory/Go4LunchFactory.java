@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.go4lunch.goforlunch.repositories.CoworkerRepository;
 import com.example.go4lunch.goforlunch.repositories.RestaurantRepository;
+import com.example.go4lunch.goforlunch.repositories.SaveDataRepository;
 import com.example.go4lunch.goforlunch.ui.coworker.CoworkerViewModel;
 import com.example.go4lunch.goforlunch.ui.maps.MapsViewModel;
 import com.example.go4lunch.goforlunch.ui.restaurant.RestaurantsViewModel;
@@ -16,10 +17,12 @@ public class Go4LunchFactory implements ViewModelProvider.Factory {
 
     private final RestaurantRepository restaurantRepository;
     private final CoworkerRepository coworkerRepository;
+    private final SaveDataRepository saveDataRepository;
 
-    public Go4LunchFactory(RestaurantRepository restaurantRepository, CoworkerRepository mCoworkerRepository) {
+    public Go4LunchFactory(RestaurantRepository restaurantRepository, CoworkerRepository mCoworkerRepository, SaveDataRepository saveDataRepository) {
         this.restaurantRepository = restaurantRepository;
         this.coworkerRepository = mCoworkerRepository;
+        this.saveDataRepository = saveDataRepository;
     }
 
     @SuppressWarnings("unchecked")
