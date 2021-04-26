@@ -87,7 +87,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             numberOfCoworker = restaurantList.get(position).getRestaurantCoworkerList().size();
         }
 
-        restaurantViewHolder.binding.restaurantItemListParticipantsNumber.setText(String.format("(%d)", restaurant.getCoworkerChoice().size()));
+        restaurantViewHolder.binding.restaurantItemListParticipantsNumber.setText("(" + numberOfCoworker + ")");
 
         displayOpeningHour(restaurantViewHolder, position);
         displayRestaurantImage(restaurantViewHolder, position);
@@ -281,7 +281,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
                 if (openDay != closeDay) {
                     theOpeningHours.setLastCloseHour(searchPreviousDay(restaurantHours, infoPreviousDay));
                 }
-
                 if (theOpeningHours.getOpeningDayCase() < 2) {
                     defineCase(openTime, closeTime, infoCloseTime);
                 }

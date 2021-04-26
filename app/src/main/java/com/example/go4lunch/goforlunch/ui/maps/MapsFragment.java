@@ -14,8 +14,10 @@ import android.view.ViewGroup;
 import com.example.go4lunch.goforlunch.base.BaseFragment;
 import com.example.go4lunch.goforlunch.factory.Go4LunchFactory;
 import com.example.go4lunch.goforlunch.injections.Injection;
+import com.example.go4lunch.goforlunch.models.Coworker;
 import com.example.go4lunch.goforlunch.models.Restaurant;
 
+import com.example.go4lunch.goforlunch.repositories.CoworkerRepository;
 import com.go4lunch.R;
 import com.go4lunch.databinding.FragmentMapsBinding;
 
@@ -28,7 +30,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import pub.devrel.easypermissions.EasyPermissions;
@@ -122,39 +126,49 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Ea
     }
 
     private void setMapMarkers(List<Restaurant> restaurants) {
- //       BitmapDescriptor bitmapDescriptor;
         if (googleMap != null) {
             googleMap.clear();
-            for (Restaurant restaurant : restaurants) {
-                Double latitude = restaurant.getRestaurantLocation().getLat();
-                Double longitude = restaurant.getRestaurantLocation().getLng();
-                LatLng restaurantPosition = new LatLng(latitude, longitude);
-                if ((restaurant.getCoworkerChoice() != null) && (restaurant.getCoworkerChoice().size() > 0)) {
-                    Marker marker = googleMap.addMarker(new MarkerOptions()
-                    .position(restaurantPosition)
-                    .title(restaurant.getRestaurantName())
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_location_selected)));
-                    marker.setTag(restaurant.getRestaurantPlaceId());
- //                   bitmapDescriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
-                } else {
-                    Marker marker = googleMap.addMarker(new MarkerOptions()
-                            .position(restaurantPosition)
-                            .title(restaurant.getRestaurantName())
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_location_normal)));
-                    marker.setTag(restaurant.getRestaurantPlaceId());
- //                   bitmapDescriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
+
+            CoworkerRepository.getAllCoworker().addOnSuccessListener(queryDocumentSnapshots -> {
+                List<Coworker> coworkerList = new ArrayList<>();
+
+                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()){
+                    Coworker userFetched = documentSnapshot.toObject(Coworker.class);
+                    coworkerList.add(userFetched);
                 }
-          //      if (restaurant.getRestaurantLocation() != null) {
-          //          LatLng latLng = new LatLng(restaurant.getRestaurantLocation().getLat(),
-          //                  restaurant.getRestaurantLocation().getLng());
-          //          Marker marker = googleMap.addMarker(new MarkerOptions()
-          //                  .position(latLng)
-          //                  .icon(bitmapDescriptor));
-          //          marker.setTag(restaurant);
-          //      }
-            }
+                Log.d("tag", " get size?" + coworkerList.size());
+                for (Restaurant restaurant : restaurants) {
+                    Double latitude = restaurant.getRestaurantLocation().getLat();
+                    Double longitude = restaurant.getRestaurantLocation().getLng();
+                    LatLng restaurantPosition = new LatLng(latitude, longitude);
+                    Log.d("tag", "restaurant"+ restaurant.getRestaurantPlaceId());
+                    for (Coworker coworker : coworkerList) {
+
+                        Log.d("tag", "place id" + coworker.getRestaurantUid());
+                        Log.d("tag", "name" + coworker.getCoworkerName());
+
+                        if(restaurant.getRestaurantPlaceId().equals(coworker.getRestaurantUid())){
+
+                            Marker marker = googleMap.addMarker(new MarkerOptions()
+                                    .position(restaurantPosition)
+                                    .title(restaurant.getRestaurantName())
+                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_location_selected)));
+                            marker.setTag(restaurant.getRestaurantCoworkerList());
+                        } else {
+                            Marker marker = googleMap.addMarker(new MarkerOptions()
+                                    .position(restaurantPosition)
+                                    .title(restaurant.getRestaurantName())
+                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_location_normal)));
+                            marker.setTag(restaurant.getRestaurantPlaceId());
+                        }
+                    }
+                    Log.d("tag", "getCoworkerChoice: get it?" + restaurant.getCoworkerChoice());
+
+                }
+            });
         }
-    }
+            }
+
 
     private void updateLocationUI() {
         try {

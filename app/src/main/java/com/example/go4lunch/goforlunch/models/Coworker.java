@@ -15,8 +15,9 @@ public class Coworker {
     @Nullable private String coworkerPhotoUrl;
     @Nullable private CoworkerRestaurantChoice coworkerRestaurantChosen;
     @Nullable private boolean restaurantChoice;
-//    @Nullable private List<String> coworkerLikes;
     @Nullable private String restaurantUid;
+    @Nullable private String restaurantName;
+    private String restaurantAddress;
     private List<String> likedRestaurants;
     public Coworker() { }
 
@@ -39,19 +40,11 @@ public class Coworker {
                     CoworkerRestaurantChoice mCoworkerRestaurantChosen) {
         this.uid = mCoworkerId;
         this.coworkerName = mCoworkerName;
+
         this.coworkerEmail = mCoworkerEmail;
         this.coworkerPhotoUrl = mCoworkerPhotoUrl;
         this.coworkerRestaurantChosen = mCoworkerRestaurantChosen;
     }
-
-   // public Coworker(String mCoworkerId, String mCoworkerName, String mCoworkerEmail, String mCoworkerPhotoUrl,
-   //                 CoworkerRestaurantChoice mCoworkerRestaurantChosen) {
-   //     uid = mCoworkerId;
-   //     coworkerName = mCoworkerName;
-   //     coworkerEmail = mCoworkerEmail;
-   //     coworkerPhotoUrl = mCoworkerPhotoUrl;
-   //     coworkerRestaurantChosen = mCoworkerRestaurantChosen;
-   // }
 
     public String getCoworkerName() { return coworkerName; }
 
@@ -60,6 +53,19 @@ public class Coworker {
     public String getCoworkerEmail() { return coworkerEmail; }
 
     public String getRestaurantUid() { return restaurantUid; }
+
+    @Nullable
+    public String getRestaurantName() {
+        return restaurantName;
+    }
+
+    public void setRestaurantName(@Nullable String restaurantName) {
+        this.restaurantName = restaurantName;
+    }
+
+    public String getRestaurantAddress() {
+        return restaurantAddress;
+    }
 
 
     public void setCoworkerEmail(String mCoworkerEmail) { coworkerEmail = mCoworkerEmail; }

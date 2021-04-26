@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private PendingIntent pendingIntentAlarm;
     private PendingIntent pendingIntentReset;
-    private static int[] TIME_NOTIFICATION = {12, 0};
+    private static int[] TIME_NOTIFICATION = {12, 00};
     private static int[] TIME_RESET = {23, 59};
 
 
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // --------------------
 
     private void configureNotification() {
-        this.configureResetData();
+ //       this.configureResetData();
         this.createNotificationChannel();
         this.configureNotificationIntent();
         this.enableNotifications();
@@ -265,7 +265,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             String channelId = getString(R.string.notificationChannel);
             CharSequence name = getString(R.string.name_channel);
             String description = getString(R.string.description_channel);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel(channelId, name, importance);
             channel.setDescription(description);
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
@@ -277,7 +277,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent notificationIntent = new Intent(this, NotificationLunchService.class);
         pendingIntentAlarm = PendingIntent.getBroadcast(this, 0,
                 notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
     }
 
     private void enableNotifications() {
@@ -302,7 +301,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         AlarmManager manager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, notificationTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntentAlarm);
 
-
     }
 
  //   private void disableNotification() {
@@ -322,29 +320,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // RESET DATA RESTAURANT EVERY DAY
     // --------------------
 
-    /*
-    this shouldn't be done from the application but from a central server instead
-     */
-    private void configureResetData(){
-        Intent notificationIntent = new Intent(this, ResetRestaurantInfo.class);
-        pendingIntentReset = PendingIntent.getBroadcast(this, 0,
-                notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        Calendar resetTime = Calendar.getInstance();
-        resetTime.setTimeInMillis(System.currentTimeMillis());
-        resetTime.set(Calendar.HOUR_OF_DAY, TIME_RESET[0]);
-        resetTime.set(Calendar.MINUTE, TIME_RESET[1]);
-        resetTime.set(Calendar.SECOND, 0);
-
-        ComponentName receiver = new ComponentName(getApplicationContext(), ResetRestaurantInfo.class);
-        PackageManager pm = getApplicationContext().getPackageManager();
-
-        pm.setComponentEnabledSetting(receiver,
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                PackageManager.DONT_KILL_APP);
-
-        AlarmManager manager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        manager.setInexactRepeating(AlarmManager.RTC, resetTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntentReset);
-
-    }
+ //   /*
+ //   this shouldn't be done from the application but from a central server instead
+ //    */
+ //   private void configureResetData(){
+ //       Intent notificationIntent = new Intent(this, ResetRestaurantInfo.class);
+ //       pendingIntentReset = PendingIntent.getBroadcast(this, 0,
+ //               notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//
+ //       Calendar resetTime = Calendar.getInstance();
+ //       resetTime.setTimeInMillis(System.currentTimeMillis());
+ //       resetTime.set(Calendar.HOUR_OF_DAY, TIME_RESET[0]);
+ //       resetTime.set(Calendar.MINUTE, TIME_RESET[1]);
+ //       resetTime.set(Calendar.SECOND, 0);
+//
+ //       ComponentName receiver = new ComponentName(getApplicationContext(), ResetRestaurantInfo.class);
+ //       PackageManager pm = getApplicationContext().getPackageManager();
+//
+ //       pm.setComponentEnabledSetting(receiver,
+ //               PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+ //               PackageManager.DONT_KILL_APP);
+//
+ //       AlarmManager manager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+ //       manager.setInexactRepeating(AlarmManager.RTC, resetTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntentReset);
+//
+ //   }
 }

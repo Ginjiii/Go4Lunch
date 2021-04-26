@@ -33,7 +33,7 @@ public class Go4LunchFactory implements ViewModelProvider.Factory {
             return (T) new SignInViewModel();
         }
         if (modelClass.isAssignableFrom(MapsViewModel.class)) {
-            return (T) new MapsViewModel(this.restaurantRepository);
+            return (T) new MapsViewModel(this.restaurantRepository, this.coworkerRepository);
         }
         if (modelClass.isAssignableFrom(RestaurantsViewModel.class)) {
             return (T) new RestaurantsViewModel(this.restaurantRepository);

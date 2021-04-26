@@ -1,8 +1,10 @@
 package com.example.go4lunch.goforlunch.ui.notification;
 
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -23,7 +25,6 @@ import java.util.List;
 public class NotificationLunchService extends BroadcastReceiver {
 
     private SaveDataRepository saveDataRepository;
-    private CoworkerRepository coworkerRepository;
     private String restaurantName;
     private String restaurantAddress;
     private String usersJoining;
@@ -32,12 +33,15 @@ public class NotificationLunchService extends BroadcastReceiver {
     private String currentUserId;
     private List<Coworker> users;
 
+
     private final int NOTIFICATION_ID = 001;
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.d("tag", "onReceive: we step in");
         this.context = context;
         this.configureRepositories();
+ //       this.showNotification();
     }
 
     // -------------------
@@ -45,10 +49,16 @@ public class NotificationLunchService extends BroadcastReceiver {
     // -------------------
 
     private void configureRepositories(){
-        coworkerRepository = coworkerRepository.getInstance();
+        CoworkerRepository.getInstance();
         saveDataRepository = SaveDataRepository.getInstance();
         saveDataRepository.configureContext(context);
         currentUserId = saveDataRepository.getUserId();
+        if (currentUserId == null)
+        {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            currentUserId = user.getUid();
+        }
+        Log.d("tag", "configurRepositories: are we good??");
         if(saveDataRepository.getNotificationSettings(currentUserId)
                 && getCurrentUser() != null){
             this.fetchUsers();
@@ -56,32 +66,34 @@ public class NotificationLunchService extends BroadcastReceiver {
     }
 
     private void fetchUsers() {
-        users = new ArrayList<>();
+         users = new ArrayList<>();
         CoworkerRepository.getAllCoworker()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()){
-                        Coworker coworker = documentSnapshot.toObject(Coworker.class);
-                        if(coworker != null && coworker.getRestaurantUid() != null) {
-                            if (coworker.getUid().equals(currentUserId)) {
-                                currentUser = coworker;
+                        Coworker user = documentSnapshot.toObject(Coworker.class);
+                        if(user != null && user.getRestaurantUid() != null) {
+                            if (user.getUid().equals(currentUserId)) {
+                                currentUser = user;
                             } else {
-                                users.add(coworker);
+                                users.add(user);
                             }
                         }
                     }
                     fetchUsersGoing();
                 });
+
     }
 
     private void fetchUsersGoing(){
         if(currentUser != null) {
             List<String> usersName = new ArrayList<>();
-            for (Coworker coworker : users) {
-                if (coworker.getRestaurantUid().equals(currentUser.getRestaurantUid())){
-                    usersName.add(coworker.getCoworkerName());
+            for (Coworker user : users) {
+                if (user.getRestaurantUid().equals(currentUser.getRestaurantUid())){
+                    usersName.add(user.getCoworkerName());
                 }
             }
-            restaurantName = currentUser.getRestaurantUid();
+            restaurantName = currentUser.getRestaurantName();
+            restaurantAddress = currentUser.getRestaurantAddress();
             usersJoining = TextUtil.convertListToString(usersName);
             showNotification();
         }

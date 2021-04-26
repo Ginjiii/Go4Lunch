@@ -80,7 +80,7 @@ public class RestaurantDetailViewModel extends BaseViewModel {
     }
 
     public void updatePickedRestaurant(Restaurant restaurant) {
-        coworkerRepository.getCoworker(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener(doc -> {
+        CoworkerRepository.getCoworker(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener(doc -> {
             coworker = doc.getResult().toObject(Coworker.class);
             if (isRestaurantPicked != null && isRestaurantPicked.getValue() != null && isRestaurantPicked.getValue()) {
                 coworkerRepository.updateRestaurantPicked(null, null, null, coworker)
@@ -112,7 +112,7 @@ public class RestaurantDetailViewModel extends BaseViewModel {
     public void fetchCoworkerLike(Restaurant restaurant)
     {
         coworker = coworkerRepository.getActualUser();
-        coworkerRepository.getCoworker(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener(doc -> {
+        CoworkerRepository.getCoworker(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener(doc -> {
             coworker = doc.getResult().toObject(Coworker.class);
             List<String> likedRestaurant = coworker.getLikedRestaurants();
             String restaurantUid = restaurant.getRestaurantPlaceId();
