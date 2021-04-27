@@ -50,8 +50,6 @@ public class SignInViewModel extends ViewModel {
     public void checkIfUserIsLogged() {
         if (isCurrentUserLogged()){
             this.fetchCurrentUserFromFirestore();
-        } else {
-            //openSignInActivityEvent.setValue(new Event<>(new Object()));
         }
     }
 

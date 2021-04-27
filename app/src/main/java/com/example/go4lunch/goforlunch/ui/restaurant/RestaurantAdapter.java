@@ -67,7 +67,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         return new RestaurantViewHolder(binding);
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     @Override
     public void onBindViewHolder(@NonNull RestaurantViewHolder restaurantViewHolder, int position) {
         Restaurant restaurant = restaurantList.get(position);
@@ -82,11 +82,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         if (restaurant.getRestaurantAddress() != null) {
             restaurantViewHolder.binding.restaurantItemListAddress.setText(restaurant.getRestaurantAddress());
         }
-
-        if (restaurantList.get(position).getRestaurantCoworkerList() != null) {
-            numberOfCoworker = restaurantList.get(position).getRestaurantCoworkerList().size();
+        if (restaurant.getRestaurantCoworkerList() != null) {
+            numberOfCoworker = restaurant.getRestaurantCoworkerList().size();
         }
-
         restaurantViewHolder.binding.restaurantItemListParticipantsNumber.setText("(" + numberOfCoworker + ")");
 
         displayOpeningHour(restaurantViewHolder, position);
@@ -103,8 +101,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             context.startActivity(intent);
         });
     }
-
-
 
     private void displayOpeningHour(RestaurantViewHolder restaurantViewHolder, int position) {
         if (restaurantList.get(position).getRestaurantOpeningHours() != null) {

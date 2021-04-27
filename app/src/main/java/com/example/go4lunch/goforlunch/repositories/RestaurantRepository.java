@@ -5,12 +5,16 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import com.example.go4lunch.goforlunch.models.Coworker;
 import com.example.go4lunch.goforlunch.models.Restaurant;
 import com.example.go4lunch.goforlunch.models.places.RestaurantDetail;
 import com.example.go4lunch.goforlunch.service.GooglePlacesService;
 import com.example.go4lunch.goforlunch.service.Retrofit;
 import com.example.go4lunch.goforlunch.ui.restaurantDetail.RestaurantDetailViewModel;
 import com.go4lunch.BuildConfig;
+import com.google.firebase.firestore.DocumentSnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +30,7 @@ import static com.example.go4lunch.goforlunch.service.GooglePlacesService.PHOTO_
 public class RestaurantRepository {
 
     public static final String TAG = RestaurantRepository.class.getSimpleName();
+    private static CoworkerRepository coworkerRepo;
 
     private final String type = "restaurant";
     private final int proximityRadius = 300;
@@ -44,13 +49,17 @@ public class RestaurantRepository {
 
     private List<Restaurant> mRestaurantList = new ArrayList<>();
     private List<Restaurant> mRestaurantListDetail = new ArrayList<>();
+    private CoworkerRepository coworkerRepository;
 
     private static volatile RestaurantRepository INSTANCE;
-
+    public RestaurantRepository(CoworkerRepository coworkerRepositor){
+        coworkerRepository = coworkerRepositor;
+    }
 
     public static RestaurantRepository getInstance(){
         if(INSTANCE == null){
-            INSTANCE = new RestaurantRepository();
+            coworkerRepo = new CoworkerRepository();
+            INSTANCE = new RestaurantRepository(coworkerRepo);
         }
         return INSTANCE;
     }
@@ -115,7 +124,13 @@ public class RestaurantRepository {
                             restaurantToAdd.setRestaurantOpeningHours(mRestaurantDetail.getResult().getOpeningHours());
                             Log.d(TAG, "onResponse: detailRestaurant"+mRestaurantDetail.getResult().getName());
                         }
+                        restaurantToAdd.setRestaurantCoworkerList( getRestaurantCoworkerList(restaurantToAdd));
                         restaurants.add(restaurantToAdd);
+                        int index = restaurants.indexOf(restaurantToAdd);
+                        if (index > 0){
+                            restaurants.set(index,restaurantToAdd);
+                        }
+                        restaurantList.postValue(restaurants);
                     }
                 }
             }
@@ -125,11 +140,43 @@ public class RestaurantRepository {
                 Log.e(TAG, "onFailure: " + t.toString());
             }
         });
-
         return restaurantList;
     }
+    private List<Restaurant.CoworkerList> getRestaurantCoworkerList(Restaurant modelRestaurant) {
+        List<Restaurant.CoworkerList> counterCoworkerList = new ArrayList<>();
 
-    public RestaurantDetail getGoogleRestaurantDetailList(String placeId, List<Restaurant> restaurants, Restaurant restaurantToAdd)  {
+        CoworkerRepository.getAllCoworker().addOnSuccessListener(queryDocumentSnapshots -> {
+            List<Coworker> coworkerList = new ArrayList<>();
+
+            for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+                Coworker userFetched = documentSnapshot.toObject(Coworker.class);
+                coworkerList.add(userFetched);
+            }
+
+            List<Restaurant.CoworkerList> oldCoworkerList = modelRestaurant.getRestaurantCoworkerList();
+            if (oldCoworkerList == null) {
+                oldCoworkerList = new ArrayList<>();
+            }
+
+            for (Coworker coworker : coworkerList) {
+                if(modelRestaurant.getRestaurantPlaceId().equals(coworker.getRestaurantUid())) {
+                    Restaurant.CoworkerList coworkerToAdd = new Restaurant.CoworkerList(coworker.getUid(), coworker.getCoworkerName(), coworker.getCoworkerPhotoUrl());
+                    if (!oldCoworkerList.contains(coworkerToAdd)) {
+                        oldCoworkerList.add(coworkerToAdd);
+                    }
+                }
+            }
+
+            for (Restaurant.CoworkerList coworkersList : oldCoworkerList) {
+                if (!counterCoworkerList.contains(coworkersList)) {
+                    counterCoworkerList.add(coworkersList);
+                }
+            }
+       });
+        return counterCoworkerList;
+    }
+
+    public RestaurantDetail getGoogleRestaurantDetailList(String placeId, List<Restaurant> restaurants, Restaurant restaurantToAdd) {
 
         GooglePlacesService googlePlacesService = Retrofit.getClient(BASE_URL_GOOGLE).create(GooglePlacesService.class);
         String fields = "name,address_components,adr_address,formatted_address,formatted_phone_number,geometry,icon,id,international_phone_number,rating,website,utc_offset,opening_hours,photo,vicinity,place_id";
@@ -193,21 +240,11 @@ public class RestaurantRepository {
                             0,
                             null
                     );
-
-                    restaurantToAdd.setRestaurantOpeningHours(restaurantDetailResponse.getOpeningHours());
-                    Log.d(TAG, "restaurantList "+mRestaurantList.size());
-
-                    int index = restaurants.indexOf(restaurantToAdd);
-                    if (index > 0){
-                        restaurants.set(index,modelRestaurant);
-                    }
-
                 }
                 restaurantList.postValue(restaurants);
             }
             @Override
             public void onFailure(Call<RestaurantDetail> call, Throwable t) {
-
             }
         });
         return null;

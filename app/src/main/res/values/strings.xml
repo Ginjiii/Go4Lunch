@@ -39,6 +39,9 @@
     // SETTING LAYOUT
     <string name="settings_layout_title">Settings</string>
     <string name="delete_account_button_text">delete account</string>
+    <string name="notification_disabled">Notification disabled</string>
+    <string name="notifications_enabled">Notifications enabled</string>
+    <string name="incorrect_username">Username not long enough</string>
 
     // SIGNIN LAYOUT
     <string name="logo_go_4_lunch" />

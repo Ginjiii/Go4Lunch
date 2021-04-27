@@ -9,7 +9,9 @@ import com.example.go4lunch.goforlunch.service.GooglePlacesService;
 public class Injection {
 
     public static RestaurantRepository createRestaurantRepository() {
-        return new RestaurantRepository();
+        CoworkerRepository coworkerRepository =  CoworkerRepository.getInstance();
+
+        return new RestaurantRepository(coworkerRepository);
     }
 
     public static CoworkerRepository createCoworkerRepository() {

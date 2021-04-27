@@ -14,12 +14,12 @@ import java.util.List;
 public class MapsViewModel extends ViewModel {
 
     private final RestaurantRepository repository ;
-    private final CoworkerRepository cowRepository ;
+    private final CoworkerRepository coworkersRepository;
 
 
     public MapsViewModel(RestaurantRepository restaurantRepository, CoworkerRepository coworkerRepository) {
         repository = restaurantRepository ;
-        cowRepository = coworkerRepository;
+        coworkersRepository = coworkerRepository;
     }
 
     /**
@@ -29,8 +29,5 @@ public class MapsViewModel extends ViewModel {
      */
     public LiveData<List<Restaurant>> getRestaurantList(double latitude, double longitude) {
         return repository.getGoogleRestaurantList(latitude, longitude);
-    }
-    public Task<QuerySnapshot> GetCoworkerList(){
-        return cowRepository.getAllCoworker();
     }
 }

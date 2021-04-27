@@ -104,6 +104,11 @@ public class CoworkerRepository {
                 "restaurantAddress", restaurantAddress, "coworkerRestaurantChosen", coworker.getCoworkerRestaurantChosen());
     }
 
+    public Task<Void> updateUrlPicture(String urlPicture, String uid){
+        coworker.setCoworkerPhotoUrl(urlPicture);
+        return coworkerCollection.document(uid).update("urlPicture", urlPicture);
+    }
+
     public Task<Void> addLikedRestaurant(String likedRestaurant, Coworker coworker) {
         if (coworker == null) {
             coworker = getActualUser();

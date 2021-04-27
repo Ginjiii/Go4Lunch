@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel;
 import com.example.go4lunch.goforlunch.models.Restaurant;
 import com.example.go4lunch.goforlunch.repositories.RestaurantRepository;
 import com.example.go4lunch.goforlunch.utils.Event;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
 

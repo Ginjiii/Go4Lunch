@@ -33,7 +33,6 @@ public class NotificationLunchService extends BroadcastReceiver {
     private String currentUserId;
     private List<Coworker> users;
 
-
     private final int NOTIFICATION_ID = 001;
 
     @Override
@@ -41,7 +40,6 @@ public class NotificationLunchService extends BroadcastReceiver {
         Log.d("tag", "onReceive: we step in");
         this.context = context;
         this.configureRepositories();
- //       this.showNotification();
     }
 
     // -------------------
@@ -81,7 +79,6 @@ public class NotificationLunchService extends BroadcastReceiver {
                     }
                     fetchUsersGoing();
                 });
-
     }
 
     private void fetchUsersGoing(){
@@ -103,7 +100,6 @@ public class NotificationLunchService extends BroadcastReceiver {
     private FirebaseUser getCurrentUser(){
         return FirebaseAuth.getInstance().getCurrentUser();
     }
-
 
     // -------------------
     // SHOW NOTIFICATION
