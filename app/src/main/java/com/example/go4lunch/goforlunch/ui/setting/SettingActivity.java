@@ -29,18 +29,25 @@ public class SettingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
-        settingViewModel = getViewModel();
-        settingViewModel.configureSaveDataRepo(getApplicationContext());
+
     }
 
     private void initView() {
         binding = SettingLayoutBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+        settingViewModel = getViewModel();
+        settingViewModel.configureSaveDataRepo(getApplicationContext());
 
+        boolean statusNotification = settingViewModel.getStatusNotification(getApplicationContext());
         binding.notificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            settingViewModel.notificationStateChanged(isChecked);
+            settingViewModel.notificationStateChanged(isChecked, getApplicationContext());
         });
+
+        binding.notificationSwitch.setChecked(statusNotification);
+
+
+
     }
 
     private SettingViewModel getViewModel() {

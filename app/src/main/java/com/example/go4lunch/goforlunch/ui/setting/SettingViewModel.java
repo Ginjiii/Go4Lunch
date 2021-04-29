@@ -1,8 +1,6 @@
 package com.example.go4lunch.goforlunch.ui.setting;
 
 import android.content.Context;
-
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.go4lunch.goforlunch.models.Coworker;
@@ -33,9 +31,15 @@ public class SettingViewModel extends ViewModel {
     // GET USER ACTION
     // --------------------
 
-    public void notificationStateChanged(boolean enabled) {
-        saveDataRepository.getPreferences();
+    public void notificationStateChanged(boolean enabled, Context context) {
+        saveDataRepository.configureContext(context);
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         saveDataRepository.saveNotificationSettings(enabled, uid);
+    }
+
+    public boolean getStatusNotification(Context context) {
+        saveDataRepository.configureContext(context);
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        return saveDataRepository.getNotificationSettings(uid);
     }
 }

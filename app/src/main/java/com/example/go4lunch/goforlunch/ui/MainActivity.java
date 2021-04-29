@@ -281,7 +281,7 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
         Calendar notificationTime = Calendar.getInstance();
         notificationTime.set(Calendar.HOUR_OF_DAY, TIME_NOTIFICATION[0]);
         notificationTime.set(Calendar.MINUTE, TIME_NOTIFICATION[1]);
-        notificationTime.set(Calendar.SECOND, 0);
+        notificationTime.set(Calendar.MILLISECOND, 0);
 
         Calendar calendar = Calendar.getInstance();
         if (notificationTime.before(calendar)) {
