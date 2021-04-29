@@ -11,6 +11,7 @@ import com.example.go4lunch.goforlunch.ui.coworker.CoworkerViewModel;
 import com.example.go4lunch.goforlunch.ui.maps.MapsViewModel;
 import com.example.go4lunch.goforlunch.ui.restaurant.RestaurantsViewModel;
 import com.example.go4lunch.goforlunch.ui.restaurantDetail.RestaurantDetailViewModel;
+import com.example.go4lunch.goforlunch.ui.setting.SettingViewModel;
 import com.example.go4lunch.goforlunch.ui.signin.SignInViewModel;
 
 public class Go4LunchFactory implements ViewModelProvider.Factory {
@@ -34,6 +35,9 @@ public class Go4LunchFactory implements ViewModelProvider.Factory {
         }
         if (modelClass.isAssignableFrom(MapsViewModel.class)) {
             return (T) new MapsViewModel(this.restaurantRepository, this.coworkerRepository);
+        }
+        if(modelClass.isAssignableFrom(SettingViewModel.class)){
+            return (T) new SettingViewModel(coworkerRepository, saveDataRepository);
         }
         if (modelClass.isAssignableFrom(RestaurantsViewModel.class)) {
             return (T) new RestaurantsViewModel(this.restaurantRepository);

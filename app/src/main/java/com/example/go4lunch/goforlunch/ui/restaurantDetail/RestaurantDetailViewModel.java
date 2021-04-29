@@ -2,8 +2,8 @@ package com.example.go4lunch.goforlunch.ui.restaurantDetail;
 
 import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
-import com.example.go4lunch.goforlunch.base.BaseViewModel;
 import com.example.go4lunch.goforlunch.models.Coworker;
 import com.example.go4lunch.goforlunch.models.Restaurant;
 import com.example.go4lunch.goforlunch.repositories.CoworkerRepository;
@@ -21,7 +21,7 @@ import static com.example.go4lunch.goforlunch.utils.Actions.REMOVED_PICKED;
 import static com.example.go4lunch.goforlunch.utils.Actions.UPDATE_LIKED;
 import static com.example.go4lunch.goforlunch.utils.Actions.UPDATE_PICKED;
 
-public class RestaurantDetailViewModel extends BaseViewModel {
+public class RestaurantDetailViewModel extends ViewModel {
 
     private final CoworkerRepository coworkerRepository;
     private final RestaurantRepository restaurantRepository;
@@ -94,21 +94,6 @@ public class RestaurantDetailViewModel extends BaseViewModel {
         });
     }
 
-    @Override
-    public void action(Actions actions) {
-        switch (actions) {
-            case UPDATE_PICKED_RESTAURANT:
-                updatePickedRestaurant(restaurant);
-                break;
-            case UPDATE_LIKED_RESTAURANT:
-                updateRestaurantLiked(restaurant);
-                break;
-            case GET_RESTAURANT_DETAIL:
-                fetchInfoRestaurant();
-                break;
-        }
-    }
-
     public void fetchCoworkerLike(Restaurant restaurant)
     {
         coworker = coworkerRepository.getActualUser();
@@ -116,7 +101,6 @@ public class RestaurantDetailViewModel extends BaseViewModel {
             coworker = doc.getResult().toObject(Coworker.class);
             List<String> likedRestaurant = coworker.getLikedRestaurants();
             String restaurantUid = restaurant.getRestaurantPlaceId();
-            //           isRestaurantLiked.setValue(checkIfRestaurantIsLiked(restaurant));
             if (likedRestaurant != null && restaurantUid != null && likedRestaurant.contains(restaurantUid)) {
                 isRestaurantLiked.setValue(true);
             }

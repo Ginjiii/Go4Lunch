@@ -29,7 +29,6 @@ public class SaveDataRepository {
 
     public void configureContext(Context context){
         preferences = context.getSharedPreferences(KEY_PREF, Context.MODE_PRIVATE);
-
     }
 
     //-----SAVE------

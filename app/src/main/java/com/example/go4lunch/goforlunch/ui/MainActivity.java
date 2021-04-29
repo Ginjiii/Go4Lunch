@@ -61,16 +61,16 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class  MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ActivityMainBinding binding;
 
     private int AUTOCOMPLETE_REQUEST_CODE = 1;
-    private List<Place.Field>  fields = Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG);
+    private List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG);
 
     private PendingIntent pendingIntentAlarm;
     private PendingIntent pendingIntentReset;
-    private static int[] TIME_NOTIFICATION = {12, 00};
+    private static int[] TIME_NOTIFICATION = {12, 0};
     private static int[] TIME_RESET = {23, 59};
 
 
@@ -104,14 +104,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // --------------------
 
     private void configureNotification() {
- //       this.configureResetData();
         this.createNotificationChannel();
         this.configureNotificationIntent();
         this.enableNotifications();
-//        this.disableNotification();
     }
 
-    private void configureUI(){
+    private void configureUI() {
         this.configureToolbar();
         this.configureBottomView();
         this.configureDrawerLayout();
@@ -163,8 +161,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.i("tag", "onOptionsItemSelected: ");
-        int id  = item.getItemId();
-        if(id == R.id.search_menu ){
+        int id = item.getItemId();
+        if (id == R.id.search_menu) {
             startAutocompleteActivity();
             return true;
         }
@@ -198,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        if(this.binding.mainDrawerLayout.isDrawerOpen(GravityCompat.START)){
+        if (this.binding.mainDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             this.binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
@@ -228,12 +226,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // AUTOCOMPLETE CLICK
     // -----------------
 
-    public void  startAutocompleteActivity() {
+    public void startAutocompleteActivity() {
         Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
                 .setTypeFilter(TypeFilter.ESTABLISHMENT)
                 .setLocationBias(RectangularBounds.newInstance(
                         new LatLng(48.6408416, 2.3259213),
-                        new LatLng(48.6408416,2.3259213)))
+                        new LatLng(48.6408416, 2.3259213)))
                 .setCountry("FR")
                 .build(this);
         startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
@@ -260,8 +258,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // NOTIFICATION ALARM MANAGER
     // -----------------
 
-    private void createNotificationChannel(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String channelId = getString(R.string.notificationChannel);
             CharSequence name = getString(R.string.name_channel);
             String description = getString(R.string.description_channel);
@@ -273,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void configureNotificationIntent(){
+    private void configureNotificationIntent() {
         Intent notificationIntent = new Intent(this, NotificationLunchService.class);
         pendingIntentAlarm = PendingIntent.getBroadcast(this, 0,
                 notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -286,7 +284,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         notificationTime.set(Calendar.SECOND, 0);
 
         Calendar calendar = Calendar.getInstance();
-        if(notificationTime.before(calendar)){
+        if (notificationTime.before(calendar)) {
             notificationTime.add(Calendar.DATE, 1);
         }
 
@@ -302,47 +300,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, notificationTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntentAlarm);
 
     }
-
- //   private void disableNotification() {
- //       AlarmManager manager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
- //       manager.cancel(pendingIntentAlarm);
-//
- //       ComponentName receiver = new ComponentName(getApplicationContext(), NotificationLunchService.class);
- //       PackageManager pm = getApplicationContext().getPackageManager();
-//
- //       pm.setComponentEnabledSetting(receiver,
- //               PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
- //               PackageManager.DONT_KILL_APP);
-//
- //   }
-
-    // --------------------
-    // RESET DATA RESTAURANT EVERY DAY
-    // --------------------
-
- //   /*
- //   this shouldn't be done from the application but from a central server instead
- //    */
- //   private void configureResetData(){
- //       Intent notificationIntent = new Intent(this, ResetRestaurantInfo.class);
- //       pendingIntentReset = PendingIntent.getBroadcast(this, 0,
- //               notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//
- //       Calendar resetTime = Calendar.getInstance();
- //       resetTime.setTimeInMillis(System.currentTimeMillis());
- //       resetTime.set(Calendar.HOUR_OF_DAY, TIME_RESET[0]);
- //       resetTime.set(Calendar.MINUTE, TIME_RESET[1]);
- //       resetTime.set(Calendar.SECOND, 0);
-//
- //       ComponentName receiver = new ComponentName(getApplicationContext(), ResetRestaurantInfo.class);
- //       PackageManager pm = getApplicationContext().getPackageManager();
-//
- //       pm.setComponentEnabledSetting(receiver,
- //               PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
- //               PackageManager.DONT_KILL_APP);
-//
- //       AlarmManager manager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
- //       manager.setInexactRepeating(AlarmManager.RTC, resetTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntentReset);
-//
- //   }
 }
