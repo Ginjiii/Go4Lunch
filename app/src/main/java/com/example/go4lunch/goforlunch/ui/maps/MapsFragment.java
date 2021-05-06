@@ -1,9 +1,6 @@
 package com.example.go4lunch.goforlunch.ui.maps;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
-
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,21 +8,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.go4lunch.goforlunch.base.BaseFragment;
 import com.example.go4lunch.goforlunch.factory.Go4LunchFactory;
 import com.example.go4lunch.goforlunch.injections.Injection;
 import com.example.go4lunch.goforlunch.models.Coworker;
 import com.example.go4lunch.goforlunch.models.Restaurant;
-
 import com.example.go4lunch.goforlunch.repositories.CoworkerRepository;
+import com.example.go4lunch.goforlunch.ui.restaurantDetail.RestaurantDetailActivity;
 import com.go4lunch.R;
 import com.go4lunch.databinding.FragmentMapsBinding;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -36,6 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pub.devrel.easypermissions.EasyPermissions;
+
+import static com.example.go4lunch.goforlunch.ui.restaurantDetail.RestaurantDetailActivity.RESTAURANT_PLACE_ID;
 
 public class MapsFragment extends BaseFragment implements OnMapReadyCallback, EasyPermissions.PermissionCallbacks {
 
@@ -132,22 +133,24 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Ea
             CoworkerRepository.getAllCoworker().addOnSuccessListener(queryDocumentSnapshots -> {
                 List<Coworker> coworkerList = new ArrayList<>();
 
-                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()){
+                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
                     Coworker userFetched = documentSnapshot.toObject(Coworker.class);
                     coworkerList.add(userFetched);
                 }
+
                 Log.d("tag", " get size?" + coworkerList.size());
                 for (Restaurant restaurant : restaurants) {
                     Double latitude = restaurant.getRestaurantLocation().getLat();
                     Double longitude = restaurant.getRestaurantLocation().getLng();
                     LatLng restaurantPosition = new LatLng(latitude, longitude);
-                    Log.d("tag", "restaurant"+ restaurant.getRestaurantPlaceId());
+                    Log.d("tag", "restaurant" + restaurant.getRestaurantPlaceId());
                     for (Coworker coworker : coworkerList) {
+
 
                         Log.d("tag", "place id" + coworker.getRestaurantUid());
                         Log.d("tag", "name" + coworker.getCoworkerName());
 
-                        if(restaurant.getRestaurantPlaceId().equals(coworker.getRestaurantUid())){
+                        if (restaurant.getRestaurantPlaceId().equals(coworker.getRestaurantUid())) {
 
                             Marker marker = googleMap.addMarker(new MarkerOptions()
                                     .position(restaurantPosition)
@@ -165,9 +168,25 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Ea
                     Log.d("tag", "getCoworkerChoice: get it?" + restaurant.getCoworkerChoice());
 
                 }
+
+                onMarkerClick();
             });
         }
+    }
+
+    private void onMarkerClick() {
+        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                String placeId = (String) marker.getTag();
+
+                Intent intent = new Intent(getActivity(), RestaurantDetailActivity.class);
+                intent.putExtra(RESTAURANT_PLACE_ID, placeId);
+                startActivity(intent);
+                return false;
             }
+        });
+    }
 
 
     private void updateLocationUI() {

@@ -47,6 +47,17 @@ public class SignInViewModel extends ViewModel {
                 RC_SIGN_IN);
     }
 
+    public void startSignInActivityTwitter(Activity activity) {
+        activity.startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(Collections.singletonList(new
+                                AuthUI.IdpConfig.TwitterBuilder().build()))
+                        .setIsSmartLockEnabled(false, true)
+                        .build(),
+                RC_SIGN_IN);
+    }
+
     public void checkIfUserIsLogged() {
         if (isCurrentUserLogged()){
             this.fetchCurrentUserFromFirestore();
@@ -86,4 +97,6 @@ public class SignInViewModel extends ViewModel {
     private boolean isCurrentUserLogged() {
         return (this.getCurrentUser() != null);
     }
+
+
 }

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
     --- MENU ---
     // BOTTOM NAVIGATION MENU
     <string name="map_button_title">Map</string>
@@ -19,86 +19,24 @@
     // TOOLBAR SEARCH MENU
     <string name="search_button_title">search</string>
 
+    //ACTION BAR
+    <string name="hungry">I\'m Hungry!</string>>
+
     --- LAYOUT ---
 
     // COWORKERS ITEM LAYOUT
-    <string name="coworkers_picture" />
-    <string name="background_content_description" />
+    <string name="coworkers_picture" translatable="false" />
+    <string name="background_content_description" translatable="false" />
+    <string name="is_joining">is joining</string>
+    <string name="is_eating">is eating</string>
+    <string name="has_not_decided_yet">has not decided yet</string>
 
     // HEADER LAYOUT
-    <string name="header_drawer_picture" />
+    <string name="header_drawer_picture" translatable="false" />
     <string name="app_name">Go4Lunch</string>
-    <string name="user_picture" />
+    <string name="user_picture" translatable="false" />
 
-    // RESTAURANT DETAIL LAYOUT
-    <string name="restaurant_picture">restaurant picture</string>
-    <string name="call_button">CALL</string>
-    <string name="like_button">LIKE</string>
-    <string name="website_button">WEBSITE</string>
-
-    // SETTING LAYOUT
-    <string name="settings_layout_title">Settings</string>
-    <string name="delete_account_button_text">delete account</string>
-    <string name="notification_disabled">Notification disabled</string>
-    <string name="notifications_enabled">Notifications enabled</string>
-    <string name="incorrect_username">Username not long enough</string>
-
-    // SIGNIN LAYOUT
-    <string name="logo_go_4_lunch" />
-    <string name="sign_in_second_title">Find a nice restaurant and invite your co-workers for lunch!</string>
-    <string name="facebook_login_button_text" />
-    <string name="adapted_facebook_login_button_text">sign in with Facebook</string>
-    <string name="google_login_button_text">sign in with Google</string>
-    <string name="navigation_drawer_open">open </string>
-    <string name="navigation_drawer_close">close </string>
-    <string name="facebook_application_id">1272208246491957</string>
-    <string name="fb_login_protocol_scheme">fb1272208246491957</string>
-    <string name="error_unknown_error" />
-    <string name="twitter_api_key">2TszP3aP4v4zm348IYXBWHuRO</string>
-    <string name="twitter_api_secret">DYCP3VXbQItam2VPIqGEvdWVoebM6Lp9dWSypZ79BOIq791kHl</string>
-    <string name="yes" />
-    <string name="alert_dialog_notifications_message" />
-    <string name="notificationChannel" translatable="false">notificationChannel</string>
-    <string name="notification_message">You are eating at %s with %s on %s</string>
-    <string name="message_notification_alone">You are eating at %s on %s</string>
-    <string name="title_notification">Your lunch today</string>
-    <string name="subtitle_notification">You have a lunch setup for today</string>
-    <string name="name_channel" translatable="false">Go4Lunch channel</string>
-    <string name="description_channel" translatable="false">Notification channel</string>
-    <string name="no" />
-    <string name="no_restaurant_message" />
-    <string name="auth_error" />
-    <string name="error_authentication_canceled" />
-    <string name="connection_succeed" />
-    <string name="error_no_internet" />
-    <string name="invalid_email_password" />
-    <string name="position" />
-    <string name="hungry">I\'m Hungry!</string>>
-    <string name="list_restaurants_adapter_open_now" />
-    <string name="list_restaurants_adapter_close_now" />
-    <string name="autocomplete_toast" />
-    <string name="map_view_fragment_my_position" />
-    <string name="no_location_message" />
-    <string name="retry_button" />
-    <string name="logged_out_success" />
-    <string name="no_restaurant_picked_message" />
-    <string name="no_time" />
-    <string name="closed" />
-    <string name="open_24_7" />
-    <string name="closing_soon" />
-    <string name="need_permission_message" />
-    <string name="default_latitude_position">48.8534100 </string>
-    <string name="default_longitude_position">2.3488000 </string>
-    <string name="notif_high" />
-    <string name="notif_high_importance" />
-    <string name="type_search" />
-    <string name="place_detail_fields" />
-    <string name="proximity_radius">150 </string>
-    <string name="bound_radius">150 </string>
-    <string name="error_saved_failed" />
-    <string name="text_no_web_site">No Website</string>
-    <string name="text_no_phone_number">No phone number</string>
-    <string name="restaurant_favorite_button">Restaurant Favorite button</string>
+    //RESTAURANT LIST
     <string name="text_restaurant_closed_open_at_on">on</string>
     <string name="restaurant_closed_today">Closed today. Open at</string>
     <string name="restaurant_closed_open_at">Closed. Open at</string>
@@ -106,11 +44,54 @@
     <string name="restaurant_closing_soon">Closing soon</string>
     <string name="restaurant_on">on</string>
     <string name="restaurant_open_h24">Open 24/7</string>
-    <string name="is_joining">is joining</string>
-    <string name="is_eating">is eating</string>
-    <string name="has_not_decided_yet">has not decided yet</string>
-    <string name="eating_here_today" />
-    <string name="cancel_download">cancel</string>
 
+    // RESTAURANT DETAIL LAYOUT
+    <string name="restaurant_picture" translatable="false">restaurant picture</string>
+    <string name="call_button">CALL</string>
+    <string name="like_button">LIKE</string>
+    <string name="website_button">WEBSITE</string>
+    <string name="text_no_web_site">No Website</string>
+    <string name="text_no_phone_number">No phone number</string>
+    <string name="restaurant_favorite_button" translatable="false">Restaurant Favorite button</string>
+
+    // SETTING LAYOUT
+    <string name="settings_layout_title">Settings</string>
+    <string name="delete_account_button_text" translatable="false">delete account</string>
+    <string name="notification_disabled">Notification disabled</string>
+    <string name="notifications_enabled">Notifications enabled</string>
+    <string name="incorrect_username">Username not long enough</string>
+
+    // SIGNIN LAYOUT
+    <string name="logo_go_4_lunch" translatable="false" />
+    <string name="sign_in_second_title">Find a nice restaurant and invite your co-workers for lunch!</string>
+    <string name="facebook_login_button_text" translatable="false" />
+    <string name="adapted_facebook_login_button_text">sign in with Facebook</string>
+    <string name="google_login_button_text">sign in with Google</string>
+    <string name="adapted_twitter_login_button_text">sign in with Twitter</string>
+    <string name="navigation_drawer_open">open </string>
+    <string name="navigation_drawer_close">close </string>
+    <string name="facebook_application_id" translatable="false">1272208246491957</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb1272208246491957</string>
+    <string name="error_unknown_error" translatable="false" />
+    <string name="com.twitter.sdk.android.CONSUMER_KEY" translatable="false">kCITZyjtuRqr5orWeG0lqUw7d</string>
+    <string name="com.twitter.sdk.android.CONSUMER_SECRET" translatable="false">VbiEQ2E8ji8SYbLiBFxtBFwJbwalEFGKJsWscypTxtZV2QYqYK</string>
+    <string name="yes" translatable="false" />
+
+    //NOTIFICATION
+    <string name="alert_dialog_notifications_message" translatable="false" />
+    <string name="notificationChannel" translatable="false">notificationChannel</string>
+    <string name="notification_message">You are eating at %s with %s on %s</string>
+    <string name="message_notification_alone">You are eating at %s on %s</string>
+    <string name="title_notification">Your lunch today</string>
+    <string name="subtitle_notification">You have a lunch setup for today</string>
+    <string name="name_channel" translatable="false">Go4Lunch channel</string>
+    <string name="description_channel" translatable="false">Notification channel</string>
+    <string name="no" translatable="false" />
+
+    //POSITION
+    <string name="default_latitude_position" translatable="false">48.8534100 </string>
+    <string name="default_longitude_position" translatable="false">2.3488000 </string>
+    <string name="proximity_radius" translatable="false">150 </string>
+    <string name="bound_radius" translatable="false">150 </string>
 
 </resources>

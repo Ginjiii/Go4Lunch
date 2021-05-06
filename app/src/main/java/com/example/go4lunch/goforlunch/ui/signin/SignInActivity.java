@@ -40,6 +40,7 @@ public class SignInActivity extends AppCompatActivity {
 
         binding.facebookLoginButton.setOnClickListener(v -> viewModel.startSignInActivityFacebook(SignInActivity.this));
         binding.gmailLoginButton.setOnClickListener(v -> viewModel.startSignInActivityGoogle(SignInActivity.this));
+        binding.twitterLoginButton.setOnClickListener(v -> viewModel.startSignInActivityTwitter(SignInActivity.this));
     }
 
     private void checkSessionUser(){

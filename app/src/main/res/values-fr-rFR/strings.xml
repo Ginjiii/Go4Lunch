@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Go4Lunch</string>
+    <string name="map_button_title" translatable="false">Carte</string>
+    <string name="list_button_title" translatable="false">Liste</string>
+    <string name="coworkers_button_title" translatable="false">Collègues</string>
+    <string name="lunch_button_title" translatable="false">Repas</string>
+    <string name="settings_button_title" translatable="false">Paramètres</string>
+    <string name="log_out_button_title" translatable="false">Déconnection</string>
+    <string name="sort_button" translatable="false">Trier</string>
+    <string name="sort_by_distance" translatable="false">Trier par distance</string>
+    <string name="sort_by_participants" translatable="false">Trier par participant</string>
+    <string name="sort_by_rate" translatable="false">Trier par note</string>
+    <string name="search_button_title" translatable="false">Rechercher</string>
+    <string name="hungry" translatable="false">J\\\'ai faim</string>
+    <string name="is_joining">%s mange ici!</string>
+    <string name="is_eating">%s mange à %s</string>
+    <string name="has_not_decided_yet">%s n\'a pas encore décidé!</string>
+    <string name="text_restaurant_closed_open_at_on" translatable="false">Fermé ouvre à le</string>
+    <string name="restaurant_closed_today">Fermé aujourd\'hui</string>
+    <string name="restaurant_closed_open_at">Fermé. Ouvre à</string>
+    <string name="restaurant_open_until">Ouvert jusqu\\\'à %s</string>
+    <string name="restaurant_closing_soon">Ferme bientôt</string>
+    <string name="restaurant_on">le</string>
+    <string name="restaurant_open_h24">Ouvert 24/7</string>
+    <string name="call_button">Appel</string>
+    <string name="like_button" translatable="false">AIMER</string>
+    <string name="website_button" translatable="false">SITE INTERNET</string>
+    <string name="text_no_web_site" translatable="false">Pas de Site Internet</string>
+    <string name="text_no_phone_number">Pas de numéro de téléphone</string>
+    <string name="settings_layout_title">Paramètres</string>
+    <string name="notifications_enabled" translatable="false">Activer les notifications</string>
+    <string name="notification_disabled">Désactiver les notifications</string>
+    <string name="incorrect_username">Nom d\'utilisateur pas assez long</string>
+    <string name="sign_in_second_title">Trouvez un restaurant sympa et invitez vos collègues pour manger!</string>
+    <string name="adapted_facebook_login_button_text">Connectez vous avec Facebook</string>
+    <string name="google_login_button_text">Connectez vous avec Google</string>
+    <string name="adapted_twitter_login_button_text">Connectez vous avec Twitter</string>
+    <string name="navigation_drawer_open">Ouvert</string>
+    <string name="navigation_drawer_close">Fermé</string>
+    <string name="notification_message">Vous manger à %s avec %s le %s</string>
+    <string name="message_notification_alone">Vous manger à %s le %s</string>
+    <string name="title_notification">Votre repas du jours</string>
+    <string name="subtitle_notification">Vous avez un déjeuner pour aujourd\\\'hui</string>
+</resources>
