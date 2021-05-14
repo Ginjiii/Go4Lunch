@@ -37,7 +37,6 @@ public class RestaurantFragmentListTest {
         coworker = new Coworker("uid", "name", "email", "urlPhoto");
         coworker.setRestaurantUid("restaurantUid");
         coworker.setRestaurantName("le petit café");
-        coworker.setRestaurantAddress("123 rue blablabla");
         coworkerRepository = CoworkerRepository.getInstance();
         coworkerRepository.createCoworker(coworker.getUid(), coworker.getCoworkerName(), coworker.getCoworkerEmail());
         coworkerRepository.updateRestaurantPicked(coworker.getRestaurantUid(), coworker.getRestaurantName(), coworker.getRestaurantAddress(), coworker);

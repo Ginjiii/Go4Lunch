@@ -73,8 +73,6 @@
     <string name="facebook_application_id" translatable="false">1272208246491957</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb1272208246491957</string>
     <string name="error_unknown_error" translatable="false" />
-    <string name="com.twitter.sdk.android.CONSUMER_KEY" translatable="false">kCITZyjtuRqr5orWeG0lqUw7d</string>
-    <string name="com.twitter.sdk.android.CONSUMER_SECRET" translatable="false">VbiEQ2E8ji8SYbLiBFxtBFwJbwalEFGKJsWscypTxtZV2QYqYK</string>
     <string name="yes" translatable="false" />
 
     //NOTIFICATION

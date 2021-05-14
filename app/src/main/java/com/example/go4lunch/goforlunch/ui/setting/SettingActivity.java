@@ -1,19 +1,14 @@
 package com.example.go4lunch.goforlunch.ui.setting;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.go4lunch.goforlunch.factory.Go4LunchFactory;
 import com.example.go4lunch.goforlunch.injections.Injection;
 import com.go4lunch.databinding.SettingLayoutBinding;
-
-import pub.devrel.easypermissions.EasyPermissions;
 
 
 public class SettingActivity extends AppCompatActivity {
@@ -29,7 +24,6 @@ public class SettingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
-
     }
 
     private void initView() {
@@ -45,9 +39,6 @@ public class SettingActivity extends AppCompatActivity {
         });
 
         binding.notificationSwitch.setChecked(statusNotification);
-
-
-
     }
 
     private SettingViewModel getViewModel() {

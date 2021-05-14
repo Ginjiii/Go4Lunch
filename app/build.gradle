@@ -85,17 +85,10 @@ dependencies {
     implementation "com.google.android.gms:play-services-location:18.0.0"
     implementation 'com.google.android.libraries.places:places:2.4.0'
 
-
     implementation 'androidx.multidex:multidex:2.0.1'
-
 
     //FACEBOOK LOGIN SUPPORT
     implementation 'com.facebook.android:facebook-android-sdk:7.1.0'
-
-
-    //TWITTER
-    implementation 'com.twitter.sdk.android:twitter:3.1.1'
-    implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
 
     //GLIDE
     implementation 'com.github.bumptech.glide:glide:4.12.0'

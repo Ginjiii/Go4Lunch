@@ -23,7 +23,7 @@ public class CoworkerTest {
     private String photoUrl;
     private String restaurantUid;
     private String restaurantName;
-    private String restaurantAddress;
+
 
     private String likedRestaurant1;
     private String likedRestaurant2;
@@ -40,7 +40,6 @@ public class CoworkerTest {
         coworker = new Coworker(uid, name, email, photoUrl);
         restaurantUid = "54321";
         restaurantName = "restaurantName";
-        restaurantAddress = "123 rue blablabla";
         likedRestaurant1 = "uid1";
         likedRestaurant2 = "uid2";
         likedRestaurant3 = "uid3";
@@ -70,7 +69,6 @@ public class CoworkerTest {
         coworker.setCoworkerEmail(newEmail);
         coworker.setRestaurantUid(restaurantUid);
         coworker.setRestaurantName(restaurantName);
-        coworker.setRestaurantAddress(restaurantAddress);
         coworker.addLikedRestaurant(likedRestaurant1);
         coworker.addLikedRestaurant(likedRestaurant2);
         coworker.addLikedRestaurant(likedRestaurant3);
@@ -82,7 +80,6 @@ public class CoworkerTest {
         assertEquals(newPhotoUrl, coworker.getCoworkerPhotoUrl());
         assertEquals(restaurantUid, coworker.getRestaurantUid());
         assertEquals(restaurantName, coworker.getRestaurantName());
-        assertEquals(restaurantAddress, coworker.getRestaurantAddress());
         assertEquals(likedRestaurants, coworker.getLikedRestaurants());
     }
 }

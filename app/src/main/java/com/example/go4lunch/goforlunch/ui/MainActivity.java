@@ -1,14 +1,5 @@
 package com.example.go4lunch.goforlunch.ui;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
@@ -18,7 +9,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,35 +17,37 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
-import com.example.go4lunch.goforlunch.factory.Go4LunchFactory;
-import com.example.go4lunch.goforlunch.injections.Injection;
 import com.example.go4lunch.goforlunch.ui.coworker.CoworkersFragment;
 import com.example.go4lunch.goforlunch.ui.maps.MapsFragment;
 import com.example.go4lunch.goforlunch.ui.notification.NotificationLunchService;
-import com.example.go4lunch.goforlunch.ui.notification.ResetRestaurantInfo;
 import com.example.go4lunch.goforlunch.ui.restaurant.RestaurantsFragmentList;
 import com.example.go4lunch.goforlunch.ui.setting.SettingActivity;
-import com.example.go4lunch.goforlunch.utils.Utils;
+import com.example.go4lunch.goforlunch.ui.signin.SignInActivity;
 import com.go4lunch.BuildConfig;
 import com.go4lunch.R;
 import com.go4lunch.databinding.ActivityMainBinding;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.example.go4lunch.goforlunch.ui.signin.SignInActivity;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -109,12 +101,18 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
         this.enableNotifications();
     }
 
+    // --------------------
+    // CONFIGURE UI NAVIGATION
+    // --------------------
+
     private void configureUI() {
         this.configureToolbar();
         this.configureBottomView();
         this.configureDrawerLayout();
         this.configureNavigationView();
     }
+
+    //----- TOOLBAR -----
 
     protected void configureToolbar() {
         setSupportActionBar(binding.mainToolbar);
@@ -167,8 +165,9 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
             return true;
         }
         return super.onOptionsItemSelected(item);
-
     }
+
+    //----- DRAWER -----
 
     private void configureDrawerLayout() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.mainDrawerLayout, binding.mainToolbar,
