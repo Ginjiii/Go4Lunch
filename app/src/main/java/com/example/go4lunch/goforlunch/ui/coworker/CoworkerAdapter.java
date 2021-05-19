@@ -16,7 +16,6 @@ import com.example.go4lunch.goforlunch.ui.restaurantDetail.RestaurantDetailActiv
 import com.go4lunch.R;
 import com.go4lunch.databinding.CoworkersItemLayoutBinding;
 
-
 import java.util.List;
 
 import static com.example.go4lunch.goforlunch.ui.restaurantDetail.RestaurantDetailActivity.RESTAURANT_PLACE_ID;
@@ -53,6 +52,7 @@ public class CoworkerAdapter extends RecyclerView.Adapter<CoworkerAdapter.Cowork
         if (coworkerList.get(position).getCoworkerRestaurantChosen() != null) {
             restaurantChoice = coworkerList.get(position).getCoworkerRestaurantChosen();
             coworkerTextName = coworkerList.get(position).getCoworkerName() + " " + context.getString(R.string.is_eating) + " (" + restaurantChoice.getRestaurantName() + ")";
+            coworkerViewHolder.binding.recyclerViewCoworkerItemTextView.setTextColor(context.getResources().getColor(R.color.colorBlack));
         } else {
             coworkerTextName = coworkerList.get(position).getCoworkerName() + " " + context.getString(R.string.has_not_decided_yet);
         }

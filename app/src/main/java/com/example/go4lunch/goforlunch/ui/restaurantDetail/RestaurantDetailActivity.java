@@ -6,7 +6,6 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -21,7 +20,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.goforlunch.factory.Go4LunchFactory;
 import com.example.go4lunch.goforlunch.injections.Injection;
-import com.example.go4lunch.goforlunch.models.Coworker;
 import com.example.go4lunch.goforlunch.models.Restaurant;
 import com.example.go4lunch.goforlunch.ui.coworker.CoworkerDetailAdapter;
 import com.example.go4lunch.goforlunch.utils.Actions;

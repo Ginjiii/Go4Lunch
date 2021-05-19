@@ -120,6 +120,7 @@ public class RestaurantRepository {
                         );
                         RestaurantDetail restaurantDetail = getGoogleRestaurantDetailList(restaurant.getPlaceId(), restaurants, restaurantToAdd);
                         RestaurantDetail mRestaurantDetail = restaurantDetail;
+
                         if (mRestaurantDetail != null && mRestaurantDetail.getResult() != null ){
                             restaurantToAdd.setRestaurantOpeningHours(mRestaurantDetail.getResult().getOpeningHours());
                             Log.d(TAG, "onResponse: detailRestaurant"+mRestaurantDetail.getResult().getName());
@@ -177,7 +178,6 @@ public class RestaurantRepository {
     }
 
     public RestaurantDetail getGoogleRestaurantDetailList(String placeId, List<Restaurant> restaurants, Restaurant restaurantToAdd) {
-
         GooglePlacesService googlePlacesService = Retrofit.getClient(BASE_URL_GOOGLE).create(GooglePlacesService.class);
         String fields = "name,address_components,adr_address,formatted_address,formatted_phone_number,geometry,icon,id,international_phone_number,rating,website,utc_offset,opening_hours,photo,vicinity,place_id";
 
@@ -240,7 +240,12 @@ public class RestaurantRepository {
                             0,
                             null
                     );
+                    int index = restaurants.indexOf(restaurantToAdd);
+                    if (index > 0){
+                        restaurants.set(index,modelRestaurant);
+                    }
                 }
+
                 restaurantList.postValue(restaurants);
             }
             @Override

@@ -99,11 +99,14 @@ public class RestaurantDetailViewModel extends ViewModel {
         coworker = coworkerRepository.getActualUser();
         CoworkerRepository.getCoworker(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener(doc -> {
             coworker = doc.getResult().toObject(Coworker.class);
-            List<String> likedRestaurant = coworker.getLikedRestaurants();
-            String restaurantUid = restaurant.getRestaurantPlaceId();
-            if (likedRestaurant != null && restaurantUid != null && likedRestaurant.contains(restaurantUid)) {
-                isRestaurantLiked.setValue(true);
+            if (coworker != null && coworker.getLikedRestaurants() != null){
+                List<String> likedRestaurant = coworker.getLikedRestaurants();
+                String restaurantUid = restaurant.getRestaurantPlaceId();
+                if (likedRestaurant != null && restaurantUid != null && likedRestaurant.contains(restaurantUid)) {
+                    isRestaurantLiked.setValue(true);
+                }
             }
+
         });
         isLoading.setValue(false);
     }
@@ -136,12 +139,16 @@ public class RestaurantDetailViewModel extends ViewModel {
         coworker = coworkerRepository.getActualUser();
         coworkerRepository.getCoworker(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener(doc -> {
             coworker = doc.getResult().toObject(Coworker.class);
-            String coworkerRestaurantUid = coworker.getRestaurantUid();
-            String restaurantUid = restaurant.getRestaurantPlaceId();
+            if(coworker != null && coworker.getRestaurantUid() != null)
+            {
+                String coworkerRestaurantUid = coworker.getRestaurantUid();
+                String restaurantUid = restaurant.getRestaurantPlaceId();
 
-            if (coworkerRestaurantUid != null && coworkerRestaurantUid.equals(restaurantUid)) {
-                isRestaurantPicked.setValue(true);
+                if (coworkerRestaurantUid != null && coworkerRestaurantUid.equals(restaurantUid)) {
+                    isRestaurantPicked.setValue(true);
+                }
             }
+
         });
         isLoading.setValue(false);
     }

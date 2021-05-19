@@ -8,8 +8,8 @@ import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,11 +22,11 @@ import com.example.go4lunch.goforlunch.models.TheOpeningHours;
 import com.example.go4lunch.goforlunch.models.places.RestaurantDetail;
 import com.example.go4lunch.goforlunch.ui.restaurantDetail.RestaurantDetailActivity;
 import com.example.go4lunch.goforlunch.utils.Go4LunchHelper;
-import com.example.go4lunch.goforlunch.utils.Utils;
 import com.go4lunch.R;
 import com.go4lunch.databinding.RestaurantItemLayoutBinding;
 
 import java.util.List;
+
 import static com.example.go4lunch.goforlunch.ui.restaurantDetail.RestaurantDetailActivity.RESTAURANT_PLACE_ID;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder> {

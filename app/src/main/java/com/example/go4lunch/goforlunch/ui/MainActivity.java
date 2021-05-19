@@ -27,10 +27,13 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.example.go4lunch.goforlunch.models.Coworker;
+import com.example.go4lunch.goforlunch.repositories.CoworkerRepository;
 import com.example.go4lunch.goforlunch.ui.coworker.CoworkersFragment;
 import com.example.go4lunch.goforlunch.ui.maps.MapsFragment;
 import com.example.go4lunch.goforlunch.ui.notification.NotificationLunchService;
 import com.example.go4lunch.goforlunch.ui.restaurant.RestaurantsFragmentList;
+import com.example.go4lunch.goforlunch.ui.restaurantDetail.RestaurantDetailActivity;
 import com.example.go4lunch.goforlunch.ui.setting.SettingActivity;
 import com.example.go4lunch.goforlunch.ui.signin.SignInActivity;
 import com.go4lunch.BuildConfig;
@@ -53,6 +56,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.example.go4lunch.goforlunch.ui.restaurantDetail.RestaurantDetailActivity.RESTAURANT_PLACE_ID;
+
 public class  MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ActivityMainBinding binding;
@@ -65,6 +70,8 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
     private static int[] TIME_NOTIFICATION = {12, 0};
     private static int[] TIME_RESET = {23, 59};
 
+    private String restaurantUid;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +81,7 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
         setContentView(view);
         this.configureUI();
         this.configureNotification();
+        this.getRestaurantUser();
 
 
         //For change title Action Bar
@@ -172,6 +180,7 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
     private void configureDrawerLayout() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.mainDrawerLayout, binding.mainToolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.colorWhite));
         binding.mainDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
     }
@@ -202,11 +211,20 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
         }
     }
 
+    private void getRestaurantUser() {
+        CoworkerRepository.getCoworker(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener(doc -> {
+            restaurantUid = doc.getResult().toObject(Coworker.class).getRestaurantUid();
+        });
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         switch (id) {
             case R.id.drawer_menu_lunch_button:
+                Intent intent = new Intent(MainActivity.this, RestaurantDetailActivity.class);
+                intent.putExtra(RESTAURANT_PLACE_ID, restaurantUid);
+                startActivity(intent);
                 break;
             case R.id.drawer_menu_settings_button:
                 startActivity(new Intent(this, SettingActivity.class));
