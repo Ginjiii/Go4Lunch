@@ -133,7 +133,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Ea
             CoworkerRepository.getAllCoworker().addOnSuccessListener(queryDocumentSnapshots -> {
                 List<Coworker> coworkerList = new ArrayList<>();
 
-                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()){
+                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
                     Coworker userFetched = documentSnapshot.toObject(Coworker.class);
                     coworkerList.add(userFetched);
                 }
@@ -153,7 +153,6 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Ea
 
                         if (restaurant.getRestaurantPlaceId().equals(coworker.getRestaurantUid())) {
                             isAnyoneGo = true;
-
                         }
                     }
                     Marker marker = googleMap.addMarker(new MarkerOptions()
@@ -161,11 +160,9 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Ea
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_location_normal))
                             .title(restaurant.getRestaurantName()));
 
-                    if (isAnyoneGo)
-                    {
+                    if (isAnyoneGo) {
                         marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_location_selected));
                     }
-
                     marker.setTag(restaurant.getRestaurantPlaceId());
                     Log.d("tag", "getCoworkerChoice: get it?" + restaurant.getCoworkerChoice());
                 }

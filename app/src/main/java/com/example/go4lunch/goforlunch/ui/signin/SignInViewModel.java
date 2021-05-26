@@ -61,6 +61,8 @@ public class SignInViewModel extends ViewModel {
     public void checkIfUserIsLogged() {
         if (isCurrentUserLogged()){
             this.fetchCurrentUserFromFirestore();
+        } else{
+            createUserInFirestore();
         }
     }
 
@@ -80,13 +82,18 @@ public class SignInViewModel extends ViewModel {
 
     private void createUserInFirestore() {
         Log.d("FireStore", "createUserInFirestore: ");
-        String urlPicture = (getCurrentUser().getPhotoUrl() != null) ?
-                this.getCurrentUser().getPhotoUrl().toString() : null;
-        //String email = getCurrentUser().getEmail();
-        String username = getCurrentUser().getDisplayName();
-        String uid = getCurrentUser().getUid();
-        coworkerRepository.createCoworker(uid, username, urlPicture)
-                .addOnSuccessListener(aVoid -> fetchCurrentUserFromFirestore());
+        FirebaseUser user = getCurrentUser();
+        if(user != null)
+        {
+            String urlPicture = (user.getPhotoUrl() != null) ?
+                    user.getPhotoUrl().toString() : null;
+            //String email = getCurrentUser().getEmail();
+            String username = user.getDisplayName();
+            String uid = user.getUid();
+            coworkerRepository.createCoworker(uid, username, urlPicture)
+                    .addOnSuccessListener(aVoid -> fetchCurrentUserFromFirestore());
+        }
+
     }
 
     @Nullable

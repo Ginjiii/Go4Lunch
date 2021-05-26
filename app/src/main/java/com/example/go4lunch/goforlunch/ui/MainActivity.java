@@ -212,9 +212,14 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
     }
 
     private void getRestaurantUser() {
-        CoworkerRepository.getCoworker(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener(doc -> {
-            restaurantUid = doc.getResult().toObject(Coworker.class).getRestaurantUid();
-        });
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            CoworkerRepository.getCoworker(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener(doc -> {
+                Coworker coworker = doc.getResult().toObject(Coworker.class);
+                if (coworker != null)
+                    restaurantUid = coworker.getRestaurantUid();
+            });
+        }
     }
 
     @Override

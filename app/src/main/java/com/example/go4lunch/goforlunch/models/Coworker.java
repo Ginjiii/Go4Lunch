@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import com.google.firebase.Timestamp;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class Coworker {
@@ -17,8 +16,8 @@ public class Coworker {
     @Nullable private boolean restaurantChoice;
     @Nullable private String restaurantUid;
     @Nullable private String restaurantName;
-    private String restaurantAddress;
-    private List<String> likedRestaurants;
+    @Nullable private String restaurantAddress;
+    @Nullable private List<String> likedRestaurants;
     public Coworker() { }
 
     public Coworker(String uid, String username, String urlPicture) {
