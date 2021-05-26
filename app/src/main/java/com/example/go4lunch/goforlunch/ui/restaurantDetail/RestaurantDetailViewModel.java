@@ -94,8 +94,7 @@ public class RestaurantDetailViewModel extends ViewModel {
         });
     }
 
-    public void fetchCoworkerLike(Restaurant restaurant)
-    {
+    public void fetchCoworkerLike(Restaurant restaurant) {
         coworker = coworkerRepository.getActualUser();
         CoworkerRepository.getCoworker(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener(doc -> {
             coworker = doc.getResult().toObject(Coworker.class);

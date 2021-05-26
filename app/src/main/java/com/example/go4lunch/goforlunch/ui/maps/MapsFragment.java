@@ -133,7 +133,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Ea
             CoworkerRepository.getAllCoworker().addOnSuccessListener(queryDocumentSnapshots -> {
                 List<Coworker> coworkerList = new ArrayList<>();
 
-                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()){
                     Coworker userFetched = documentSnapshot.toObject(Coworker.class);
                     coworkerList.add(userFetched);
                 }
@@ -142,6 +142,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Ea
                 for (Restaurant restaurant : restaurants) {
                     Double latitude = restaurant.getRestaurantLocation().getLat();
                     Double longitude = restaurant.getRestaurantLocation().getLng();
+                    boolean isAnyoneGo = false;
                     LatLng restaurantPosition = new LatLng(latitude, longitude);
                     Log.d("tag", "restaurant" + restaurant.getRestaurantPlaceId());
                     for (Coworker coworker : coworkerList) {
@@ -151,43 +152,38 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Ea
                         Log.d("tag", "name" + coworker.getCoworkerName());
 
                         if (restaurant.getRestaurantPlaceId().equals(coworker.getRestaurantUid())) {
+                            isAnyoneGo = true;
 
-                            Marker marker = googleMap.addMarker(new MarkerOptions()
-                                    .position(restaurantPosition)
-                                    .title(restaurant.getRestaurantName())
-                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_location_selected)));
-                            marker.setTag(restaurant.getRestaurantCoworkerList());
-                        } else {
-                            Marker marker = googleMap.addMarker(new MarkerOptions()
-                                    .position(restaurantPosition)
-                                    .title(restaurant.getRestaurantName())
-                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_location_normal)));
-                            marker.setTag(restaurant.getRestaurantPlaceId());
                         }
                     }
+                    Marker marker = googleMap.addMarker(new MarkerOptions()
+                            .position(restaurantPosition)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_location_normal))
+                            .title(restaurant.getRestaurantName()));
+
+                    if (isAnyoneGo)
+                    {
+                        marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_location_selected));
+                    }
+
+                    marker.setTag(restaurant.getRestaurantPlaceId());
                     Log.d("tag", "getCoworkerChoice: get it?" + restaurant.getCoworkerChoice());
-
                 }
-
                 onMarkerClick();
             });
         }
     }
 
     private void onMarkerClick() {
-        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                String placeId = (String) marker.getTag();
+        googleMap.setOnMarkerClickListener(marker -> {
+            String placeId = (String) marker.getTag();
 
-                Intent intent = new Intent(getActivity(), RestaurantDetailActivity.class);
-                intent.putExtra(RESTAURANT_PLACE_ID, placeId);
-                startActivity(intent);
-                return false;
-            }
+            Intent intent = new Intent(getActivity(), RestaurantDetailActivity.class);
+            intent.putExtra(RESTAURANT_PLACE_ID, placeId);
+            startActivity(intent);
+            return false;
         });
     }
-
 
     private void updateLocationUI() {
         try {

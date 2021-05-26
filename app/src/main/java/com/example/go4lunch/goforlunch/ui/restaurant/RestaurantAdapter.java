@@ -37,7 +37,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     private Context context;
 
     private List<Restaurant> restaurants;
-    private RequestManager glide;
+    private final RequestManager glide;
 
     /**
      * Declarations for the opening hours display
@@ -72,12 +72,12 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     public void onBindViewHolder(@NonNull RestaurantViewHolder restaurantViewHolder, int position) {
         Restaurant restaurant = restaurantList.get(position);
         restaurantViewHolder.binding.restaurantItemListName.setText(String.valueOf(restaurant.getRestaurantName()));
+
         int numberOfCoworker = 0;
         context = restaurantViewHolder.itemView.getContext();
 
-
         if (restaurant.getRestaurantDistance() > 0) {
-            restaurantViewHolder.binding.restaurantItemListDistance.setText(String.valueOf((int)restaurant.getRestaurantDistance())+" m");
+            restaurantViewHolder.binding.restaurantItemListDistance.setText((int) restaurant.getRestaurantDistance() +" m");
         }
         if (restaurant.getRestaurantAddress() != null) {
             restaurantViewHolder.binding.restaurantItemListAddress.setText(restaurant.getRestaurantAddress());

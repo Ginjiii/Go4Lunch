@@ -240,10 +240,12 @@ public class RestaurantRepository {
                             0,
                             null
                     );
-                    int index = restaurants.indexOf(restaurantToAdd);
-                    if (index > 0){
-                        restaurants.set(index,modelRestaurant);
-                    }
+                    //restaurantToAdd.setRestaurantCoworkerList( getRestaurantCoworkerList(restaurantToAdd));
+
+//                    int index = restaurants.indexOf(restaurantToAdd);
+//                    if (index > 0){
+//                        restaurants.set(index,modelRestaurant);
+//                    }
                 }
 
                 restaurantList.postValue(restaurants);

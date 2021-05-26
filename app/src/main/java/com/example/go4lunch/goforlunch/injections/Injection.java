@@ -8,7 +8,7 @@ import com.example.go4lunch.goforlunch.repositories.SaveDataRepository;
 public class Injection {
 
     public static RestaurantRepository createRestaurantRepository() {
-        CoworkerRepository coworkerRepository = CoworkerRepository.getInstance();
+        CoworkerRepository coworkerRepository =  CoworkerRepository.getInstance();
 
         return new RestaurantRepository(coworkerRepository);
     }
@@ -17,9 +17,7 @@ public class Injection {
         return new CoworkerRepository();
     }
 
-    public static SaveDataRepository createSaveDataRepository() {
-        return new SaveDataRepository();
-    }
+    public static SaveDataRepository createSaveDataRepository() { return new SaveDataRepository();}
 
     public static Go4LunchFactory go4LunchFactory() {
         return new Go4LunchFactory(createRestaurantRepository(), createCoworkerRepository(), createSaveDataRepository());
