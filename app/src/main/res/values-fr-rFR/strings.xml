@@ -12,14 +12,14 @@
     <string name="sort_by_participants" translatable="false">Trier par participant</string>
     <string name="sort_by_rate" translatable="false">Trier par note</string>
     <string name="search_button_title" translatable="false">Rechercher</string>
-    <string name="hungry" translatable="false">J\\\'ai faim</string>
-    <string name="is_joining">%s mange ici!</string>
-    <string name="is_eating">%s mange à %s</string>
-    <string name="has_not_decided_yet">%s n\'a pas encore décidé!</string>
+    <string name="hungry" translatable="false">J\'ai faim</string>
+    <string name="is_joining"> mange ici!</string>
+    <string name="is_eating"> mange à </string>
+    <string name="has_not_decided_yet"> n\'a pas encore décidé!</string>
     <string name="text_restaurant_closed_open_at_on" translatable="false">Fermé ouvre à le</string>
     <string name="restaurant_closed_today">Fermé aujourd\'hui</string>
     <string name="restaurant_closed_open_at">Fermé. Ouvre à</string>
-    <string name="restaurant_open_until">Ouvert jusqu\\\'à %s</string>
+    <string name="restaurant_open_until">Ouvert jusqu\'à </string>
     <string name="restaurant_closing_soon">Ferme bientôt</string>
     <string name="restaurant_on">le</string>
     <string name="restaurant_open_h24">Ouvert 24/7</string>
@@ -38,8 +38,15 @@
     <string name="adapted_twitter_login_button_text">Connectez vous avec Twitter</string>
     <string name="navigation_drawer_open">Ouvert</string>
     <string name="navigation_drawer_close">Fermé</string>
-    <string name="notification_message">Vous manger à %s avec %s le %s</string>
-    <string name="message_notification_alone">Vous manger à %s le %s</string>
+    <string name="notification_message">Vous manger à avec  le </string>
+    <string name="message_notification_alone">Vous manger à le </string>
     <string name="title_notification">Votre repas du jours</string>
-    <string name="subtitle_notification">Vous avez un déjeuner pour aujourd\\\'hui</string>
+    <string name="subtitle_notification">Vous avez un déjeuner pour aujourd\'hui</string>
+    <string name="no_time">Horaire indisponible</string>
+    <string name="closed">Fermé</string>
+    <string name="closing_soon">Ferme bientot</string>
+    <string name="open_until">Ouvert jusqu\'à </string>
+    <string name="opening_soon">Ouvre bientot</string>
+    <string name="open_24_7">Ouvert 24/7</string>
+    <string name="open_24h">Ouvert 24h</string>
 </resources>

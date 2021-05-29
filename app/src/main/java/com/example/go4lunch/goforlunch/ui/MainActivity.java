@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,11 +23,12 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
-import com.example.go4lunch.goforlunch.models.Coworker;
-import com.example.go4lunch.goforlunch.repositories.CoworkerRepository;
+import com.example.go4lunch.goforlunch.factory.Go4LunchFactory;
+import com.example.go4lunch.goforlunch.injections.Injection;
 import com.example.go4lunch.goforlunch.ui.coworker.CoworkersFragment;
 import com.example.go4lunch.goforlunch.ui.maps.MapsFragment;
 import com.example.go4lunch.goforlunch.ui.notification.NotificationLunchService;
@@ -39,14 +39,10 @@ import com.example.go4lunch.goforlunch.ui.signin.SignInActivity;
 import com.go4lunch.BuildConfig;
 import com.go4lunch.R;
 import com.go4lunch.databinding.ActivityMainBinding;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.widget.Autocomplete;
-import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -58,33 +54,29 @@ import java.util.List;
 
 import static com.example.go4lunch.goforlunch.ui.restaurantDetail.RestaurantDetailActivity.RESTAURANT_PLACE_ID;
 
-public class  MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ActivityMainBinding binding;
+    private MainViewModel viewModel;
 
     private int AUTOCOMPLETE_REQUEST_CODE = 1;
-    private List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG);
 
     private PendingIntent pendingIntentAlarm;
-    private PendingIntent pendingIntentReset;
-    private static int[] TIME_NOTIFICATION = {12, 0};
-    private static int[] TIME_RESET = {23, 59};
+    private static int[] TIME_NOTIFICATION = {12, 00};
 
-    private String restaurantUid;
-
+    private String selectedRestaurantId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
-        this.configureUI();
-        this.configureNotification();
-        this.getRestaurantUser();
 
+        initView();
+        viewModel = obtainViewModel();
+        configureUI();
+        configureNotification();
+        getRestaurantUser();
 
-        //For change title Action Bar
+        // for change title Action Bar
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(R.string.hungry);
@@ -92,16 +84,23 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
 
         Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
 
-        //For connect MapFragment with activity
+        // for connect MapFragment with activity
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.main_frame_layout, new MapsFragment())
                 .commit();
     }
 
-    // --------------------
-    // UI
-    // --------------------
+    private void initView() {
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+    }
+
+    private MainViewModel obtainViewModel() {
+        Go4LunchFactory viewModelFactory = Injection.provideViewModelFactory();
+        return new ViewModelProvider(this, viewModelFactory).get(MainViewModel.class);
+    }
 
     private void configureNotification() {
         this.createNotificationChannel();
@@ -159,14 +158,12 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Log.i("tag", "onCreateOptionsMenu: ");
         getMenuInflater().inflate(R.menu.toolbar_search_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.i("tag", "onOptionsItemSelected: ");
         int id = item.getItemId();
         if (id == R.id.search_menu) {
             startAutocompleteActivity();
@@ -212,14 +209,8 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
     }
 
     private void getRestaurantUser() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            CoworkerRepository.getCoworker(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener(doc -> {
-                Coworker coworker = doc.getResult().toObject(Coworker.class);
-                if (coworker != null)
-                    restaurantUid = coworker.getRestaurantUid();
-            });
-        }
+        viewModel.getSelectedRestaurant();
+        viewModel.selectedRestaurantId.observe(this, id -> selectedRestaurantId = id);
     }
 
     @Override
@@ -227,9 +218,11 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
         int id = item.getItemId();
         switch (id) {
             case R.id.drawer_menu_lunch_button:
-                Intent intent = new Intent(MainActivity.this, RestaurantDetailActivity.class);
-                intent.putExtra(RESTAURANT_PLACE_ID, restaurantUid);
-                startActivity(intent);
+                if (selectedRestaurantId != null) {
+                    Intent intent = new Intent(MainActivity.this, RestaurantDetailActivity.class);
+                    intent.putExtra(RESTAURANT_PLACE_ID, selectedRestaurantId);
+                    startActivity(intent);
+                }
                 break;
             case R.id.drawer_menu_settings_button:
                 startActivity(new Intent(this, SettingActivity.class));
@@ -249,12 +242,10 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
     // -----------------
 
     public void startAutocompleteActivity() {
-        Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
-                .setTypeFilter(TypeFilter.ESTABLISHMENT)
-                .setLocationBias(RectangularBounds.newInstance(
-                        new LatLng(48.6408416, 2.3259213),
-                        new LatLng(48.6408416, 2.3259213)))
+        List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.TYPES);
+        Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
                 .setCountry("FR")
+                .setTypeFilter(TypeFilter.ESTABLISHMENT)
                 .build(this);
         startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
     }
@@ -263,14 +254,16 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                Place place = Autocomplete.getPlaceFromIntent(data);
-                Log.i("TAG", "Place: " + place.getName() + ", " + place.getId());
-            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-                // TODO: Handle the error.
-                Status status = Autocomplete.getStatusFromIntent(data);
-                Log.i("TAG", status.getStatusMessage());
-            } else if (resultCode == RESULT_CANCELED) {
-                // The user canceled the operation.
+                Place requestPlace = Autocomplete.getPlaceFromIntent(data);
+                if (requestPlace.getTypes() != null) {
+                    for (Place.Type type : requestPlace.getTypes()) {
+                        if (type == Place.Type.RESTAURANT) {
+                            Intent detailIntent = new Intent(this, RestaurantDetailActivity.class);
+                            detailIntent.putExtra(RESTAURANT_PLACE_ID, requestPlace.getId());
+                            startActivity(detailIntent);
+                        }
+                    }
+                }
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -320,6 +313,5 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
 
         AlarmManager manager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, notificationTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntentAlarm);
-
     }
 }

@@ -1,194 +1,60 @@
 package com.example.go4lunch.goforlunch.utils;
 
-import android.annotation.SuppressLint;
-import android.location.Location;
+import com.example.go4lunch.goforlunch.models.details.OpeningHours;
+import com.example.go4lunch.goforlunch.models.details.OpeningPeriods;
+import com.go4lunch.R;
+import com.google.common.base.Joiner;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.maps.android.SphericalUtil;
-
-import java.math.RoundingMode;
-import java.text.DateFormatSymbols;
-import java.text.DecimalFormat;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class Utils {
 
-    public static final String TXT_PROVIDER = "fusedLocationProvider";
-    public static final double MAX_LEVEL_ONE_STAR = 1.67;
-    public static final double MAX_LEVEL_TWO_STAR = 3.34;
+    public static String convertListToString(List<String> listString) {
+        return Joiner.on(", ").join(listString);
+    }
 
-    /**
-     * Indicates the number of star note to display in function of the rating note
-     * @param note : double : rating note
-     * @return int : number of star to display
-     */
-    public static int ratingNumberOfStarToDisplay(double note) {
-
-        int lNbStarToDisplay;
-
-        if (note == 0) {
-            lNbStarToDisplay = 0;
-        } else if (note > 0 && note <= MAX_LEVEL_ONE_STAR) {
-            lNbStarToDisplay = 1;
-        } else if (note > MAX_LEVEL_ONE_STAR && note <= MAX_LEVEL_TWO_STAR) {
-            lNbStarToDisplay = 2;
-        } else {
-            lNbStarToDisplay = 3;
+    public static Date convertStringToDate(int hour) {
+        String hourInString = String.valueOf(hour);
+        DateFormat dateFormat = new SimpleDateFormat("HHmm", Locale.FRANCE);
+        try {
+            return dateFormat.parse(hourInString);
+        } catch (ParseException e) {
+            return null;
         }
-        return lNbStarToDisplay;
     }
 
-    /**
-     * Calculate the distance between the current location and the restaurant
-     * @param currentLocation : object : current location
-     * @param restaurantLocation : object : restaurant location
-     * @return int : return the distance
-     */
-    public static int getRestaurantDistanceToCurrentLocation(Location currentLocation, Location restaurantLocation) {
-        Location lRestaurantLocation = new Location(TXT_PROVIDER);
-        lRestaurantLocation.setLatitude(restaurantLocation.getLatitude());
-        lRestaurantLocation.setLongitude(restaurantLocation.getLongitude());
-        return (int) currentLocation.distanceTo(lRestaurantLocation);
-    }
-
-    /**
-     * Convert a latitude and a longitude into a location
-     * @param Lat : double : latitude
-     * @param Lng: double : longitude
-     * @return : object : location
-     */
-    public static Location setCurrentLocation(Double Lat, Double Lng) {
-        Location lFusedLocationProvider = new Location(TXT_PROVIDER);
-        lFusedLocationProvider.setLatitude(Lat);
-        lFusedLocationProvider.setLongitude(Lng);
-        return lFusedLocationProvider;
-    }
-
-    /**
-     * Convert the distance in a text format for the display
-     * @param distance : int : distance
-     * @return : string : distance with the indicator meters or kilometers
-     */
-    public static String convertDistance(int distance) {
-        String newDistance = String.valueOf(distance);
-        double mDistance = distance*0.001;
-
-        DecimalFormat mDecimalFormat = new DecimalFormat("##.#");
-        mDecimalFormat.setRoundingMode(RoundingMode.UP);
-
-        if(distance<1000) {
-            newDistance = newDistance + "m";
-        } else {
-            newDistance = mDecimalFormat.format(mDistance) + "km";
+    public static int getOpeningTime(OpeningHours openingHours) {
+        if (openingHours == null || openingHours.getOpeningPeriods() == null)
+            return R.string.no_time;
+        if (openingHours.getOpenNow() != null && !openingHours.getOpenNow()) {
+            return R.string.closed;
         }
+        int dayOfTheWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
+        if (openingHours.getOpeningPeriods().size() >= dayOfTheWeek + 1) {
+            OpeningPeriods periodOfTheDay = openingHours.getOpeningPeriods().get(dayOfTheWeek);
 
-        return newDistance;
-    }
+            if (periodOfTheDay.getCloseHour() == null) return R.string.open_24_7;
 
-    /**
-     * get the current day of week
-     * @return : int : day of week
-     */
-    public static int getCurrentDayInt() {
-        Calendar c = Calendar.getInstance();
-        Date date = new Date();
-        c.setTime(date);
-        return c.get(Calendar.DAY_OF_WEEK);
-    }
+            String closureString = periodOfTheDay.getCloseHour().getTime();
+            int closure = Integer.parseInt(closureString);
 
-    /**
-     * Get day in string format
-     * @param day : int : day
-     * @return : string : day
-     */
-    @SuppressLint("SimpleDateFormat")
-    public static String getDayString(int day) {
-        String[] shortWeekDay = new DateFormatSymbols().getShortWeekdays();
-        String stringDay = "";
-
-        for(int index = 1; index < shortWeekDay.length; index++) {
-            if (index == day+1) {
-                stringDay = shortWeekDay[index];
+            Date todayDate = Calendar.getInstance().getTime();
+            DateFormat dateFormat = new SimpleDateFormat("HHmm", Locale.FRANCE);
+            String todayDateString = dateFormat.format(todayDate);
+            int timeNow = Integer.parseInt(todayDateString);
+            int timeBeforeClosure = closure - timeNow;
+            if (timeBeforeClosure <= 100) {
+                return R.string.closing_soon;
+            } else {
+                return closure;
             }
         }
-        return stringDay;
-    }
-
-    /**
-     * Get current time
-     * @return : int : time
-     */
-    public static int getCurrentTime() {
-        @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat sdf = new SimpleDateFormat("HHmm");
-        return Integer.parseInt(sdf.format(new Date()));
-    }
-
-    /**
-     * Get current time with a string format
-     * @param time : int : time
-     * @return : string : time
-     */
-    public static String getCurrentTimeFormatted(int time) {
-
-        @SuppressLint("DefaultLocale")
-        String result = String.format("%02d:%02d", time / 100, time % 100);
-
-        return result;
-    }
-
-    /**
-     * Convert time into minutes
-     * @param time : int : time
-     * @return : int : minutes
-     */
-    public static int convertTimeInMinutes(int time) {
-        int hourIntoMin = (time/100)*60;
-        int minutes = time % 100;
-        return (hourIntoMin + minutes);
-    }
-
-    /**
-     * Format the address
-     * @param address : string : address
-     * @return : string : address
-     */
-    public static String formatAddress(String address) {
-        String mAddress = null;
-        if(address.indexOf(",")>0) {
-            mAddress = address.substring(0, address.indexOf(","));
-        }
-        return mAddress;
-    }
-
-    /**
-     * Define a perimeter for the autocomplete prediction request
-     * @param center : object : LatLng center of the perimeter
-     * @param radiusInMeters : double : radius in meters of the perimeter
-     * @return : object : LatLngBounds : return the new position
-     */
-    public static LatLngBounds convertToBounds(LatLng center, double radiusInMeters) {
-        double distanceFromCenterToCorner = radiusInMeters * Math.sqrt(2.0);
-        LatLng southwestCorner =
-                SphericalUtil.computeOffset(center, distanceFromCenterToCorner, 225.0);
-        LatLng northeastCorner =
-                SphericalUtil.computeOffset(center, distanceFromCenterToCorner, 45.0);
-        return new LatLngBounds(southwestCorner, northeastCorner);
-    }
-
-    public static double distFrom(double lat1, double lng1, double lat2, double lng2) {
-        double earthRadius = 3958.75;
-        double dLat = Math.toRadians(lat2-lat1);
-        double dLng = Math.toRadians(lng2-lng1);
-        double sindLat = Math.sin(dLat / 2);
-        double sindLng = Math.sin(dLng / 2);
-        double a = Math.pow(sindLat, 2) + Math.pow(sindLng, 2)
-                * Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2));
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        double dist = earthRadius * c;
-        return dist;
+        return R.string.no_time;
     }
 }

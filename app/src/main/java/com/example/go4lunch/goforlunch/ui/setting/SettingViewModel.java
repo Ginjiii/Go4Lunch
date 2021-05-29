@@ -1,28 +1,25 @@
 package com.example.go4lunch.goforlunch.ui.setting;
 
 import android.content.Context;
-import androidx.lifecycle.ViewModel;
 
+import com.example.go4lunch.goforlunch.base.BaseViewModel;
 import com.example.go4lunch.goforlunch.models.Coworker;
 import com.example.go4lunch.goforlunch.repositories.CoworkerRepository;
 import com.example.go4lunch.goforlunch.repositories.SaveDataRepository;
-import com.google.firebase.auth.FirebaseAuth;
 
-
-public class SettingViewModel extends ViewModel {
+public class SettingViewModel extends BaseViewModel {
 
     private final SaveDataRepository saveDataRepository;
-    private final CoworkerRepository coworkerRepository;
-    private Coworker user;
+    private final Coworker coworker;
 
     public SettingViewModel(CoworkerRepository coworkerRepository, SaveDataRepository saveDataRepository) {
         this.saveDataRepository = saveDataRepository;
         this.coworkerRepository = coworkerRepository;
-        user = coworkerRepository.getActualUser();
+        coworker = coworkerRepository.getActualUser();
     }
 
-    public void configureSaveDataRepo(Context context){
-        if(saveDataRepository.getPreferences() == null){
+    public void configureSaveDataRepo(Context context) {
+        if (saveDataRepository.getPreferences() == null) {
             saveDataRepository.configureContext(context);
         }
     }
@@ -33,13 +30,11 @@ public class SettingViewModel extends ViewModel {
 
     public void notificationStateChanged(boolean enabled, Context context) {
         saveDataRepository.configureContext(context);
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        saveDataRepository.saveNotificationSettings(enabled, uid);
+        saveDataRepository.saveNotificationSettings(enabled, coworker.getUid());
     }
 
     public boolean getStatusNotification(Context context) {
         saveDataRepository.configureContext(context);
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        return saveDataRepository.getNotificationSettings(uid);
+        return saveDataRepository.getNotificationSettings(coworker.getUid());
     }
 }

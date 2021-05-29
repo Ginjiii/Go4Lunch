@@ -1,7 +1,8 @@
 package com.example.go4lunch.goforlunch.service;
 
-import com.example.go4lunch.goforlunch.models.places.Restaurant;
-import com.example.go4lunch.goforlunch.models.places.RestaurantDetail;
+import com.example.go4lunch.goforlunch.models.ApiDetailsRestaurantResponse;
+import com.example.go4lunch.goforlunch.models.ApiRestaurantResponse;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -14,14 +15,14 @@ public interface GooglePlacesService {
     String KEY_GOOGLE = "&key=";
 
     @GET("nearbysearch/json")
-    Call<Restaurant> getNearByPlaces(
+    Call<ApiRestaurantResponse> getNearByPlaces(
             @Query("key") String key,
             @Query("type") String type,
             @Query("location") String location,
             @Query("radius") int radius);
 
     @GET("details/json")
-    Call<RestaurantDetail> getRestaurantDetail(
+    Call<ApiDetailsRestaurantResponse> getRestaurantDetail(
             @Query("key") String pKey,
             @Query("place_id") String pPlaceId,
             @Query("fields") String pFields

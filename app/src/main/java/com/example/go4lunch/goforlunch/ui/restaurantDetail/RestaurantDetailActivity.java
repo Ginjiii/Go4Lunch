@@ -10,11 +10,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleRegistry;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -22,142 +20,101 @@ import com.example.go4lunch.goforlunch.factory.Go4LunchFactory;
 import com.example.go4lunch.goforlunch.injections.Injection;
 import com.example.go4lunch.goforlunch.models.Restaurant;
 import com.example.go4lunch.goforlunch.ui.coworker.CoworkerDetailAdapter;
-import com.example.go4lunch.goforlunch.utils.Actions;
 import com.go4lunch.R;
-import com.go4lunch.databinding.RestaurantDetailLayoutBinding;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.example.go4lunch.goforlunch.service.Go4Lunch.api;
+import com.go4lunch.databinding.ActivityRestaurantDetailBinding;
 
 public class RestaurantDetailActivity extends AppCompatActivity {
 
-    public static final String RESTAURANT_PLACE_ID = "placeId";
-    public static final String RESTAURANT_DETAIL = "restaurantDetail";
-    private LifecycleRegistry mLifecycleRegistry;
-    private Restaurant restaurant;
-    private String restaurantId;
-    private RecyclerView recyclerView;
-    RestaurantDetailLayoutBinding binding;
-    RestaurantDetailViewModel restaurantDetailViewModel;
-    CoworkerDetailAdapter coworkerDetailAdapter;
+    private final String TAG = RestaurantDetailActivity.class.getSimpleName();
 
+    public static final String RESTAURANT_PLACE_ID = "placeId";
+    private Restaurant restaurant;
+    private ActivityRestaurantDetailBinding binding;
+    private RestaurantDetailViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = RestaurantDetailLayoutBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
-        mLifecycleRegistry = new LifecycleRegistry(this);
-        mLifecycleRegistry.markState(Lifecycle.State.CREATED);
-        String placeId = getRestaurantPlaceId();
 
-        if (placeId != null) {
-            getRestaurantDetail(placeId);
-        }
+        initView();
+        initListener();
+        initViewModel();
+        getRestaurantPlaceId();
     }
 
-    private String getRestaurantPlaceId() {
-        if (getIntent().hasExtra(RESTAURANT_PLACE_ID)) {
-            restaurantId = getIntent().getStringExtra(RESTAURANT_PLACE_ID);
-            api.setRestaurantId(restaurantId);
-            return restaurantId;
-        }
-        return null;
+    private void initView() {
+        binding = ActivityRestaurantDetailBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+    }
+
+    private void initListener() {
+        binding.restaurantDetailCallButton.setOnClickListener(v -> openDialer(restaurant.getPhoneNumber()));
+        binding.restaurantDetailLikeButton.setOnClickListener(v -> viewModel.updateRestaurantLiked(restaurant));
+        binding.restaurantDetailWebsiteButton.setOnClickListener(v -> openWebSite(restaurant.getWebSite()));
+        binding.restaurantDetailFab.setOnClickListener(v -> viewModel.updatePickedRestaurant(restaurant));
     }
 
     private void initViewModel() {
-        Go4LunchFactory factory = Injection.go4LunchFactory();
-        restaurantDetailViewModel = new ViewModelProvider(this, factory).get(RestaurantDetailViewModel.class);
+        Go4LunchFactory viewModelFactory = Injection.provideViewModelFactory();
+        viewModel = new ViewModelProvider(this, viewModelFactory).get(RestaurantDetailViewModel.class);
+    }
+
+    private void getRestaurantPlaceId() {
+        if (getIntent().hasExtra(RESTAURANT_PLACE_ID)) {
+            String placeId = getIntent().getStringExtra(RESTAURANT_PLACE_ID);
+            getRestaurantDetail(placeId);
+            initCoworkersList();
+        }
     }
 
     private void getRestaurantDetail(String placeId) {
-        Go4LunchFactory factory = Injection.go4LunchFactory();
-        restaurantDetailViewModel = new ViewModelProvider(this, factory).get(RestaurantDetailViewModel.class);
-        restaurantDetailViewModel.getRestaurantDetail(placeId).observe(this, this::displayInfoRestaurant);
-
-        displayChoiceStatus();
-
+        viewModel.getRestaurantDetail(placeId).observe(this, this::displayInfoRestaurant);
     }
 
     private void displayInfoRestaurant(Restaurant restaurant) {
-        binding.restaurantDetailName.setText(restaurant.getRestaurantName());
-        binding.restaurantDetailAddress.setText(restaurant.getRestaurantAddress());
+        this.restaurant = restaurant;
+        binding.restaurantDetailName.setText(restaurant.getName());
+        binding.restaurantDetailAddress.setText(restaurant.getAddress());
 
-        if (restaurant.getRestaurantPhotoUrl() != null) {
+        if (restaurant.getPhotoReference() != null) {
             Glide.with(RestaurantDetailActivity.this)
-                    .load(restaurant.getRestaurantPhotoUrl())
+                    .load(restaurant.getPhotoReference())
                     .apply(RequestOptions.centerCropTransform())
                     .into(this.binding.restaurantDetailPicture);
         }
 
+        viewModel.fetchInfoRestaurant(restaurant);
+        viewModel.fetchCoworkerLike(restaurant);
+    }
 
-        restaurantDetailViewModel.fetchCoworkerChoice(restaurant);
-        restaurantDetailViewModel.fetchCoworkerLike(restaurant);
+    private void initCoworkersList() {
+        CoworkerDetailAdapter coworkerDetailAdapter = new CoworkerDetailAdapter();
+        binding.coworkersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.coworkersRecyclerView.setAdapter(coworkerDetailAdapter);
 
-        recyclerView = binding.restaurantDetailCoworkerList;
-
-
-        List<Restaurant.CoworkerList> list = new ArrayList<Restaurant.CoworkerList>();
-
-        coworkerDetailAdapter = new CoworkerDetailAdapter();
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(coworkerDetailAdapter);
-
-        restaurantDetailViewModel.mCoworkerList.observe(this, t -> {
-            coworkerDetailAdapter.setCoworkerLists(restaurantDetailViewModel.mCoworkerList.getValue());
-            recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-            recyclerView.setAdapter(coworkerDetailAdapter);
-        });
-
-        binding.restaurantDetailCallButton.setOnClickListener(v -> openDialer(restaurant.getRestaurantPhone()));
-        binding.restaurantDetailWebsiteButton.setOnClickListener(v -> openWebSite(restaurant.getRestaurantWebSite()));
-
-
-        restaurantDetailViewModel.isRestaurantLiked.observe(this, this::changeLikeStatus);
-        binding.restaurantDetailLikeButton.setOnClickListener(v -> restaurantDetailViewModel.updateRestaurantLiked(restaurant));
-        restaurantDetailViewModel.isRestaurantPicked.observe(this, this::changeChoiceStatus);
-        binding.restaurantDetailFab.setOnClickListener(v1 -> {
-            restaurantDetailViewModel.updatePickedRestaurant(restaurant);
-        });
+        viewModel.mCoworkerList.observe(this, coworkerDetailAdapter::setCoworkerLists);
+        viewModel.isRestaurantLiked.observe(this, this::changeLikeStatus);
+        viewModel.isRestaurantPicked.observe(this, this::changeChoiceStatus);
     }
 
     /**
      * Display if the restaurant is liked by the workmate
      */
-    private void changeLikeStatus(Boolean aBoolean) {
-        if(aBoolean) {
-            Drawable fullStar = getResources().getDrawable(R.drawable.ic_baseline_star_rate_24);
-            fullStar.setBounds(0,0, fullStar.getMinimumWidth(),60);
-            binding.restaurantDetailLikeButton.setCompoundDrawables(null,fullStar,null,null);
-            binding.restaurantDetailLikeButton.setTag(Actions.IS_CHOSEN);
-        } else {
-            Drawable likeButton = getResources().getDrawable(R.drawable.ic_baseline_star_border_24);
-            likeButton.setBounds(0,0, likeButton.getIntrinsicWidth(),60);
-            binding.restaurantDetailLikeButton.setCompoundDrawables(null,likeButton,null,null);
-            binding.restaurantDetailLikeButton.setTag(Actions.NOT_CHOSEN);
-        }
+    private void changeLikeStatus(Boolean isLiked) {
+        int resourceId = (isLiked) ? R.drawable.ic_baseline_star_rate_24 : R.drawable.ic_baseline_menu_star_border_24;
+        Drawable drawable = ContextCompat.getDrawable(this, resourceId);
+        drawable.setBounds(0, 0, drawable.getMinimumWidth(), 60);
+        binding.restaurantDetailLikeButton.setCompoundDrawables(null, drawable, null, null);
+        binding.restaurantDetailLikeButton.setBackgroundResource(resourceId);
     }
 
-
-    private void changeChoiceStatus(Boolean aBoolean) {
-        if (aBoolean) {
-            Drawable checkButton = getResources().getDrawable(R.drawable.ic_baseline_check_circle_24_ok);
-            //  //set the color filter, you can use also Mode.SRC_ATOP
-            checkButton.mutate().setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY);
-            //set it to your fab button initialized before
-            binding.restaurantDetailFab.setImageDrawable(checkButton);
-
-        } else {
-            Drawable checkButton = getResources().getDrawable(R.drawable.ic_baseline_uncheck_circle_24);
-            //  //set the color filter, you can use also Mode.SRC_ATOP
-            checkButton.mutate().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
-            //set it to your fab button initialized before
-            binding.restaurantDetailFab.setImageDrawable(checkButton);
-        }
+    private void changeChoiceStatus(Boolean isSelected) {
+        int resourceId = (isSelected) ? R.drawable.ic_baseline_check_circle_24_ok : R.drawable.ic_baseline_uncheck_circle_24;
+        int color = (isSelected) ? Color.GREEN : Color.GRAY;
+        Drawable drawable = ContextCompat.getDrawable(this, resourceId);
+        drawable.mutate().setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+        binding.restaurantDetailFab.setImageDrawable(drawable);
     }
 
     /**
@@ -185,12 +142,6 @@ public class RestaurantDetailActivity extends AppCompatActivity {
             startActivity(lIntent);
         } else {
             Toast.makeText(RestaurantDetailActivity.this, getString(R.string.text_no_phone_number), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void displayChoiceStatus() {
-        if (restaurantDetailViewModel == null) {
-            initViewModel();
         }
     }
 }

@@ -1,8 +1,7 @@
 package model;
+
 import com.example.go4lunch.goforlunch.models.Coworker;
 import com.example.go4lunch.goforlunch.models.Restaurant;
-import com.example.go4lunch.goforlunch.models.common.Location;
-import com.example.go4lunch.goforlunch.models.places.RestaurantDetail;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,65 +11,154 @@ import org.junit.runners.JUnit4;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @RunWith(JUnit4.class)
 public class RestaurantTest {
-    private Restaurant restaurant;
 
-    private String restaurantPlaceId;
-    private String restaurantName;
-    private String restaurantAddress;
-    private String restaurantPhone;
-    private String restaurantWebSite;
-    private String restaurantDistanceText;
-    private double restaurantRating;
-    private String restaurantPhotoUrl;
-    private Location restaurantLocation;
-    private RestaurantDetail.OpeningHours restaurantOpeningHours;
-    private float restaurantDistance;
-    private List<Restaurant.CoworkerList> restaurantCoworkerList;
-    private List<Coworker> coworkersEatingHere;
+    private Restaurant restaurant;
+    private String restaurantID = "id" ;
+    private String name = "name";
+    private Double latitude = 1.0;
+    private Double longitude = -1.0;
+    private String address = "address";
+    private int openingHours = 10;
+    private int distance = 100;
+    private String photoReference = "photo_reference";
+    private float rating = 4;
+    private String phoneNumber = "phone_number";
+    private String webSite = "website";
+    private List<Coworker> coworkersEatingHere = new ArrayList<>();
+    private Coworker coworkerEating;
 
 
     @Before
-    public void setup(){
-        restaurantName = "Jean Michel";
-        restaurantPlaceId = "12345";
-        restaurantAddress = "123 rue blablabla";
-        restaurantPhone = "0666666666";
-        restaurantWebSite = "www.blablabla.com";
-        restaurantDistanceText = "distanceText";
-        restaurantRating = 3;
-        restaurantPhotoUrl = "http://photo";
-        restaurantLocation = restaurantLocation;
-        restaurantOpeningHours = restaurantOpeningHours;
-        restaurantDistance = 3;
-        restaurantCoworkerList = restaurantCoworkerList;
-        coworkersEatingHere = new ArrayList<>();
+    public void setup() {}
 
-        restaurant = new Restaurant(restaurantPlaceId, restaurantName, restaurantAddress, restaurantPhone, restaurantWebSite, restaurantDistanceText, restaurantRating, restaurantPhotoUrl, restaurantLocation, restaurantOpeningHours, restaurantDistance, restaurantCoworkerList);
+    @Test
+    public void setAndGetRestaurantIdWithSuccess() {
+        restaurant = new Restaurant(restaurantID,name,latitude,longitude,address,openingHours,distance,photoReference,rating,phoneNumber,webSite);
+        assertEquals(restaurantID, restaurant.getRestaurantID());
+
+        String setData = "restaurantId";
+        restaurant.setRestaurantID(setData);
+
+        String getData = restaurant.getRestaurantID();
+        assertNotNull(getData);
+        assertEquals(setData,getData);
     }
 
     @Test
-    public void getCorrectInfoFromRestaurant() throws Exception{
-        assertEquals(restaurantPlaceId, restaurant.getRestaurantPlaceId());
-        assertEquals(restaurantName, restaurant.getRestaurantName());
-        assertEquals(restaurantAddress, restaurant.getRestaurantAddress());
-        assertEquals(restaurantPhone, restaurant.getRestaurantPhone());
-        assertEquals(restaurantWebSite, restaurant.getRestaurantWebSite());
-        assertEquals(restaurantLocation, restaurant.getRestaurantLocation());
-        assertEquals(restaurantOpeningHours, restaurant.getRestaurantOpeningHours());
-        assertEquals(restaurantPhotoUrl, restaurant.getRestaurantPhotoUrl());
-        assertEquals(restaurantRating, restaurant.getRestaurantRating(), restaurantRating);
+    public void setAndGetRestaurantNameWithSuccess() {
+        restaurant = new Restaurant(restaurantID,name,latitude,longitude,address,openingHours,distance,photoReference,rating,phoneNumber,webSite);
+        assertEquals(name, restaurant.getName());
 
+        String setData = "restaurantName";
+        restaurant.setName(setData);
+
+        String getData = restaurant.getName();
+        assertNotNull(getData);
+        assertEquals(setData,getData);
     }
 
     @Test
-    public void changeInfoUser_getCorrectInfo() throws Exception{
-        restaurant.setCoworkerChoice(coworkersEatingHere);
+    public void setAndGetRestaurantAddressWithSuccess() {
+        restaurant = new Restaurant(restaurantID,name,latitude,longitude,address,openingHours,distance,photoReference,rating,phoneNumber,webSite);
 
-        assertEquals(coworkersEatingHere, restaurant.getCoworkerChoice());
+        String setData = "restaurantAddress";
+        restaurant.setAddress(setData);
+
+        String getData = restaurant.getAddress();
+        assertNotNull(getData);
+        assertEquals(setData,getData);
     }
+
+    @Test
+    public void setAndGetPhoneWithSuccess() {
+        restaurant = new Restaurant(restaurantID,name,latitude,longitude,address,openingHours,distance,photoReference,rating,phoneNumber,webSite);
+
+        String setData = "restaurantPhoneNumber";
+        restaurant.setPhoneNumber(setData);
+
+        String getData = restaurant.getPhoneNumber();
+        assertNotNull(getData);
+        assertEquals(setData,getData);
+    }
+
+    @Test
+    public void setAndGetWebSiteWithSuccess() {
+        restaurant = new Restaurant(restaurantID,name,latitude,longitude,address,openingHours,distance,photoReference,rating,phoneNumber,webSite);
+
+        String setData = "restaurantWebsite";
+        restaurant.setWebSite(setData);
+
+        String getData = restaurant.getWebSite();
+        assertNotNull(getData);
+        assertEquals(setData,getData);
+    }
+
+    @Test
+    public void setAndGetRatingWithSuccess() {
+        restaurant = new Restaurant(restaurantID,name,latitude,longitude,address,openingHours,distance,photoReference,rating,phoneNumber,webSite);
+        assertEquals(restaurant.getRating(), (rating), 0.0);
+
+        float setData = (float) 3.2;
+        restaurant.setRating(setData);
+
+        double getData = restaurant.getRating();
+        assertEquals(getData, setData, 0.0);
+    }
+
+    @Test
+    public void setAndGetRestaurantPhotoUrlWithSuccess() {
+        restaurant = new Restaurant(restaurantID,name,latitude,longitude,address,openingHours,distance,photoReference,rating,phoneNumber,webSite);
+        assertEquals(photoReference, restaurant.getPhotoReference());
+
+        String setData = "photoReference";
+        restaurant.setPhotoReference(setData);
+
+        String getData = restaurant.getPhotoReference();
+        assertNotNull(getData);
+        assertEquals(setData,getData);
+    }
+
+    @Test
+    public void setAndGetRestaurantDistanceInMetersWithSuccess() {
+        restaurant = new Restaurant(restaurantID,name,latitude,longitude,address,openingHours,distance,photoReference,rating,phoneNumber,webSite);
+
+        int setData = 200;
+        restaurant.setDistance(setData);
+
+        int getData = restaurant.getDistance();
+        assertEquals(setData, getData);
+    }
+
+    @Test
+    public void setAndGetCoworkerNameFromCoworkersListComingToEatWithSuccess() {
+        coworkerEating = new Coworker();
+        assertNull(coworkerEating.getCoworkerRestaurantChoice());
+
+        String setData = "coworkerName";
+        coworkerEating.setName(setData);
+
+        String getData = coworkerEating.getName();
+        assertNotNull(getData);
+        assertEquals(setData, getData);
+    }
+
+    @Test
+    public void setAndGetCoworkerPhotoReferenceFromCoworkersListComingToEatWithSuccess() {
+        coworkerEating = new Coworker();
+        assertNull(coworkerEating.getPhotoUrl());
+
+        String setData = "albert photo url";
+        coworkerEating.setPhotoUrl(setData);
+
+        String getData = coworkerEating.getPhotoUrl();
+        assertNotNull(getData);
+        assertEquals(setData, getData);
+    }
+
 }

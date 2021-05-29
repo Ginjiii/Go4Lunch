@@ -1,85 +1,87 @@
 package model;
 
+import androidx.annotation.Nullable;
+
 import com.example.go4lunch.goforlunch.models.Coworker;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import junit.framework.TestCase;
 
-import java.util.ArrayList;
+import org.junit.Before;
+
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-
-
-@RunWith(JUnit4.class)
-public class CoworkerTest {
+public class CoworkerTest extends TestCase {
 
     private Coworker coworker;
-    private String name;
-    private String uid;
-    private String email;
-    private String photoUrl;
-    private String restaurantUid;
-    private String restaurantName;
-
-
-    private String likedRestaurant1;
-    private String likedRestaurant2;
-    private String likedRestaurant3;
-
+    private String uid = "uid";
+    private String name = "name";
+    @Nullable
+    private String email = "email";
+    @Nullable
+    private String photoUrl = "photoUrl";
+    @Nullable
     private List<String> likedRestaurants;
 
     @Before
-    public void setup(){
-        name = "Jean Michel";
-        uid = "12345";
-        photoUrl = "http://photo";
-        email = "name@email.com";
-        coworker = new Coworker(uid, name, email, photoUrl);
-        restaurantUid = "54321";
-        restaurantName = "restaurantName";
-        likedRestaurant1 = "uid1";
-        likedRestaurant2 = "uid2";
-        likedRestaurant3 = "uid3";
-        likedRestaurants = new ArrayList<>();
-        likedRestaurants.add(likedRestaurant1);
-        likedRestaurants.add(likedRestaurant2);
-        likedRestaurants.add(likedRestaurant3);
-    }
+    public void setup() {}
 
-    @Test
-    public void getCorrectInfoFromUser() throws Exception{
+    public void testSetAndGetUid() {
+        coworker = new Coworker(uid,name,email,photoUrl);
         assertEquals(uid, coworker.getUid());
-        assertEquals(name, coworker.getCoworkerName());
-        assertEquals(email, coworker.getCoworkerEmail());
-        assertEquals(photoUrl, coworker.getCoworkerPhotoUrl());
+
+        String setData = "uid";
+        coworker.setUid(setData);
+
+        String getData = coworker.getUid();
+        assertNotNull(getData);
+        assertEquals(setData,getData);
     }
 
-    @Test
-    public void changeInfoUser_getCorrectInfo() throws Exception{
-        String newName = "Michel Jean";
-        String newUid = "4321";
-        String newPhotoUrl = "http://newphoto";
-        String newEmail = "new@email.com";
-        coworker.setCoworkerName(newName);
-        coworker.setUid(newUid);
-        coworker.setCoworkerPhotoUrl(newPhotoUrl);
-        coworker.setCoworkerEmail(newEmail);
-        coworker.setRestaurantUid(restaurantUid);
-        coworker.setRestaurantName(restaurantName);
-        coworker.addLikedRestaurant(likedRestaurant1);
-        coworker.addLikedRestaurant(likedRestaurant2);
-        coworker.addLikedRestaurant(likedRestaurant3);
+    public void testSetAndGetName() {
+        coworker = new Coworker(uid,name,email,photoUrl);
+        assertEquals(name, coworker.getName());
 
+        String setData = "name";
+        coworker.setName(setData);
 
-        assertEquals(newUid, coworker.getUid());
-        assertEquals(newName, coworker.getCoworkerName());
-        assertEquals(newEmail, coworker.getCoworkerEmail());
-        assertEquals(newPhotoUrl, coworker.getCoworkerPhotoUrl());
-        assertEquals(restaurantUid, coworker.getRestaurantUid());
-        assertEquals(restaurantName, coworker.getRestaurantName());
-        assertEquals(likedRestaurants, coworker.getLikedRestaurants());
+        String getData = coworker.getName();
+        assertNotNull(getData);
+        assertEquals(setData,getData);
+    }
+
+    public void testSetAndGetEmail() {
+        coworker = new Coworker(uid,name,email,photoUrl);
+        assertEquals(email, coworker.getEmail());
+
+        String setData = "email";
+        coworker.setEmail(setData);
+
+        String getData = coworker.getEmail();
+        assertNotNull(getData);
+        assertEquals(setData,getData);
+    }
+
+    public void testSetAndGetPhotoUrl() {
+        coworker = new Coworker(uid,name,email,photoUrl);
+        assertEquals(photoUrl, coworker.getPhotoUrl());
+
+        String setData = "photoUrl";
+        coworker.setPhotoUrl(setData);
+
+        String getData = coworker.getPhotoUrl();
+        assertNotNull(getData);
+        assertEquals(setData,getData);
+    }
+
+    public void testGetLikedRestaurants() {
+        coworker = new Coworker(uid,name,email,photoUrl);
+        assertNull(coworker.getLikedRestaurants());
+
+        String setData = "uid";
+        coworker.setName(setData);
+
+        String getData = coworker.getName();
+        assertNotNull(getData);
+        assertEquals(setData,getData);
     }
 }

@@ -4,11 +4,10 @@ import com.example.go4lunch.goforlunch.models.common.Location;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Restaurant implements Serializable {
+public class Restaurant {
 
     @SerializedName("html_attributions")
     @Expose
@@ -20,57 +19,46 @@ public class Restaurant implements Serializable {
     @Expose
     private String status;
 
-    public Restaurant() {}
+    public Restaurant() {
+    }
 
     /**
-     *
-     * @return
-     * The htmlAttributions
+     * @return The htmlAttributions
      */
     public List<Object> getHtmlAttributions() {
         return htmlAttributions;
     }
 
     /**
-     *
-     * @param htmlAttributions
-     * The html_attributions
+     * @param htmlAttributions The html_attributions
      */
     public void setHtmlAttributions(List<Object> htmlAttributions) {
         this.htmlAttributions = htmlAttributions;
     }
 
     /**
-     *
-     * @return
-     * The results
+     * @return The results
      */
     public List<Result> getResults() {
         return results;
     }
 
     /**
-     *
-     * @param results
-     * The results
+     * @param results The results
      */
     public void setResults(List<Result> results) {
         this.results = results;
     }
 
     /**
-     *
-     * @return
-     * The status
+     * @return The status
      */
     public String getStatus() {
         return status;
     }
 
     /**
-     *
-     * @param status
-     * The status
+     * @param status The status
      */
     public void setStatus(String status) {
         this.status = status;
@@ -83,18 +71,14 @@ public class Restaurant implements Serializable {
         private com.example.go4lunch.goforlunch.models.common.Location location;
 
         /**
-         *
-         * @return
-         * The location
+         * @return The location
          */
         public com.example.go4lunch.goforlunch.models.common.Location getLocation() {
             return location;
         }
 
         /**
-         *
-         * @param location
-         * The location
+         * @param location The location
          */
         public void setLocation(Location location) {
             this.location = location;
@@ -112,36 +96,28 @@ public class Restaurant implements Serializable {
         private List<Object> weekdayText = new ArrayList<>();
 
         /**
-         *
-         * @return
-         * The openNow
+         * @return The openNow
          */
         public Boolean getOpenNow() {
             return openNow;
         }
 
         /**
-         *
-         * @param openNow
-         * The open_now
+         * @param openNow The open_now
          */
         public void setOpenNow(Boolean openNow) {
             this.openNow = openNow;
         }
 
         /**
-         *
-         * @return
-         * The weekdayText
+         * @return The weekdayText
          */
         public List<Object> getWeekdayText() {
             return weekdayText;
         }
 
         /**
-         *
-         * @param weekdayText
-         * The weekday_text
+         * @param weekdayText The weekday_text
          */
         public void setWeekdayText(List<Object> weekdayText) {
             this.weekdayText = weekdayText;
@@ -164,72 +140,56 @@ public class Restaurant implements Serializable {
         private Integer width;
 
         /**
-         *
-         * @return
-         * The height
+         * @return The height
          */
         public Integer getHeight() {
             return height;
         }
 
         /**
-         *
-         * @param height
-         * The height
+         * @param height The height
          */
         public void setHeight(Integer height) {
             this.height = height;
         }
 
         /**
-         *
-         * @return
-         * The htmlAttributions
+         * @return The htmlAttributions
          */
         public List<String> getHtmlAttributions() {
             return htmlAttributions;
         }
 
         /**
-         *
-         * @param htmlAttributions
-         * The html_attributions
+         * @param htmlAttributions The html_attributions
          */
         public void setHtmlAttributions(List<String> htmlAttributions) {
             this.htmlAttributions = htmlAttributions;
         }
 
         /**
-         *
-         * @return
-         * The photoReference
+         * @return The photoReference
          */
         public String getPhotoReference() {
             return photoReference;
         }
 
         /**
-         *
-         * @param photoReference
-         * The photo_reference
+         * @param photoReference The photo_reference
          */
         public void setPhotoReference(String photoReference) {
             this.photoReference = photoReference;
         }
 
         /**
-         *
-         * @return
-         * The width
+         * @return The width
          */
         public Integer getWidth() {
             return width;
         }
 
         /**
-         *
-         * @param width
-         * The width
+         * @param width The width
          */
         public void setWidth(Integer width) {
             this.width = width;
@@ -279,234 +239,182 @@ public class Restaurant implements Serializable {
         private Integer priceLevel;
 
         /**
-         *
-         * @return
-         * The geometry
+         * @return The geometry
          */
         public Geometry getGeometry() {
             return geometry;
         }
 
         /**
-         *
-         * @param geometry
-         * The geometry
+         * @param geometry The geometry
          */
         public void setGeometry(Geometry geometry) {
             this.geometry = geometry;
         }
 
         /**
-         *
-         * @return
-         * The icon
+         * @return The icon
          */
         public String getIcon() {
             return icon;
         }
 
         /**
-         *
-         * @param icon
-         * The icon
+         * @param icon The icon
          */
         public void setIcon(String icon) {
             this.icon = icon;
         }
 
         /**
-         *
-         * @return
-         * The id
+         * @return The id
          */
         public String getId() {
             return id;
         }
 
         /**
-         *
-         * @param id
-         * The id
+         * @param id The id
          */
         public void setId(String id) {
             this.id = id;
         }
 
         /**
-         *
-         * @return
-         * The name
+         * @return The name
          */
         public String getName() {
             return name;
         }
 
         /**
-         *
-         * @param name
-         * The name
+         * @param name The name
          */
         public void setName(String name) {
             this.name = name;
         }
 
         /**
-         *
-         * @return
-         * The openingHours
+         * @return The openingHours
          */
         public OpeningHours getOpeningHours() {
             return openingHours;
         }
 
         /**
-         *
-         * @param openingHours
-         * The opening_hours
+         * @param openingHours The opening_hours
          */
         public void setOpeningHours(OpeningHours openingHours) {
             this.openingHours = openingHours;
         }
 
         /**
-         *
-         * @return
-         * The photos
+         * @return The photos
          */
         public List<Photo> getPhotos() {
             return photos;
         }
 
         /**
-         *
-         * @param photos
-         * The photos
+         * @param photos The photos
          */
         public void setPhotos(List<Photo> photos) {
             this.photos = photos;
         }
 
         /**
-         *
-         * @return
-         * The placeId
+         * @return The placeId
          */
         public String getPlaceId() {
             return placeId;
         }
 
         /**
-         *
-         * @param placeId
-         * The place_id
+         * @param placeId The place_id
          */
         public void setPlaceId(String placeId) {
             this.placeId = placeId;
         }
 
         /**
-         *
-         * @return
-         * The rating
+         * @return The rating
          */
         public Double getRating() {
             return rating;
         }
 
         /**
-         *
-         * @param rating
-         * The rating
+         * @param rating The rating
          */
         public void setRating(Double rating) {
             this.rating = rating;
         }
 
         /**
-         *
-         * @return
-         * The reference
+         * @return The reference
          */
         public String getReference() {
             return reference;
         }
 
         /**
-         *
-         * @param reference
-         * The reference
+         * @param reference The reference
          */
         public void setReference(String reference) {
             this.reference = reference;
         }
 
         /**
-         *
-         * @return
-         * The scope
+         * @return The scope
          */
         public String getScope() {
             return scope;
         }
 
         /**
-         *
-         * @param scope
-         * The scope
+         * @param scope The scope
          */
         public void setScope(String scope) {
             this.scope = scope;
         }
 
         /**
-         *
-         * @return
-         * The types
+         * @return The types
          */
         public List<String> getTypes() {
             return types;
         }
 
         /**
-         *
-         * @param types
-         * The types
+         * @param types The types
          */
         public void setTypes(List<String> types) {
             this.types = types;
         }
 
         /**
-         *
-         * @return
-         * The vicinity
+         * @return The vicinity
          */
         public String getVicinity() {
             return vicinity;
         }
 
         /**
-         *
-         * @param vicinity
-         * The vicinity
+         * @param vicinity The vicinity
          */
         public void setVicinity(String vicinity) {
             this.vicinity = vicinity;
         }
 
         /**
-         *
-         * @return
-         * The priceLevel
+         * @return The priceLevel
          */
         public Integer getPriceLevel() {
             return priceLevel;
         }
 
         /**
-         *
-         * @param priceLevel
-         * The price_level
+         * @param priceLevel The price_level
          */
         public void setPriceLevel(Integer priceLevel) {
             this.priceLevel = priceLevel;

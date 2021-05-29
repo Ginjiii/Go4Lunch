@@ -1,180 +1,115 @@
 package com.example.go4lunch.goforlunch.ui.restaurantDetail;
 
 import android.util.Log;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
+import com.example.go4lunch.goforlunch.base.BaseViewModel;
 import com.example.go4lunch.goforlunch.models.Coworker;
 import com.example.go4lunch.goforlunch.models.Restaurant;
 import com.example.go4lunch.goforlunch.repositories.CoworkerRepository;
 import com.example.go4lunch.goforlunch.repositories.RestaurantRepository;
-import com.example.go4lunch.goforlunch.utils.Actions;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.go4lunch.goforlunch.utils.Actions.REMOVED_LIKED;
-import static com.example.go4lunch.goforlunch.utils.Actions.REMOVED_PICKED;
-import static com.example.go4lunch.goforlunch.utils.Actions.UPDATE_LIKED;
-import static com.example.go4lunch.goforlunch.utils.Actions.UPDATE_PICKED;
+public class RestaurantDetailViewModel extends BaseViewModel {
 
-public class RestaurantDetailViewModel extends ViewModel {
+    private final String TAG = RestaurantDetailViewModel.class.getSimpleName();
 
-    private final CoworkerRepository coworkerRepository;
     private final RestaurantRepository restaurantRepository;
     private Restaurant restaurant;
-    private Coworker coworker;
 
-
-    public final MutableLiveData<List<Restaurant.CoworkerList>> mCoworkerList = new MutableLiveData<>();
-    public final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
+    public final MutableLiveData<List<Coworker>> mCoworkerList = new MutableLiveData<>();
     public MutableLiveData<Boolean> isRestaurantLiked = new MutableLiveData<>();
     public MutableLiveData<Boolean> isRestaurantPicked = new MutableLiveData<>();
 
-    public RestaurantDetailViewModel(RestaurantRepository mRestaurantRepository, CoworkerRepository mCoworkerRepository) {
-        this.restaurantRepository = mRestaurantRepository;
-        this.coworkerRepository = mCoworkerRepository;
-        coworker = coworkerRepository.getCoworker();
+    public RestaurantDetailViewModel(RestaurantRepository restaurantRepository, CoworkerRepository coworkerRepository) {
+        this.restaurantRepository = restaurantRepository;
+        this.coworkerRepository = coworkerRepository;
+        coworker = coworkerRepository.getActualUser();
     }
 
-    public MutableLiveData<Restaurant> getRestaurantDetail(String placeId) {
+    public LiveData<Restaurant> getRestaurantDetail(String placeId) {
         return restaurantRepository.getGoogleRestaurantDetail(placeId);
     }
 
-    public void fetchInfoRestaurant() {
-        isLoading.setValue(true);
-        String uidSelection = restaurantRepository.getRestaurantSelected();
-        boolean isRestaurantStored = false;
-        if (restaurantRepository.getRestaurantsLoaded() != null) {
-            for (Restaurant restaurant : restaurantRepository.getRestaurantsLoaded()) {
-                if (restaurant.getRestaurantPlaceId().equals(uidSelection)) {
-                    this.restaurant = restaurant;
-                    isRestaurantStored = true;
-                    break;
-                }
-            }
-        }
-        if (isRestaurantStored) {
-            fetchCoworkerChoice(restaurant);
-
+    public void fetchInfoRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+        fetchUsersGoing();
+        isRestaurantLiked.setValue(checkIfRestaurantIsLiked());
+        if (coworker.getCoworkerRestaurantChoice() != null) {
+            String uidSelection = coworker.getCoworkerRestaurantChoice().getRestaurantId();
+            String restaurantId = restaurant.getRestaurantID();
+            isRestaurantPicked.setValue(uidSelection.equals(restaurantId));
         } else {
-            getRestaurantDetail(uidSelection);
+            isRestaurantPicked.setValue(false);
         }
     }
 
     public void updateRestaurantLiked(Restaurant restaurant) {
-        coworkerRepository.getCoworker(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener(doc -> {
-            coworker = doc.getResult().toObject(Coworker.class);
-            if (isRestaurantLiked != null && isRestaurantLiked.getValue() != null && isRestaurantLiked.getValue()) {
-                coworkerRepository.removeLikedRestaurant(restaurant.getRestaurantPlaceId(), coworker)
-                        .addOnSuccessListener(onSuccessListener(REMOVED_LIKED, restaurant));
-            } else {
-                isRestaurantLiked.setValue(true);
-                coworkerRepository.addLikedRestaurant(restaurant.getRestaurantPlaceId(), coworker)
-                        .addOnSuccessListener(onSuccessListener(UPDATE_LIKED, restaurant));
-            }
-        });
+        if (isRestaurantLiked.getValue()) {
+            isRestaurantLiked.setValue(false);
+            coworkerRepository.removeLikedRestaurant(restaurant.getRestaurantID())
+                    .addOnCompleteListener(result -> Log.i(TAG, "restaurant disliked"));
+        } else {
+            isRestaurantLiked.setValue(true);
+            coworkerRepository.addLikedRestaurant(restaurant.getRestaurantID())
+                    .addOnCompleteListener(result -> Log.i(TAG, "restaurant liked"));
+        }
     }
 
     public void updatePickedRestaurant(Restaurant restaurant) {
-        CoworkerRepository.getCoworker(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener(doc -> {
-            coworker = doc.getResult().toObject(Coworker.class);
-            if (isRestaurantPicked != null && isRestaurantPicked.getValue() != null && isRestaurantPicked.getValue()) {
-                coworkerRepository.updateRestaurantPicked(null, null, null, coworker)
-                        .addOnSuccessListener(onSuccessListener(REMOVED_PICKED, restaurant));
-            } else {
-                isRestaurantPicked.setValue(true);
-                coworkerRepository.updateRestaurantPicked(restaurant.getRestaurantPlaceId(), restaurant.getRestaurantName(),
-                        restaurant.getRestaurantAddress(), coworker)
-                        .addOnSuccessListener(onSuccessListener(UPDATE_PICKED, restaurant));
-            }
-        });
+        if (isRestaurantPicked.getValue()) {
+            isRestaurantPicked.setValue(false);
+            coworkerRepository.updateRestaurantPicked(null, null, null, coworker.getUid())
+                    .addOnCompleteListener(result -> Log.i(TAG, "restaurant unselected"));
+        } else {
+            isRestaurantPicked.setValue(true);
+            coworkerRepository.updateRestaurantPicked(restaurant.getRestaurantID(), restaurant.getName(),
+                    restaurant.getAddress(), coworker.getUid())
+                    .addOnCompleteListener(result -> Log.i(TAG, "restaurant selected"));
+        }
+        fetchUsersGoing();
     }
 
     public void fetchCoworkerLike(Restaurant restaurant) {
-        coworker = coworkerRepository.getActualUser();
-        CoworkerRepository.getCoworker(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener(doc -> {
-            coworker = doc.getResult().toObject(Coworker.class);
-            if (coworker != null && coworker.getLikedRestaurants() != null){
-                List<String> likedRestaurant = coworker.getLikedRestaurants();
-                String restaurantUid = restaurant.getRestaurantPlaceId();
-                if (likedRestaurant != null && restaurantUid != null && likedRestaurant.contains(restaurantUid)) {
-                    isRestaurantLiked.setValue(true);
-                }
+        if (coworker != null && coworker.getLikedRestaurants() != null) {
+            List<String> likedRestaurant = coworker.getLikedRestaurants();
+            String restaurantUid = restaurant.getRestaurantID();
+            if (likedRestaurant != null && restaurantUid != null && likedRestaurant.contains(restaurantUid)) {
+                isRestaurantLiked.setValue(true);
             }
-
-        });
-        isLoading.setValue(false);
+        }
     }
 
-    public void fetchCoworkerChoice(Restaurant restaurant) {
-        List<Coworker> userToAdd = new ArrayList<>();
-        ArrayList<Restaurant.CoworkerList> coworkerList = new ArrayList<Restaurant.CoworkerList>();
-        mCoworkerList.setValue(coworkerList);
-
-        CoworkerRepository.getAllCoworker()
+    private void fetchUsersGoing() {
+        List<Coworker> coworkerToAdd = new ArrayList<>();
+        coworkerRepository.getAllCoworker()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
                         Coworker coworker = documentSnapshot.toObject(Coworker.class);
-                        if (coworker != null && coworker.getUid() != null) {
-                            String restaurantUid = coworker.getRestaurantUid();
-                            if (restaurantUid != null && restaurantUid.equals(restaurant.getRestaurantPlaceId())) {
-                                userToAdd.add(coworker);
-                                coworkerList.add(new Restaurant.CoworkerList(coworker.getUid(), coworker.getCoworkerName(), coworker.getCoworkerPhotoUrl()));
+                        if (coworker != null && coworker.getCoworkerRestaurantChoice() != null && coworker.getCoworkerRestaurantChoice().getRestaurantId() != null) {
+                            String restaurantUid = coworker.getCoworkerRestaurantChoice().getRestaurantId();
+                            if (restaurantUid.equals(restaurant.getRestaurantID())) {
+                                coworkerToAdd.add(coworker);
                             }
                         }
                     }
-                    restaurant.setCoworkerChoice(userToAdd);
-                    mCoworkerList.setValue(coworkerList);
-                    configureInfoRestaurant(restaurant);
+                    restaurant.setCoworkersGoingEating(coworkerToAdd);
+                    mCoworkerList.setValue(restaurant.getCoworkersEatingHere());
                 });
     }
 
-    private void configureInfoRestaurant(Restaurant restaurant) {
-
-        coworker = coworkerRepository.getActualUser();
-        coworkerRepository.getCoworker(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener(doc -> {
-            coworker = doc.getResult().toObject(Coworker.class);
-            if(coworker != null && coworker.getRestaurantUid() != null)
-            {
-                String coworkerRestaurantUid = coworker.getRestaurantUid();
-                String restaurantUid = restaurant.getRestaurantPlaceId();
-
-                if (coworkerRestaurantUid != null && coworkerRestaurantUid.equals(restaurantUid)) {
-                    isRestaurantPicked.setValue(true);
-                }
+    private boolean checkIfRestaurantIsLiked() {
+        List<String> restaurantLiked = coworker.getLikedRestaurants();
+        if (restaurantLiked != null && restaurantLiked.size() > 0) {
+            for (String uid : restaurantLiked) {
+                if (uid.equals(restaurant.getRestaurantID())) return true;
             }
-
-        });
-        isLoading.setValue(false);
-    }
-
-    private OnSuccessListener<Void> onSuccessListener(final Actions actions, Restaurant restaurant) {
-        return aVoid -> {
-            switch (actions) {
-                case UPDATE_PICKED:
-                    Log.d("we step in", "onSuccessListener: ");
-                    isRestaurantPicked.setValue(true);
-                    fetchCoworkerChoice(restaurant);
-                    isLoading.setValue(false);
-                    break;
-                case REMOVED_PICKED:
-                    isRestaurantPicked.setValue(false);
-                    fetchCoworkerChoice(restaurant);
-                    isLoading.setValue(false);
-                    break;
-                case UPDATE_LIKED:
-                    isRestaurantLiked.setValue(true);
-                    isLoading.setValue(false);
-                    break;
-                case REMOVED_LIKED:
-                    isRestaurantLiked.setValue(false);
-                    isLoading.setValue(false);
-                    break;
-            }
-        };
+        }
+        return false;
     }
 }

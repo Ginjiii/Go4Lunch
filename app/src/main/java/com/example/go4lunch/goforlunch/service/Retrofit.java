@@ -9,7 +9,7 @@ public class Retrofit {
      */
     private static retrofit2.Retrofit retrofit;
 
-    public static retrofit2.Retrofit getClient(String baseUrl) {
+    public static retrofit2.Retrofit getClient() {
         if (retrofit == null) {
             retrofit = new retrofit2.Retrofit.Builder()
                     .baseUrl("https://maps.googleapis.com/maps/api/place/")

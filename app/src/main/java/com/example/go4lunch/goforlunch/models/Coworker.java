@@ -2,104 +2,102 @@ package com.example.go4lunch.goforlunch.models;
 
 import androidx.annotation.Nullable;
 
-import com.google.firebase.Timestamp;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Coworker {
+
     private String uid;
-    private String coworkerName;
-    @Nullable private String coworkerEmail;
-    @Nullable private String coworkerPhotoUrl;
-    @Nullable private CoworkerRestaurantChoice coworkerRestaurantChosen;
-    @Nullable private boolean restaurantChoice;
-    @Nullable private String restaurantUid;
-    @Nullable private String restaurantName;
-    @Nullable private String restaurantAddress;
-    @Nullable private List<String> likedRestaurants;
-    public Coworker() { }
-
-    public Coworker(String uid, String username, String urlPicture) {
-        this.uid = uid;
-        this.coworkerName = username;
-        this.coworkerPhotoUrl = urlPicture;
-    }
-
-    public Coworker(String mCoworkerId,String mCoworkerName, String mCoworkerEmail, String mCoworkerPhotoUrl) {
-        this.uid = mCoworkerId;
-        this.coworkerName = mCoworkerName;
-        this.coworkerEmail = mCoworkerEmail;
-        this.coworkerPhotoUrl = mCoworkerPhotoUrl;
-
-        this.restaurantChoice = false;
-    }
-
-    public Coworker(String mCoworkerId, String mCoworkerName, String mCoworkerEmail, String mCoworkerPhotoUrl,
-                    CoworkerRestaurantChoice mCoworkerRestaurantChosen) {
-        this.uid = mCoworkerId;
-        this.coworkerName = mCoworkerName;
-
-        this.coworkerEmail = mCoworkerEmail;
-        this.coworkerPhotoUrl = mCoworkerPhotoUrl;
-        this.coworkerRestaurantChosen = mCoworkerRestaurantChosen;
-    }
-
-    public String getCoworkerName() { return coworkerName; }
-
-    public void setCoworkerName(String mCoworkerName) { coworkerName = mCoworkerName; }
-
-    public String getCoworkerEmail() { return coworkerEmail; }
-
-    public String getRestaurantUid() { return restaurantUid; }
-
+    private String name;
     @Nullable
-    public String getRestaurantName() {
-        return restaurantName;
+    private String email;
+    @Nullable
+    private String photoUrl;
+    @Nullable
+    private CoworkerRestaurantChoice coworkerRestaurantChoice;
+    @Nullable
+    private List<String> likedRestaurants;
+
+    public Coworker() {
     }
 
-    public void setRestaurantName(@Nullable String restaurantName) {
-        this.restaurantName = restaurantName;
+    public Coworker(String uid, String name, @Nullable String email, @Nullable String photoUrl) {
+        this.uid = uid;
+        this.name = name;
+        this.email = email;
+        this.photoUrl = photoUrl;
     }
 
-    public String getRestaurantAddress() {
-        return restaurantAddress;
+    public String getUid() {
+        return uid;
     }
-
-
-    public void setCoworkerEmail(String mCoworkerEmail) { coworkerEmail = mCoworkerEmail; }
-    public void setRestaurantUid(String mRestaurantUid) { restaurantUid = mRestaurantUid; }
-
-
-    public String getCoworkerPhotoUrl() { return coworkerPhotoUrl; }
-
-    public void setCoworkerPhotoUrl(@Nullable String mCoworkerPhotoUrl) { coworkerPhotoUrl = mCoworkerPhotoUrl; }
-
-    public boolean isRestaurantChoice() { return restaurantChoice;}
-
-    public CoworkerRestaurantChoice getCoworkerRestaurantChosen() { return coworkerRestaurantChosen; }
-
-    public void  setCoworkerRestaurantChosen(CoworkerRestaurantChoice mCoworkerRestaurantChosen) { this.coworkerRestaurantChosen = mCoworkerRestaurantChosen; this.restaurantChoice = true; }
-
-    public String getUid() { return uid; }
 
     public void setUid(String uid) {
         this.uid = uid;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Nullable
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(@Nullable String email) {
+        this.email = email;
+    }
+
+    @Nullable
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(@Nullable String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
+    @Nullable
+    public CoworkerRestaurantChoice getCoworkerRestaurantChoice() {
+        return coworkerRestaurantChoice;
+    }
+
+    public void setCoworkerRestaurantChoice(@Nullable CoworkerRestaurantChoice coworkerRestaurantChoice) {
+        this.coworkerRestaurantChoice = coworkerRestaurantChoice;
+    }
+
+    @Nullable
     public List<String> getLikedRestaurants() {
         return likedRestaurants;
     }
 
-    public void addLikedRestaurant(String restaurantUid){
-        if(likedRestaurants == null) {
+    public void setLikedRestaurants(@Nullable List<String> likedRestaurants) {
+        this.likedRestaurants = likedRestaurants;
+    }
+
+    @Override
+    public String toString() {
+        return "Coworker{" +
+                "uid='" + uid + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
+    public void addLikedRestaurant(String restaurantUid) {
+        if (likedRestaurants == null) {
             this.likedRestaurants = new ArrayList<>();
         }
         this.likedRestaurants.add(restaurantUid);
     }
 
-    public void removeLikedRestaurant(String restaurantUid){
-        if(likedRestaurants != null) {
+    public void removeLikedRestaurant(String restaurantUid) {
+        if (likedRestaurants != null) {
             List<String> likeToRemove = new ArrayList<String>();
             for (String like : likedRestaurants) {
                 if (like.equals(restaurantUid)) {
@@ -109,79 +107,4 @@ public class Coworker {
             likedRestaurants.removeAll(likeToRemove);
         }
     }
-
-    public static class CoworkerRestaurantChoice {
-        public String restaurantId;
-        public String restaurantName;
-        public String restaurantAddress;
-        public Timestamp restaurantDateChoice;
-
-        public CoworkerRestaurantChoice() {}
-
-        public CoworkerRestaurantChoice(String mRestaurantId, String mRestaurantName, String mRestaurantAddress ,Timestamp mRestaurantDateChoice) {
-            restaurantId = mRestaurantId;
-            restaurantName = mRestaurantName;
-            restaurantAddress = mRestaurantAddress;
-            restaurantDateChoice = mRestaurantDateChoice;
-        }
-
-        public CoworkerRestaurantChoice(String restaurantPlaceId, String restaurantName, Timestamp timestamp) {
-        }
-
-        public String getRestaurantId() {
-            return restaurantId;
-        }
-
-        public void setRestaurantId(String mRestaurantId) {
-            restaurantId = mRestaurantId;
-        }
-
-        public String getRestaurantName() {
-            return restaurantName;
-        }
-
-        public void setRestaurantName(String mRestaurantName) {
-            restaurantName = mRestaurantName;
-        }
-
-        public String getRestaurantAddress() {
-            return restaurantAddress;
-        }
-
-        public void setRestaurantAddress(String restaurantAddress) {
-            this.restaurantAddress = restaurantAddress;
-        }
-
-        public Timestamp getRestaurantDateChoice() {
-            return restaurantDateChoice;
-        }
-
-        public void setRestaurantDateChoice(Timestamp mRestaurantDateChoice) {
-            restaurantDateChoice = mRestaurantDateChoice;
-        }
-
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "uid='" + uid + '\'' +
-                ", username='" + this.coworkerName + '\'' +
-                ", email='" + this.coworkerEmail + '\'' +
-                ", urlPicture='" + this.coworkerPhotoUrl + '\'' +
-                ", restaurantUid='" + this.coworkerRestaurantChosen.getRestaurantId() + '\'' +
-                ", likedRestaurants=" + this.likedRestaurants +
-                '}';
-    }
-
-    public enum Fields {
-        Coworker,
-        coworkerId,
-        coworkerName,
-        coworkerEmail,
-        coworkerPhotoUrl,
-        coworkerRestaurantChosen,
-        coworkerLikes
-    }
-
 }

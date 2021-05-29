@@ -16,17 +16,15 @@ public class ResetRestaurantInfo extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         coworkerRepository = CoworkerRepository.getInstance();
         this.eraseRestaurantInfo();
-
-
     }
 
     private void eraseRestaurantInfo() {
-        CoworkerRepository.getAllCoworker()
+        coworkerRepository.getAllCoworker()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()){
+                    for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
                         Coworker coworker = documentSnapshot.toObject(Coworker.class);
-                        if(coworker != null && coworker.getRestaurantUid() != null) {
-                            coworkerRepository.updateRestaurantPicked(null, null, null, coworker);
+                        if (coworker != null && coworker.getCoworkerRestaurantChoice().getRestaurantId() != null) {
+                            coworkerRepository.updateRestaurantPicked(null, null, null, coworker.getUid());
                         }
                     }
                 });

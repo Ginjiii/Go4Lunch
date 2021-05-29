@@ -7,14 +7,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.example.go4lunch.goforlunch.factory.Go4LunchFactory;
+import com.example.go4lunch.goforlunch.injections.Injection;
 import com.example.go4lunch.goforlunch.ui.MainActivity;
 import com.go4lunch.R;
 import com.go4lunch.databinding.ActivitySignInBinding;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import static com.example.go4lunch.goforlunch.ui.signin.SignInViewModel.RC_SIGN_IN;
-
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -25,27 +25,34 @@ public class SignInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
+
+        intListener();
+
+        viewModel = obtainViewModel();
+
         checkSessionUser();
-        viewModel = new ViewModelProvider(this).get(SignInViewModel.class);
     }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        viewModel.checkIfUserIsLogged();
-    }
+
     private void initView() {
         binding = ActivitySignInBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+    }
 
+    private void intListener() {
         binding.facebookLoginButton.setOnClickListener(v -> viewModel.startSignInActivityFacebook(SignInActivity.this));
         binding.gmailLoginButton.setOnClickListener(v -> viewModel.startSignInActivityGoogle(SignInActivity.this));
         binding.twitterLoginButton.setOnClickListener(v -> viewModel.startSignInActivityTwitter(SignInActivity.this));
     }
 
-    private void checkSessionUser(){
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
+    private SignInViewModel obtainViewModel() {
+        Go4LunchFactory viewModelFactory = Injection.provideViewModelFactory();
+        return new ViewModelProvider(this, viewModelFactory).get(SignInViewModel.class);
+    }
+
+    private void checkSessionUser() {
+        viewModel.updateCurrentUser();
+        if (viewModel.isCurrentUserLogged()) {
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }
@@ -56,6 +63,7 @@ public class SignInActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
+                viewModel.updateCurrentUser();
                 Intent loginIntent = new Intent(this, MainActivity.class);
                 startActivity(loginIntent);
             } else {

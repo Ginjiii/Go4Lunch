@@ -35,9 +35,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
+            android:text="Restaurant"
             android:textColor="@color/colorWhite"
             android:textSize="14sp"
-            android:text="Restaurant"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -59,9 +59,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="6dp"
+            android:text="Restaurant Addresses"
             android:textColor="@color/colorWhite"
             android:textSize="12sp"
-            android:text="Restaurant Addresses"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/restaurant_detail_name" />
 
@@ -72,8 +72,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="14dp"
-        android:clickable="true"
-        android:focusable="true"
         app:backgroundTint="@color/cardview_light_background"
         app:layout_constraintBottom_toBottomOf="@+id/restaurant_detail_picture"
         app:layout_constraintEnd_toEndOf="@+id/restaurant_detail_picture"
@@ -109,8 +107,8 @@
             <Button
                 android:id="@+id/restaurant_detail_like_button"
                 style="@style/RestaurantDetailsButton"
-                android:drawableTop="@drawable/ic_baseline_menu_star_border_24"
                 android:layout_marginHorizontal="60dp"
+                android:drawableTop="@drawable/ic_baseline_menu_star_border_24"
                 android:text="@string/like_button"
                 app:layout_constraintStart_toEndOf="@id/restaurant_detail_call_button"
                 app:layout_constraintTop_toBottomOf="@+id/restaurant_detail_info"
@@ -119,8 +117,8 @@
             <Button
                 android:id="@+id/restaurant_detail_website_button"
                 style="@style/RestaurantDetailsButton"
-                android:drawableTop="@drawable/ic_baseline_public_24"
                 android:layout_marginHorizontal="60dp"
+                android:drawableTop="@drawable/ic_baseline_public_24"
                 android:text="@string/website_button"
                 app:layout_constraintStart_toEndOf="@id/restaurant_detail_like_button"
                 app:layout_constraintTop_toBottomOf="@+id/restaurant_detail_info"
@@ -131,14 +129,13 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/restaurant_detail_coworker_list"
+        android:id="@+id/coworkersRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/middle_bar"
-        app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/fragment_coworkers_layout" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

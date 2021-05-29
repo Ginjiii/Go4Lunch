@@ -1,11 +1,8 @@
 package com.example.go4lunch.goforlunch.ui.signin;
 
 import android.app.Activity;
-import android.util.Log;
 
-import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModel;
-
+import com.example.go4lunch.goforlunch.base.BaseViewModel;
 import com.example.go4lunch.goforlunch.models.Coworker;
 import com.example.go4lunch.goforlunch.repositories.CoworkerRepository;
 import com.firebase.ui.auth.AuthUI;
@@ -14,15 +11,12 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Collections;
 
-public class SignInViewModel extends ViewModel {
+public class SignInViewModel extends BaseViewModel {
 
     public static final int RC_SIGN_IN = 100;
-    private Coworker coworker;
-    protected CoworkerRepository coworkerRepository;
 
-    public SignInViewModel()
-    {
-        this.coworkerRepository = new CoworkerRepository();
+    public SignInViewModel(CoworkerRepository coworkerRepository) {
+        this.coworkerRepository = coworkerRepository;
     }
 
     public void startSignInActivityFacebook(Activity activity) {
@@ -58,52 +52,35 @@ public class SignInViewModel extends ViewModel {
                 RC_SIGN_IN);
     }
 
-    public void checkIfUserIsLogged() {
-        if (isCurrentUserLogged()){
-            this.fetchCurrentUserFromFirestore();
-        } else{
-            createUserInFirestore();
-        }
-    }
-
-    private void fetchCurrentUserFromFirestore(){
-        if (isCurrentUserLogged()) {
-            coworkerRepository.getCoworker(getCurrentUser().getUid())
-                    .addOnSuccessListener(documentSnapshot -> {
-                        coworker = documentSnapshot.toObject(Coworker.class);
-                        if (coworker == null){
-                            createUserInFirestore();
-                        } else {
-                            coworkerRepository.updateCoworkerRepository(coworker);
-                        }
-                    });
-        }
+    public void updateCurrentUser() {
+        String uid = (isCurrentUserLogged()) ? getCurrentUser().getUid() : "default";
+        coworkerRepository.getCoworkerFromFirebase(uid)
+                .addOnSuccessListener(documentSnapshot -> {
+                    coworker = documentSnapshot.toObject(Coworker.class);
+                    if (coworker != null) {
+                        coworkerRepository.updateCurrentUser(coworker);
+                    } else {
+                        createUserInFirestore();
+                    }
+                });
     }
 
     private void createUserInFirestore() {
-        Log.d("FireStore", "createUserInFirestore: ");
-        FirebaseUser user = getCurrentUser();
-        if(user != null)
-        {
-            String urlPicture = (user.getPhotoUrl() != null) ?
-                    user.getPhotoUrl().toString() : null;
-            //String email = getCurrentUser().getEmail();
-            String username = user.getDisplayName();
-            String uid = user.getUid();
-            coworkerRepository.createCoworker(uid, username, urlPicture)
-                    .addOnSuccessListener(aVoid -> fetchCurrentUserFromFirestore());
-        }
-
+        String uid = getCurrentUser().getUid();
+        String name = getCurrentUser().getDisplayName();
+        String email = getCurrentUser().getEmail();
+        String urlPicture = (getCurrentUser().getPhotoUrl() != null) ?
+                this.getCurrentUser().getPhotoUrl().toString() : null;
+        Coworker newCoworker = new Coworker(uid, name, email, urlPicture);
+        coworkerRepository.createCoworker(newCoworker)
+                .addOnSuccessListener(result -> coworkerRepository.updateCurrentUser(newCoworker));
     }
 
-    @Nullable
-    private FirebaseUser getCurrentUser(){
+    private FirebaseUser getCurrentUser() {
         return FirebaseAuth.getInstance().getCurrentUser();
     }
 
-    private boolean isCurrentUserLogged() {
-        return (this.getCurrentUser() != null);
+    public boolean isCurrentUserLogged() {
+        return getCurrentUser() != null;
     }
-
-
 }

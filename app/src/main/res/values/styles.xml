@@ -45,4 +45,19 @@
         <item name="android:layout_margin">10dp</item>
     </style>
 
+    <style name="TimeRestaurantClosed">
+        <item name="android:textColor">@color/colorTextRed</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TimeRestaurantClosingSoon">
+        <item name="android:textColor">@color/quantum_orange</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TimeRestaurantOpen">
+        <item name="android:textColor">@color/quantum_googgreen</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
 </resources>

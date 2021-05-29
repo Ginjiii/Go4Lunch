@@ -27,7 +27,7 @@
     // COWORKERS ITEM LAYOUT
     <string name="coworkers_picture" translatable="false" />
     <string name="background_content_description" translatable="false" />
-    <string name="is_joining">is joining</string>
+    <string name="is_joining">is joining!</string>
     <string name="is_eating">is eating</string>
     <string name="has_not_decided_yet">has not decided yet</string>
 
@@ -91,5 +91,12 @@
     <string name="default_longitude_position" translatable="false">2.3488000 </string>
     <string name="proximity_radius" translatable="false">150 </string>
     <string name="bound_radius" translatable="false">150 </string>
+    <string name="no_time">No Time available</string>
+    <string name="closed">Closed</string>
+    <string name="closing_soon">Close soon</string>
+    <string name="open_until">Open until %s</string>
+    <string name="opening_soon">Opening soon</string>
+    <string name="open_24_7">Open 24/7</string>
+    <string name="open_24h">Open 24h</string>
 
 </resources>

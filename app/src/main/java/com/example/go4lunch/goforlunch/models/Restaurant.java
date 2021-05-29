@@ -1,189 +1,136 @@
 package com.example.go4lunch.goforlunch.models;
 
-import com.example.go4lunch.goforlunch.models.common.Location;
-import com.example.go4lunch.goforlunch.models.places.RestaurantDetail;
+import androidx.annotation.Nullable;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Restaurant implements Serializable, Comparable<Restaurant> {
-    private String restaurantPlaceId;
-    private String restaurantName;
-    private String restaurantAddress;
-    private String restaurantPhone;
-    private String restaurantWebSite;
-    private String restaurantDistanceText;
-    private double restaurantRating;
-    private String restaurantPhotoUrl;
-    private Location restaurantLocation;
-    private RestaurantDetail.OpeningHours restaurantOpeningHours;
-    private float restaurantDistance;
-    private List<CoworkerList> restaurantCoworkerList;
+public class Restaurant {
+
+    private String restaurantID;
+    private String name;
+    private Double latitude;
+    private Double longitude;
+    private String address;
+    private int openingHours;
+    private int distance;
+    private String photoReference;
+    private float rating;
+    private String phoneNumber;
+    private String webSite;
     private List<Coworker> coworkersEatingHere;
 
-    public Restaurant () {}
-
-    public Restaurant(String mRestaurantPlaceId, String mRestaurantName) {
-        restaurantPlaceId = mRestaurantPlaceId;
-        restaurantName = mRestaurantName;
+    public Restaurant(String restaurantID, String name, Double latitude, Double longitude, @Nullable String address,
+                      int openingHours, int distance, @Nullable String photoReference, float rating, String phoneNumber, String webSite) {
+        this.restaurantID = restaurantID;
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.address = address;
+        this.openingHours = openingHours;
+        this.distance = distance;
+        this.photoReference = photoReference;
+        this.rating = rating;
+        this.phoneNumber = phoneNumber;
+        this.webSite = webSite;
+        this.coworkersEatingHere = new ArrayList<>();
     }
 
-    public Restaurant(String mRestaurantPlaceId, String mRestaurantName, String mRestaurantAddress,
-                      String mRestaurantDistanceText, double mRestaurantRating, String mRestaurantPhotoUrl,
-                      Location mRestaurantLocation, RestaurantDetail.OpeningHours mRestaurantOpeningHours,
-                      float mRestaurantDistance, List<CoworkerList> mRestaurantCoworkerList) {
-        restaurantPlaceId = mRestaurantPlaceId;
-        restaurantName = mRestaurantName;
-        restaurantAddress = mRestaurantAddress;
-        restaurantDistanceText = mRestaurantDistanceText;
-        restaurantRating = mRestaurantRating;
-        restaurantPhotoUrl = mRestaurantPhotoUrl;
-        restaurantLocation = mRestaurantLocation;
-        restaurantOpeningHours = mRestaurantOpeningHours;
-        restaurantDistance = mRestaurantDistance;
-        restaurantCoworkerList = mRestaurantCoworkerList;
+    public String getRestaurantID() {
+        return restaurantID;
     }
 
-    public Restaurant(String mRestaurantPlaceId, String mRestaurantName, String mRestaurantAddress, String mRestaurantPhone, String mRestaurantWebSite,
-                      String mRestaurantDistanceText,  double mRestaurantRating, String mRestaurantPhotoUrl,
-                      Location mRestaurantLocation, RestaurantDetail.OpeningHours mRestaurantOpeningHours,
-                      float mRestaurantDistance, List<CoworkerList> mRestaurantCoworkerList) {
-
-        restaurantPlaceId = mRestaurantPlaceId;
-        restaurantName = mRestaurantName;
-        restaurantAddress = mRestaurantAddress;
-        restaurantPhone = mRestaurantPhone;
-        restaurantWebSite = mRestaurantWebSite;
-        restaurantDistanceText = mRestaurantDistanceText;
-        restaurantRating = mRestaurantRating;
-        restaurantPhotoUrl = mRestaurantPhotoUrl;
-        restaurantLocation = mRestaurantLocation;
-        restaurantOpeningHours = mRestaurantOpeningHours;
-        restaurantDistance = mRestaurantDistance;
-        restaurantCoworkerList = mRestaurantCoworkerList;
-        coworkersEatingHere = new ArrayList<>();
+    public void setRestaurantID(String restaurantID) {
+        this.restaurantID = restaurantID;
     }
 
-    public String getRestaurantPlaceId() { return restaurantPlaceId; }
+    public String getName() {
+        return name;
+    }
 
-    public void setRestaurantPlaceId(String mRestaurantPlaceId) { restaurantPlaceId = mRestaurantPlaceId; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public String getRestaurantName() { return restaurantName; }
+    public Double getLatitude() {
+        return latitude;
+    }
 
-    public void setRestaurantName(String mRestaurantName) { restaurantName = mRestaurantName; }
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
 
-    public String getRestaurantAddress() { return restaurantAddress; }
+    public Double getLongitude() {
+        return longitude;
+    }
 
-    public void setRestaurantAddress(String mRestaurantAddress) { restaurantAddress = mRestaurantAddress; }
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
 
-    public String getRestaurantPhone() { return restaurantPhone; }
+    public String getAddress() {
+        return address;
+    }
 
-    public void setRestaurantPhone(String mRestaurantPhone) { restaurantPhone = mRestaurantPhone; }
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-    public String getRestaurantWebSite() { return restaurantWebSite; }
+    public int getOpeningHours() {
+        return openingHours;
+    }
 
-    public void setRestaurantWebSite(String mRestaurantWebSite) { restaurantWebSite = mRestaurantWebSite; }
+    public void setOpeningHours(int openingHours) {
+        this.openingHours = openingHours;
+    }
 
-    public String getRestaurantDistanceText() { return restaurantDistanceText; }
+    public Integer getDistance() {
+        return distance;
+    }
 
-    public void setRestaurantDistanceText(String mRestaurantDistanceText) { restaurantDistanceText = mRestaurantDistanceText; }
+    public void setDistance(Integer distance) {
+        this.distance = distance;
+    }
 
-    public void setCoworkerChoice(List<Coworker> coworkers){
-        coworkersEatingHere = coworkers;
+    public String getPhotoReference() {
+        return photoReference;
+    }
+
+    public void setPhotoReference(String photoReference) {
+        this.photoReference = photoReference;
+    }
+
+    public void setCoworkersGoingEating(List<Coworker> users) {
+        coworkersEatingHere = users;
 
     }
 
-    public List<Coworker> getCoworkerChoice(){
+    public List<Coworker> getCoworkersEatingHere() {
         return coworkersEatingHere;
     }
 
-    public double getRestaurantRating() { return restaurantRating; }
-
-    public void setRestaurantRating(double mRestaurantRating) { restaurantRating = mRestaurantRating; }
-
-    public String getRestaurantPhotoUrl() { return restaurantPhotoUrl; }
-
-    public void setRestaurantPhotoUrl(String mRestaurantPhotoUrl) { restaurantPhotoUrl = mRestaurantPhotoUrl; }
-
-    public Location getRestaurantLocation() { return restaurantLocation; }
-
-    public void setRestaurantLocation(Location mRestaurantLocation) { restaurantLocation = mRestaurantLocation; }
-
-    public RestaurantDetail.OpeningHours getRestaurantOpeningHours() { return restaurantOpeningHours; }
-
-    public void setRestaurantOpeningHours(RestaurantDetail.OpeningHours mRestaurantOpeningHours) { restaurantOpeningHours = mRestaurantOpeningHours; }
-
-    public float getRestaurantDistance() { return restaurantDistance; }
-
-    public void setRestaurantDistance(float mRestaurantDistance) { restaurantDistance = mRestaurantDistance; }
-
-    public List<CoworkerList> getRestaurantCoworkerList() {
-        return restaurantCoworkerList;
+    public float getRating() {
+        return rating;
     }
 
-    public void setRestaurantCoworkerList(List<CoworkerList> mRestaurantCoworkerList) {
-        restaurantCoworkerList = mRestaurantCoworkerList;
+    public void setRating(float rating) {
+        this.rating = rating;
     }
 
-    @Override
-    public int compareTo(Restaurant mRestaurant) { return (int)mRestaurant.restaurantDistance - (int)this.restaurantDistance; }
-
-  // public String SetChosenRestaurant() {
-  //
-  // }
-
-    public static class CoworkerList {
-        public String coworkerId;
-        public String coworkerName;
-        public String coworkerUrl;
-
-        public CoworkerList() {}
-
-        public CoworkerList(String mCoworkerId, String mCoworkerName, String mCoworkerUrl) {
-            coworkerId = mCoworkerId;
-            coworkerName = mCoworkerName;
-            coworkerUrl = mCoworkerUrl;
-        }
-
-        public String getCoworkerId() {
-            return coworkerId;
-        }
-
-        public void setCoworkerId(String mCoworkerId) {
-            coworkerId = mCoworkerId;
-        }
-
-        public String getCoworkerName() {
-            return coworkerName;
-        }
-
-        public void setCoworkerName(String mCoworkerName) {
-            coworkerName = mCoworkerName;
-        }
-
-        public String getCoworkerUrl() {
-            return coworkerUrl;
-        }
-
-        public void setCoworkerUrl(String mCoworkerUrl) {
-            coworkerUrl = mCoworkerUrl;
-        }
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public enum Fields{
-        Restaurant,
-        restaurantPlaceId,
-        restaurantName,
-        restaurantAddress,
-        restaurantPhone,
-        restaurantWebSite,
-        restaurantDistanceText,
-        restaurantRating,
-        restaurantPhotoUrl,
-        restaurantLocation,
-        restaurantOpeningHours,
-        restaurantDistance,
-        restaurantCoworkerList
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
+
+    public String getWebSite() {
+        return webSite;
+    }
+
+    public void setWebSite(String webSite) {
+        this.webSite = webSite;
+    }
+
 }
