@@ -45,7 +45,7 @@
     <string name="no_time">Horaire indisponible</string>
     <string name="closed">Fermé</string>
     <string name="closing_soon">Ferme bientot</string>
-    <string name="open_until">Ouvert jusqu\'à </string>
+    <string name="open_until">Ouvert jusqu\'à %s</string>
     <string name="opening_soon">Ouvre bientot</string>
     <string name="open_24_7">Ouvert 24/7</string>
     <string name="open_24h">Ouvert 24h</string>

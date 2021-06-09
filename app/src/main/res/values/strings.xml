@@ -94,7 +94,7 @@
     <string name="no_time">No Time available</string>
     <string name="closed">Closed</string>
     <string name="closing_soon">Close soon</string>
-    <string name="open_until">Open until %s</string>
+    <string name="open_until">Open until %</string>
     <string name="opening_soon">Opening soon</string>
     <string name="open_24_7">Open 24/7</string>
     <string name="open_24h">Open 24h</string>

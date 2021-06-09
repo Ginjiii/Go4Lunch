@@ -93,6 +93,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Ea
         this.googleMap = googleMap;
         googleMap.setIndoorEnabled(false);
         updateLocationUI();
+        googleMap.setOnCameraMoveListener(this::onMarkerClick);
     }
 
     @Override
@@ -166,5 +167,11 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Ea
         mapView = binding.mapView;
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+    }
+
+    public void displayRestaurant(LatLng latLng) {
+        if (latLng != null) {
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
+        }
     }
 }

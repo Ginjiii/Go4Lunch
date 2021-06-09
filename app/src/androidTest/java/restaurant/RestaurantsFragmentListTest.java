@@ -1,22 +1,35 @@
 package restaurant;
 
-import com.example.go4lunch.goforlunch.models.common.Location;
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.MutableLiveData;
+
+import com.example.go4lunch.goforlunch.models.Restaurant;
+import com.example.go4lunch.goforlunch.repositories.RestaurantRepository;
 import com.example.go4lunch.goforlunch.ui.restaurant.RestaurantsViewModel;
 
-import junit.framework.TestCase;
+import org.junit.Rule;
+import org.mockito.Mock;
 
-public class RestaurantsFragmentListTest extends TestCase {
+import java.util.ArrayList;
+import java.util.List;
 
-    private Location location;
+public class RestaurantsFragmentListTest {
+
+    @Rule
+    public InstantTaskExecutorRule mInstantTaskExecutorRule = new InstantTaskExecutorRule();
     private RestaurantsViewModel restaurantsViewModel;
-    private android.location.Location locationUser;
 
-    public void setUp() throws Exception {
-        super.setUp();
-    }
+    @Mock
+    public RestaurantRepository restaurantRepository;
 
-    public void testGetLocationUser() {
-        assertEquals(location, locationUser);
-    }
+    private MutableLiveData<List<Restaurant>> mGetGoogleRestaurantList = new MutableLiveData<>();
+
+    private List<Restaurant> mRestaurantList = new ArrayList<>();
+
+ //  @Before
+ //  public void setup() {
+ //      initMocks(this);
+ //      restaurantsViewModel = new RestaurantsViewModel(restaurantRepository);
+ //  }
 
 }

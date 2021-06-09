@@ -46,7 +46,8 @@
         <activity
             android:name="com.example.go4lunch.goforlunch.ui.setting.SettingActivity"
             android:parentActivityName="com.example.go4lunch.goforlunch.ui.MainActivity" />
-        <activity android:name="com.example.go4lunch.goforlunch.ui.restaurantDetail.RestaurantDetailActivity" />
+        <activity android:name="com.example.go4lunch.goforlunch.ui.restaurantDetail.RestaurantDetailActivity"
+        android:parentActivityName="com.example.go4lunch.goforlunch.ui.MainActivity" />
         <activity android:name="com.example.go4lunch.goforlunch.ui.MainActivity" />
         <activity android:name="com.example.go4lunch.goforlunch.ui.signin.SignInActivity">
             <intent-filter>

@@ -19,6 +19,17 @@ public class SignInViewModel extends BaseViewModel {
         this.coworkerRepository = coworkerRepository;
     }
 
+    public void startSignInYourself(Activity activity) {
+        activity.startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(Collections.singletonList(new
+                                AuthUI.IdpConfig.EmailBuilder().build()))
+                        .setIsSmartLockEnabled(false, true)
+                        .build(),
+                RC_SIGN_IN);
+    }
+
     public void startSignInActivityFacebook(Activity activity) {
         activity.startActivityForResult(
                 AuthUI.getInstance()
@@ -83,4 +94,6 @@ public class SignInViewModel extends BaseViewModel {
     public boolean isCurrentUserLogged() {
         return getCurrentUser() != null;
     }
+
+
 }

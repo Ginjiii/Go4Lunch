@@ -238,11 +238,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     // -----------------
-    // AUTOCOMPLETE CLICK
-    // -----------------
+// AUTOCOMPLETE CLICK
+// -----------------
 
     public void startAutocompleteActivity() {
-        List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.TYPES);
+        List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.TYPES, Place.Field.LAT_LNG);
         Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
                 .setCountry("FR")
                 .setTypeFilter(TypeFilter.ESTABLISHMENT)
@@ -250,23 +250,43 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_frame_layout);
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place requestPlace = Autocomplete.getPlaceFromIntent(data);
-                if (requestPlace.getTypes() != null) {
-                    for (Place.Type type : requestPlace.getTypes()) {
-                        if (type == Place.Type.RESTAURANT) {
-                            Intent detailIntent = new Intent(this, RestaurantDetailActivity.class);
-                            detailIntent.putExtra(RESTAURANT_PLACE_ID, requestPlace.getId());
-                            startActivity(detailIntent);
-                        }
-                    }
+                if (currentFragment instanceof MapsFragment) {
+                    moveToRestaurantLocation((MapsFragment) currentFragment, requestPlace);
+                } else {
+                    displayDetailRestaurant(requestPlace);
                 }
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void moveToRestaurantLocation(MapsFragment mapsFragment, Place requestPlace) {
+        if (requestPlace.getTypes() != null) {
+            for (Place.Type type : requestPlace.getTypes()) {
+                if (type == Place.Type.RESTAURANT) {
+                    mapsFragment.displayRestaurant(requestPlace.getLatLng());
+                }
+            }
+        }
+    }
+
+    private void displayDetailRestaurant(Place requestPlace) {
+        if (requestPlace.getTypes() != null) {
+            for (Place.Type type : requestPlace.getTypes()) {
+                if (type == Place.Type.RESTAURANT) {
+                    Intent detailIntent = new Intent(this, RestaurantDetailActivity.class);
+                    detailIntent.putExtra(RESTAURANT_PLACE_ID, requestPlace.getId());
+                    startActivity(detailIntent);
+                }
+            }
+        }
     }
 
     // -----------------

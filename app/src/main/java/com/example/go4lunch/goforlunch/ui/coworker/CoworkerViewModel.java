@@ -14,7 +14,6 @@ import java.util.List;
 
 public class CoworkerViewModel extends BaseViewModel {
 
-    private RestaurantRepository restaurantRepository;
 
     private MutableLiveData<List<Coworker>> coworkers = new MutableLiveData<>();
 
