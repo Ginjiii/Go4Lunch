@@ -3,7 +3,6 @@ package com.example.go4lunch.goforlunch.repositories;
 import android.location.Location;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -166,12 +165,6 @@ public class RestaurantRepository {
 
     public Task<DocumentSnapshot> getRestaurantFromFirebase(String restaurantID) {
         return restaurantCollection.document(restaurantID).get();
-    }
-
-    public Task<Void> createRestaurantInFirestore(String restaurantID, String name, Double latitude, Double longitude, @Nullable String address,
-                                                  int openingHours, int distance, @Nullable String photoReference, float rating, String phoneNumber, String webSite) {
-        Restaurant newRestaurant = new Restaurant(restaurantID, name, latitude, longitude, address, openingHours, distance, photoReference, rating, phoneNumber, webSite);
-        return getRestaurantCollection().document(restaurantID).set(newRestaurant);
     }
 
     /**
