@@ -20,6 +20,7 @@ public class Restaurant {
     private String webSite;
     private List<Coworker> coworkersEatingHere;
 
+    public Restaurant(){ }
     public Restaurant(String restaurantID, String name, Double latitude, Double longitude, @Nullable String address,
                       int openingHours, int distance, @Nullable String photoReference, float rating, String phoneNumber, String webSite) {
         this.restaurantID = restaurantID;
@@ -100,10 +101,7 @@ public class Restaurant {
         this.photoReference = photoReference;
     }
 
-    public void setCoworkersGoingEating(List<Coworker> users) {
-        coworkersEatingHere = users;
-
-    }
+    public void setCoworkersGoingEating(List<Coworker> users) { coworkersEatingHere = users; }
 
     public List<Coworker> getCoworkersEatingHere() {
         return coworkersEatingHere;

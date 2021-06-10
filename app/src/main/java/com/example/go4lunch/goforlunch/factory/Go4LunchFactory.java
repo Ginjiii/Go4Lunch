@@ -35,7 +35,7 @@ public class Go4LunchFactory implements ViewModelProvider.Factory {
             return (T) new SignInViewModel(coworkerRepository);
         }
         if (modelClass.isAssignableFrom(MainViewModel.class)) {
-            return (T) new MainViewModel(coworkerRepository);
+            return (T) new MainViewModel (coworkerRepository);
         }
         if (modelClass.isAssignableFrom(MapsViewModel.class)) {
             return (T) new MapsViewModel(restaurantRepository, coworkerRepository);
