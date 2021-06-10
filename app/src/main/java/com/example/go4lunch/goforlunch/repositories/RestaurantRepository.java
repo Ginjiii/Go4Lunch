@@ -49,11 +49,14 @@ public class RestaurantRepository {
     private final String key = BuildConfig.MAPS_API_KEY;
 
     private final MutableLiveData<List<Restaurant>> restaurantListMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<Restaurant> restaurantLiveData = new MutableLiveData<>();
     private final List<Restaurant> restaurants = new ArrayList<>();
 
     private static volatile RestaurantRepository INSTANCE;
 
-    public RestaurantRepository() {this.restaurantCollection = getRestaurantCollection();}
+    public RestaurantRepository() {
+        this.restaurantCollection = getRestaurantCollection();
+    }
 
     public static RestaurantRepository getInstance() {
         if (INSTANCE == null) {
@@ -91,54 +94,52 @@ public class RestaurantRepository {
                 Log.e(TAG, "onFailure getGoogleRestaurantList: " + throwable.getMessage());
             }
         });
-
         return restaurantListMutableLiveData;
     }
 
     public LiveData<Restaurant> getGoogleRestaurantDetail(String placeId) {
-        MutableLiveData<Restaurant> restaurantLiveData = new MutableLiveData<>();
-
+        restaurantLiveData = new MutableLiveData<>();
         getRestaurantFromFirebase(placeId).addOnSuccessListener(documentSnapshot -> {
             Restaurant restaurantFirebase = documentSnapshot.toObject(Restaurant.class);
             if (restaurantFirebase != null) {
                 restaurants.add(restaurantFirebase);
                 restaurantLiveData.setValue(restaurantFirebase);
                 restaurantListMutableLiveData.postValue(restaurants);
-
             }else {
-                GooglePlacesService googlePlacesService = Retrofit.getClient().create(GooglePlacesService.class);
-                String fields = "name,address_components,adr_address,formatted_address,formatted_phone_number,geometry,icon,id,international_phone_number,rating,website,utc_offset,opening_hours,photo,vicinity,place_id";
-
-                Call<ApiDetailsRestaurantResponse> restaurantDetailCall = googlePlacesService.getRestaurantDetail(key, placeId, fields);
-
-                restaurantDetailCall.enqueue(new Callback<ApiDetailsRestaurantResponse>() {
-                    @Override
-                    public void onResponse(@NotNull Call<ApiDetailsRestaurantResponse> call, @NotNull Response<ApiDetailsRestaurantResponse> response) {
-                        Log.d(TAG, "onResponse getGoogleRestaurantDetail");
-
-                        if (response.isSuccessful() && response.body().getResult() != null) {
-                            Restaurant restaurant = createRestaurant(response.body().getResult());
-                            saveRestaurantInFirestore(restaurant);
-                            restaurants.add(restaurant);
-                            restaurantLiveData.setValue(restaurant);
-                            restaurantListMutableLiveData.postValue(restaurants);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull Call<ApiDetailsRestaurantResponse> call, @NotNull Throwable throwable) {
-                        Log.e(TAG, "onFailure getGoogleRestaurantDetail");
-                    }
-                });
-
+                getWebServiceCall(placeId);
             }
-
-
         });
-
-
-    return restaurantLiveData;
+        return restaurantLiveData;
     }
+
+
+     public LiveData<Restaurant> getWebServiceCall(String placeId) {
+            GooglePlacesService googlePlacesService = Retrofit.getClient().create(GooglePlacesService.class);
+            String fields = "name,address_components,adr_address,formatted_address,formatted_phone_number,geometry,icon,id,international_phone_number,rating,website,utc_offset,opening_hours,photo,vicinity,place_id";
+
+            Call<ApiDetailsRestaurantResponse> restaurantDetailCall = googlePlacesService.getRestaurantDetail(key, placeId, fields);
+
+            restaurantDetailCall.enqueue(new Callback<ApiDetailsRestaurantResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<ApiDetailsRestaurantResponse> call, @NotNull Response<ApiDetailsRestaurantResponse> response) {
+                    Log.d(TAG, "onResponse getGoogleRestaurantDetail");
+
+                    if (response.isSuccessful() && response.body().getResult() != null) {
+                        Restaurant restaurant = createRestaurant(response.body().getResult());
+                        saveRestaurantInFirestore(restaurant);
+                        restaurants.add(restaurant);
+                        restaurantLiveData.setValue(restaurant);
+                        restaurantListMutableLiveData.postValue(restaurants);
+                    }
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<ApiDetailsRestaurantResponse> call, @NotNull Throwable throwable) {
+                    Log.e(TAG, "onFailure getGoogleRestaurantDetail");
+                }
+            });
+         return restaurantLiveData;
+     }
 
     private Restaurant createRestaurant(RestaurantApi result) {
         String uid = result.getPlaceId();
