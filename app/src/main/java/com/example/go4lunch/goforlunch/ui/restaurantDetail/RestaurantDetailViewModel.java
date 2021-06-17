@@ -20,7 +20,7 @@ public class RestaurantDetailViewModel extends BaseViewModel {
     private final String TAG = RestaurantDetailViewModel.class.getSimpleName();
 
     private final RestaurantRepository restaurantRepository;
-    private Restaurant restaurant;
+    public Restaurant restaurant;
 
     public final MutableLiveData<List<Coworker>> mCoworkerList = new MutableLiveData<>();
     public MutableLiveData<Boolean> isRestaurantLiked = new MutableLiveData<>();

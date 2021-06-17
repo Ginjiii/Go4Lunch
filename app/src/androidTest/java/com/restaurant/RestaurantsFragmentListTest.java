@@ -1,4 +1,4 @@
-package restaurant;
+package com.restaurant;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;

@@ -3,6 +3,7 @@ package com.example.go4lunch.goforlunch.repositories;
 import android.location.Location;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -14,6 +15,8 @@ import com.example.go4lunch.goforlunch.service.GooglePlacesService;
 import com.example.go4lunch.goforlunch.service.Retrofit;
 import com.example.go4lunch.goforlunch.utils.Utils;
 import com.go4lunch.BuildConfig;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -37,8 +40,6 @@ public class RestaurantRepository {
 
     private static final String COLLECTION_NAME = "restaurant";
     private final CollectionReference restaurantCollection;
-    private RestaurantRepository restaurantRepository;
-    private Restaurant restaurant;
 
     public static final String TAG = RestaurantRepository.class.getSimpleName();
 
@@ -82,9 +83,14 @@ public class RestaurantRepository {
         restaurantCall.enqueue(new Callback<ApiRestaurantResponse>() {
             @Override
             public void onResponse(@NotNull Call<ApiRestaurantResponse> call, @NotNull Response<ApiRestaurantResponse> response) {
-                Log.d(TAG, "onResponse getGoogleRestaurantList");
-                for (RestaurantApi restaurant : response.body().getResults()) {
-                    getGoogleRestaurantDetail(restaurant.getPlaceId());
+                for (RestaurantApi restaurantapi : response.body().getResults()) {
+                    Restaurant restaurant = createRestaurant(restaurantapi);
+                    restaurants.add(restaurant);
+                    restaurantLiveData.setValue(restaurant);
+                    restaurantListMutableLiveData.postValue(restaurants);
+
+                    deleteRestaurantInFirestore(restaurant.getRestaurantID());
+                    saveRestaurantInFirestore(restaurant);
                 }
             }
 
@@ -97,48 +103,31 @@ public class RestaurantRepository {
     }
 
     public LiveData<Restaurant> getGoogleRestaurantDetail(String placeId) {
-        restaurantLiveData = new MutableLiveData<>();
-        getRestaurantFromFirebase(placeId).addOnSuccessListener(documentSnapshot -> {
-            Restaurant restaurantFirebase = documentSnapshot.toObject(Restaurant.class);
-            if (restaurantFirebase != null) {
-                restaurants.add(restaurantFirebase);
-                restaurantLiveData.setValue(restaurantFirebase);
-                restaurantListMutableLiveData.postValue(restaurants);
-            }else {
-                getWebServiceCall(placeId);
+        GooglePlacesService googlePlacesService = Retrofit.getClient().create(GooglePlacesService.class);
+        String fields = "name,address_components,adr_address,formatted_address,formatted_phone_number,geometry,icon,id,international_phone_number,rating,website,utc_offset,opening_hours,photo,vicinity,place_id";
+
+        Call<ApiDetailsRestaurantResponse> restaurantDetailCall = googlePlacesService.getRestaurantDetail(key, placeId, fields);
+
+        restaurantDetailCall.enqueue(new Callback<ApiDetailsRestaurantResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<ApiDetailsRestaurantResponse> call, @NotNull Response<ApiDetailsRestaurantResponse> response) {
+                Log.d(TAG, "onResponse getGoogleRestaurantDetail");
+
+                if (response.isSuccessful() && response.body().getResult() != null) {
+                    Restaurant restaurant = createRestaurant(response.body().getResult());
+                    restaurants.add(restaurant);
+                    restaurantLiveData.setValue(restaurant);
+                    restaurantListMutableLiveData.postValue(restaurants);
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ApiDetailsRestaurantResponse> call, @NotNull Throwable throwable) {
+                Log.e(TAG, "onFailure getGoogleRestaurantDetail");
             }
         });
         return restaurantLiveData;
     }
-
-
-     public LiveData<Restaurant> getWebServiceCall(String placeId) {
-            GooglePlacesService googlePlacesService = Retrofit.getClient().create(GooglePlacesService.class);
-            String fields = "name,address_components,adr_address,formatted_address,formatted_phone_number,geometry,icon,id,international_phone_number,rating,website,utc_offset,opening_hours,photo,vicinity,place_id";
-
-            Call<ApiDetailsRestaurantResponse> restaurantDetailCall = googlePlacesService.getRestaurantDetail(key, placeId, fields);
-
-            restaurantDetailCall.enqueue(new Callback<ApiDetailsRestaurantResponse>() {
-                @Override
-                public void onResponse(@NotNull Call<ApiDetailsRestaurantResponse> call, @NotNull Response<ApiDetailsRestaurantResponse> response) {
-                    Log.d(TAG, "onResponse getGoogleRestaurantDetail");
-
-                    if (response.isSuccessful() && response.body().getResult() != null) {
-                        Restaurant restaurant = createRestaurant(response.body().getResult());
-                        saveRestaurantInFirestore(restaurant);
-                        restaurants.add(restaurant);
-                        restaurantLiveData.setValue(restaurant);
-                        restaurantListMutableLiveData.postValue(restaurants);
-                    }
-                }
-
-                @Override
-                public void onFailure(@NotNull Call<ApiDetailsRestaurantResponse> call, @NotNull Throwable throwable) {
-                    Log.e(TAG, "onFailure getGoogleRestaurantDetail");
-                }
-            });
-         return restaurantLiveData;
-     }
 
     private Restaurant createRestaurant(RestaurantApi result) {
         String uid = result.getPlaceId();
@@ -158,12 +147,32 @@ public class RestaurantRepository {
     /**
      * Save the restaurant in Firestore
      */
-    public Task<Void> saveRestaurantInFirestore(Restaurant restaurant){
-    this.restaurant = restaurant;
-    return restaurantCollection.document(restaurant.getRestaurantID()).set(restaurant);
+    private void deleteRestaurantInFirestore(String placeId) {
+        Log.d(TAG, "deleteRestaurantInFirestore");
+        restaurantCollection.document(placeId)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error deleting document", e);
+                    }
+                });
     }
 
-    public Task<DocumentSnapshot> getRestaurantFromFirebase(String restaurantID) {
+    /**
+     * Save the restaurant in Firestore
+     */
+    private Task<Void> saveRestaurantInFirestore(Restaurant restaurant) {
+        return restaurantCollection.document(restaurant.getRestaurantID()).set(restaurant);
+    }
+
+    private Task<DocumentSnapshot> getRestaurantFromFirebase(String restaurantID) {
         return restaurantCollection.document(restaurantID).get();
     }
 

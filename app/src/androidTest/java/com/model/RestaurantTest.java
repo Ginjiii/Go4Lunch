@@ -1,4 +1,4 @@
-package model;
+package com.model;
 
 import com.example.go4lunch.goforlunch.models.Coworker;
 import com.example.go4lunch.goforlunch.models.Restaurant;
