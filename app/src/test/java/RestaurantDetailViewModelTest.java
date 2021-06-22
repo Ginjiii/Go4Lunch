@@ -1,6 +1,3 @@
-package com.restaurantDetail;
-
-
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
 
@@ -9,7 +6,7 @@ import com.example.go4lunch.goforlunch.models.Restaurant;
 import com.example.go4lunch.goforlunch.repositories.CoworkerRepository;
 import com.example.go4lunch.goforlunch.repositories.RestaurantRepository;
 import com.example.go4lunch.goforlunch.ui.restaurantDetail.RestaurantDetailViewModel;
-import com.example.go4lunch.goforlunch.utils.LiveDataTestUtil;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -32,9 +29,12 @@ public class RestaurantDetailViewModelTest {
     CoworkerRepository coworkerRepository;
     @Mock
     RestaurantRepository restaurantRepository;
+    @Mock
+    FirebaseAuth firebaseAuth;
 
     private RestaurantDetailViewModel restaurantDetailViewModel;
     private Coworker coworker;
+    private String currentUid = "321";
     private String restaurantId;
     private MutableLiveData<Restaurant> restaurantLiveData = new MutableLiveData<>();
     private MutableLiveData<Restaurant> googleRestaurantDetail = new MutableLiveData<>();
@@ -42,7 +42,7 @@ public class RestaurantDetailViewModelTest {
 
     @Before
     public void setUp()  {
-
+//        when(firebaseAuth.getUid()).thenReturn(currentUid);
         when(coworkerRepository.getActualUser()).thenReturn(coworker);
         when(restaurantRepository.getGoogleRestaurantDetail(restaurantId)).thenReturn(googleRestaurantDetail);
     }
@@ -50,12 +50,14 @@ public class RestaurantDetailViewModelTest {
     @Test
     public void fetchRestaurantViewModel() throws InterruptedException {
         //Given
-        Restaurant restaurantExpected = new Restaurant("restaurantID","name",48.633331,2.33333,"address",10,100,"photoReference",5,"phoneNumber","webSite");
+        Restaurant restaurantExpected = new Restaurant("1234","name",48.633331,2.33333,"address",10,100,"photoReference",5,"phoneNumber","webSite");
         //When
         restaurantDetailViewModel.getRestaurantDetail(restaurantId);
         restaurants = LiveDataTestUtil.getOrAwaitValue(restaurantDetailViewModel.getRestaurantDetail(restaurantId));
         Restaurant restaurantDetailResult = LiveDataTestUtil.getOrAwaitValue(restaurantDetailViewModel.getRestaurantDetail(restaurantId));
+        restaurantDetailViewModel = new RestaurantDetailViewModel(restaurantRepository, coworkerRepository);
         //Then
+        Assert.assertNotNull(restaurantDetailResult);
         Assert.assertEquals(restaurantExpected, restaurantDetailResult );
     }
 }
