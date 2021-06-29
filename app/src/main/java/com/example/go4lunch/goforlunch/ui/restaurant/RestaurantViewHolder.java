@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.go4lunch.goforlunch.models.Restaurant;
 import com.example.go4lunch.goforlunch.ui.restaurantDetail.RestaurantDetailActivity;
+import com.go4lunch.R;
 import com.go4lunch.databinding.RestaurantItemLayoutBinding;
 
 import java.util.List;
@@ -37,8 +38,7 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder {
         }
         int counter = checkCoworkersEatingHere(restaurant.getRestaurantID(), coworkerIds);
         binding.restaurantItemListParticipantsNumber.setText("(" + counter + ")");
-
-//        displayOpeningHours(restaurant.getOpeningHours());
+        binding.restaurantItemListInfo.setText((restaurant.isOpenNow()) ? R.string.restaurant_on : R.string.restaurant_closed_today);
         if (restaurant.getPhotoReference() != null) {
             Glide.with(context)
                     .load(restaurant.getPhotoReference())
@@ -67,27 +67,4 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder {
         }
         return counter;
     }
-
-//    private void displayOpeningHours(int timeOpening) {
-//        switch (timeOpening) {
-//            case R.string.closed:
-//                binding.restaurantItemListInfo.setText(timeOpening);
-//                TextViewCompat.setTextAppearance(binding.restaurantItemListInfo, R.style.TimeRestaurantClosed);
-//                break;
-////            case R.string.closing_soon:
-////                binding.restaurantItemListInfo.setText(timeOpening);
-////                TextViewCompat.setTextAppearance(binding.restaurantItemListInfo, R.style.TimeRestaurantClosingSoon);
-////                break;
-////            case R.string.open_24_7:
-////                binding.restaurantItemListInfo.setText(timeOpening);
-////                TextViewCompat.setTextAppearance(binding.restaurantItemListInfo, R.style.TimeRestaurantOpen);
-////                break;
-//            default:
-//                DateFormat dateFormat = new SimpleDateFormat("hh.mma", Locale.FRANCE);
-//                String timeToDisplay = dateFormat.format(Objects.requireNonNull(Utils.convertStringToDate(timeOpening)));
-//                binding.restaurantItemListInfo.setText(String.format(context.getString(R.string.open_until), timeToDisplay));
-//                TextViewCompat.setTextAppearance(binding.restaurantItemListInfo, R.style.TimeRestaurantOpen);
-//                break;
-//        }
-  //  }
 }

@@ -142,7 +142,7 @@ public class RestaurantRepository {
         String photo = (result.getPhotos() != null) ? getPhoto(result.getPhotos().get(0).getPhotoReference()) : null;
         String address = result.getVicinity();
         int distance = (int) getDistance(latitude, longitude);
-        boolean isOpenNow = result.getOpeningHours().getOpenNow();
+        boolean isOpenNow = result.getOpeningHours() != null && result.getOpeningHours().getOpenNow();
         String webSite = result.getWebsite();
         String phoneNumber = result.getPhoneNumber();
         float rating = result.getRating();

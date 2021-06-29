@@ -50,7 +50,7 @@ public class RestaurantDetailViewModelTest {
     @Test
     public void fetchRestaurantViewModel() throws InterruptedException {
         //Given
-        Restaurant restaurantExpected = new Restaurant("1234","name",48.633331,2.33333,"address",10,100,"photoReference",5,"phoneNumber","webSite");
+        Restaurant restaurantExpected = new Restaurant("1234","name",48.633331,2.33333,"address",true,100,"photoReference",5,"phoneNumber","webSite");
         //When
         restaurantDetailViewModel.getRestaurantDetail(restaurantId);
         restaurants = LiveDataTestUtil.getOrAwaitValue(restaurantDetailViewModel.getRestaurantDetail(restaurantId));
