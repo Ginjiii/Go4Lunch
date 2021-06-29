@@ -12,7 +12,7 @@ public class Restaurant {
     private Double latitude;
     private Double longitude;
     private String address;
-    private int openingHours;
+    private boolean isOpenNow;
     private int distance;
     private String photoReference;
     private float rating;
@@ -22,13 +22,13 @@ public class Restaurant {
 
     public Restaurant(){ }
     public Restaurant(String restaurantID, String name, Double latitude, Double longitude, @Nullable String address,
-                      int openingHours, int distance, @Nullable String photoReference, float rating, String phoneNumber, String webSite) {
+                      boolean isOpenNow, int distance, @Nullable String photoReference, float rating, String phoneNumber, String webSite) {
         this.restaurantID = restaurantID;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.address = address;
-        this.openingHours = openingHours;
+        this.isOpenNow = isOpenNow;
         this.distance = distance;
         this.photoReference = photoReference;
         this.rating = rating;
@@ -77,12 +77,12 @@ public class Restaurant {
         this.address = address;
     }
 
-    public int getOpeningHours() {
-        return openingHours;
+    public boolean isOpenNow() {
+        return isOpenNow;
     }
 
-    public void setOpeningHours(int openingHours) {
-        this.openingHours = openingHours;
+    public void setIsOpenNow(boolean isOpenNow) {
+        this.isOpenNow = isOpenNow;
     }
 
     public Integer getDistance() {

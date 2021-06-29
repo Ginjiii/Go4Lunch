@@ -30,30 +30,28 @@ public class RestaurantsViewModel extends BaseViewModel {
 
         restaurantRepository.getRestaurantFromFirebase().addOnSuccessListener( queryDocumentSnapshots -> {
             for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
-                Restaurant mRestaurant = documentSnapshot.toObject(Restaurant.class);
-                restaurantToAdd.add(mRestaurant);
+                Restaurant restaurant = documentSnapshot.toObject(Restaurant.class);
+                restaurantToAdd.add(restaurant);
             }
             restaurantsLiveData.setValue(restaurantToAdd);
         });
 
-
         return restaurantsLiveData;
     }
 
-
-    /**
-     * Get restaurants.
-     */
-    public void fetchRestaurants() {
-        List<Restaurant> restaurant = new ArrayList<>();
-        restaurantRepository.getAllRestaurants()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
-                        Restaurant mRestaurant = documentSnapshot.toObject(Restaurant.class);
-                        restaurant.add(mRestaurant);
-
-                    }
-                    restaurantsLiveData.setValue(restaurant);
-                });
-    }
+//    /**
+//     * Get restaurants.
+//     */
+//    public void fetchRestaurants() {
+//        List<Restaurant> restaurant = new ArrayList<>();
+//        restaurantRepository.getAllRestaurants()
+//                .addOnSuccessListener(queryDocumentSnapshots -> {
+//                    for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+//                        Restaurant mRestaurant = documentSnapshot.toObject(Restaurant.class);
+//                        restaurant.add(mRestaurant);
+//
+//                    }
+//                    restaurantsLiveData.setValue(restaurant);
+//                });
+//    }
 }

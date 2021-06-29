@@ -13,7 +13,6 @@ import com.example.go4lunch.goforlunch.models.Restaurant;
 import com.example.go4lunch.goforlunch.models.RestaurantApi;
 import com.example.go4lunch.goforlunch.service.GooglePlacesService;
 import com.example.go4lunch.goforlunch.service.Retrofit;
-import com.example.go4lunch.goforlunch.utils.Utils;
 import com.go4lunch.BuildConfig;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -66,9 +65,9 @@ public class RestaurantRepository {
         return INSTANCE;
     }
 
-    public Task<QuerySnapshot> getAllRestaurants() {
-        return restaurantCollection.get();
-    }
+//    public Task<QuerySnapshot> getAllRestaurants() {
+//        return restaurantCollection.get();
+//    }
 
     private CollectionReference getRestaurantCollection() {
         return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
@@ -143,11 +142,11 @@ public class RestaurantRepository {
         String photo = (result.getPhotos() != null) ? getPhoto(result.getPhotos().get(0).getPhotoReference()) : null;
         String address = result.getVicinity();
         int distance = (int) getDistance(latitude, longitude);
-        int openingHours = Utils.getOpeningTime(result.getOpeningHours());
+        boolean isOpenNow = result.getOpeningHours().getOpenNow();
         String webSite = result.getWebsite();
         String phoneNumber = result.getPhoneNumber();
         float rating = result.getRating();
-        return new Restaurant(uid, name, latitude, longitude, address, openingHours, distance, photo, rating, phoneNumber, webSite);
+        return new Restaurant(uid, name, latitude, longitude, address, isOpenNow, distance, photo, rating, phoneNumber, webSite);
     }
 
     /**
