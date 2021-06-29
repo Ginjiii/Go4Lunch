@@ -15,13 +15,10 @@ import com.example.go4lunch.goforlunch.service.GooglePlacesService;
 import com.example.go4lunch.goforlunch.service.Retrofit;
 import com.example.go4lunch.goforlunch.utils.Utils;
 import com.go4lunch.BuildConfig;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
@@ -42,6 +39,8 @@ public class RestaurantRepository {
 
     private static final String COLLECTION_NAME = "restaurant";
     private final CollectionReference restaurantCollection;
+    private RestaurantRepository restaurantRepository;
+    private Restaurant restaurant;
 
     public static final String TAG = RestaurantRepository.class.getSimpleName();
 
@@ -65,6 +64,10 @@ public class RestaurantRepository {
             INSTANCE = new RestaurantRepository();
         }
         return INSTANCE;
+    }
+
+    public Task<QuerySnapshot> getAllRestaurants() {
+        return restaurantCollection.get();
     }
 
     private CollectionReference getRestaurantCollection() {
@@ -131,6 +134,7 @@ public class RestaurantRepository {
         return restaurantLiveData;
     }
 
+
     private Restaurant createRestaurant(RestaurantApi result) {
         String uid = result.getPlaceId();
         String name = result.getName();
@@ -165,27 +169,14 @@ public class RestaurantRepository {
     /**
      * Save the restaurant in Firestore
      */
-    private Task<Void> saveRestaurantInFirestore(Restaurant restaurant) {
+    public Task<Void> saveRestaurantInFirestore(Restaurant restaurant){
+        this.restaurant = restaurant;
         return restaurantCollection.document(restaurant.getRestaurantID()).set(restaurant);
     }
 
-    public Task<DocumentSnapshot> getRestaurantFromFirebase() {
-                restaurantCollection.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-        return restaurantCollection.document().get();
+    public Task<QuerySnapshot> getRestaurantFromFirebase() {
+        return restaurantCollection.get();
     }
-
 
     /**
      * Get the photo from Google

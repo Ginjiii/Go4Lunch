@@ -62,13 +62,14 @@ public class RestaurantsFragmentList extends BaseFragment {
         binding.restaurantRecyclerView.setAdapter(adapter);
     }
 
-    private void fetchRestaurantList() {
+    private void fetchRestaurantList(Location location) {
         viewModel.fetchCoworkersGoing();
         viewModel.coworkersIdMutableLiveData
                 .observe(getViewLifecycleOwner(), coworkerIds ->
-                        viewModel.getRestaurantRepository()
+                        viewModel.getRestaurantListFirebase()
                                 .observe(getViewLifecycleOwner(), list ->
                                         changeAndNotifyAdapterChange(list, coworkerIds)));
+
     }
 
     private void changeAndNotifyAdapterChange(List<Restaurant> restaurants, List<String> coworkerIds) {

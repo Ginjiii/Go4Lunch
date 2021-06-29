@@ -81,14 +81,14 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder {
                 binding.restaurantItemListInfo.setText(timeOpening);
                 TextViewCompat.setTextAppearance(binding.restaurantItemListInfo, R.style.TimeRestaurantClosed);
                 break;
-            case R.string.closing_soon:
-                binding.restaurantItemListInfo.setText(timeOpening);
-                TextViewCompat.setTextAppearance(binding.restaurantItemListInfo, R.style.TimeRestaurantClosingSoon);
-                break;
-            case R.string.open_24_7:
-                binding.restaurantItemListInfo.setText(timeOpening);
-                TextViewCompat.setTextAppearance(binding.restaurantItemListInfo, R.style.TimeRestaurantOpen);
-                break;
+//            case R.string.closing_soon:
+//                binding.restaurantItemListInfo.setText(timeOpening);
+//                TextViewCompat.setTextAppearance(binding.restaurantItemListInfo, R.style.TimeRestaurantClosingSoon);
+//                break;
+//            case R.string.open_24_7:
+//                binding.restaurantItemListInfo.setText(timeOpening);
+//                TextViewCompat.setTextAppearance(binding.restaurantItemListInfo, R.style.TimeRestaurantOpen);
+//                break;
             default:
                 DateFormat dateFormat = new SimpleDateFormat("hh.mma", Locale.FRANCE);
                 String timeToDisplay = dateFormat.format(Objects.requireNonNull(Utils.convertStringToDate(timeOpening)));
