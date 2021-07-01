@@ -35,14 +35,13 @@ public class RestaurantDetailViewModelTest {
     private RestaurantDetailViewModel restaurantDetailViewModel;
     private Coworker coworker;
     private String currentUid = "321";
-    private String restaurantId;
+    private String restaurantId = "restaurantId";
     private MutableLiveData<Restaurant> restaurantLiveData = new MutableLiveData<>();
     private MutableLiveData<Restaurant> googleRestaurantDetail = new MutableLiveData<>();
     private Restaurant restaurants;
 
     @Before
     public void setUp()  {
-//        when(firebaseAuth.getUid()).thenReturn(currentUid);
         when(coworkerRepository.getActualUser()).thenReturn(coworker);
         when(restaurantRepository.getGoogleRestaurantDetail(restaurantId)).thenReturn(googleRestaurantDetail);
     }

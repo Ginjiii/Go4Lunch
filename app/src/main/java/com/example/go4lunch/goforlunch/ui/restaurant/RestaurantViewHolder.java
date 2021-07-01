@@ -3,6 +3,7 @@ package com.example.go4lunch.goforlunch.ui.restaurant;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.core.widget.TextViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -39,6 +40,7 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder {
         int counter = checkCoworkersEatingHere(restaurant.getRestaurantID(), coworkerIds);
         binding.restaurantItemListParticipantsNumber.setText("(" + counter + ")");
         binding.restaurantItemListInfo.setText((restaurant.isOpenNow()) ? R.string.restaurant_on : R.string.restaurant_closed_today);
+        TextViewCompat.setTextAppearance(binding.restaurantItemListInfo, R.style.TimeRestaurantOpen);
         if (restaurant.getPhotoReference() != null) {
             Glide.with(context)
                     .load(restaurant.getPhotoReference())

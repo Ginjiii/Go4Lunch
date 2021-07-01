@@ -16,13 +16,9 @@
     <string name="is_joining"> mange ici!</string>
     <string name="is_eating"> mange à </string>
     <string name="has_not_decided_yet"> n\'a pas encore décidé!</string>
-    <string name="text_restaurant_closed_open_at_on" translatable="false">Fermé ouvre à le</string>
     <string name="restaurant_closed_today">Fermé aujourd\'hui</string>
-    <string name="restaurant_closed_open_at">Fermé. Ouvre à</string>
-    <string name="restaurant_open_until">Ouvert jusqu\'à </string>
-    <string name="restaurant_closing_soon">Ferme bientôt</string>
-    <string name="restaurant_on">le</string>
-    <string name="restaurant_open_h24">Ouvert 24/7</string>
+    <string name="restaurant_on">Ouvert</string>
+
     <string name="call_button">Appel</string>
     <string name="like_button" translatable="false">AIMER</string>
     <string name="website_button" translatable="false">SITE INTERNET</string>
@@ -44,9 +40,5 @@
     <string name="subtitle_notification">Vous avez un déjeuner pour aujourd\'hui</string>
     <string name="no_time">Horaire indisponible</string>
     <string name="closed">Fermé</string>
-    <string name="closing_soon">Ferme bientot</string>
-    <string name="open_until">Ouvert jusqu\'à %s</string>
-    <string name="opening_soon">Ouvre bientot</string>
-    <string name="open_24_7">Ouvert 24/7</string>
-    <string name="open_24h">Ouvert 24h</string>
+
 </resources>
