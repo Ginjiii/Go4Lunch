@@ -24,7 +24,7 @@ public class RestaurantTest {
     private Double latitude = 1.0;
     private Double longitude = -1.0;
     private String address = "address";
-    private int openingHours = 10;
+    private boolean openingHours = true;
     private int distance = 100;
     private String photoReference = "photo_reference";
     private float rating = 4;

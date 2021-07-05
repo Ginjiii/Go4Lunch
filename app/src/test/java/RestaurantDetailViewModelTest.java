@@ -31,8 +31,9 @@ public class RestaurantDetailViewModelTest {
     RestaurantRepository restaurantRepository;
     @Mock
     FirebaseAuth firebaseAuth;
-
+    @Mock
     private RestaurantDetailViewModel restaurantDetailViewModel;
+
     private Coworker coworker;
     private String currentUid = "321";
     private String restaurantId = "restaurantId";
@@ -56,6 +57,7 @@ public class RestaurantDetailViewModelTest {
         Restaurant restaurantDetailResult = LiveDataTestUtil.getOrAwaitValue(restaurantDetailViewModel.getRestaurantDetail(restaurantId));
         restaurantDetailViewModel = new RestaurantDetailViewModel(restaurantRepository, coworkerRepository);
         //Then
+
         Assert.assertNotNull(restaurantDetailResult);
         Assert.assertEquals(restaurantExpected, restaurantDetailResult );
     }

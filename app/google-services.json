@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "1090020078139-ajsfjk250oa68kag8ju22he5hos084ov.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.go4Lunch",
+            "certificate_hash": "252cdb3aeabccdd8baebf1f01d29ffa06e7bf832"
+          }
+        },
+        {
+          "client_id": "1090020078139-bp2ohbq4mpsemud74emfk0kj3mkbpvgp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.go4Lunch",
+            "certificate_hash": "3b23ef3a5c8b46994f49a1e5faaec29889157a76"
+          }
+        },
+        {
           "client_id": "1090020078139-skunjk1o913abibc8j8s0hqh2lpvchsv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

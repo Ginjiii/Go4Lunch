@@ -38,20 +38,4 @@ public class RestaurantsViewModel extends BaseViewModel {
 
         return restaurantsLiveData;
     }
-
-//    /**
-//     * Get restaurants.
-//     */
-//    public void fetchRestaurants() {
-//        List<Restaurant> restaurant = new ArrayList<>();
-//        restaurantRepository.getAllRestaurants()
-//                .addOnSuccessListener(queryDocumentSnapshots -> {
-//                    for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
-//                        Restaurant mRestaurant = documentSnapshot.toObject(Restaurant.class);
-//                        restaurant.add(mRestaurant);
-//
-//                    }
-//                    restaurantsLiveData.setValue(restaurant);
-//                });
-//    }
 }
