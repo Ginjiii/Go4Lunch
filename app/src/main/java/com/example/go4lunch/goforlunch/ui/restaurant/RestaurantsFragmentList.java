@@ -66,7 +66,7 @@ public class RestaurantsFragmentList extends BaseFragment {
         viewModel.fetchCoworkersGoing();
         viewModel.coworkersIdMutableLiveData
                 .observe(getViewLifecycleOwner(), coworkerIds ->
-                        viewModel.getRestaurantListFirebase()
+                        viewModel.getRestaurants()
                                 .observe(getViewLifecycleOwner(), list ->
                                         changeAndNotifyAdapterChange(list, coworkerIds)));
 

@@ -3,7 +3,6 @@ package com.example.go4lunch.goforlunch.repositories;
 import android.location.Location;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -14,11 +13,6 @@ import com.example.go4lunch.goforlunch.models.RestaurantApi;
 import com.example.go4lunch.goforlunch.service.GooglePlacesService;
 import com.example.go4lunch.goforlunch.service.Retrofit;
 import com.go4lunch.BuildConfig;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -36,11 +30,6 @@ import static com.example.go4lunch.goforlunch.service.GooglePlacesService.PHOTO_
 
 public class RestaurantRepository {
 
-    private static final String COLLECTION_NAME = "restaurant";
-    private final CollectionReference restaurantCollection;
-    private RestaurantRepository restaurantRepository;
-    private Restaurant restaurant;
-
     public static final String TAG = RestaurantRepository.class.getSimpleName();
 
     private double longUser = 0.0;
@@ -48,29 +37,19 @@ public class RestaurantRepository {
 
     private final String key = BuildConfig.MAPS_API_KEY;
 
-    private final MutableLiveData<List<Restaurant>> restaurantListMutableLiveData = new MutableLiveData<>();
+    public final MutableLiveData<List<Restaurant>> restaurantListMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<Restaurant> restaurantLiveData = new MutableLiveData<>();
     private final List<Restaurant> restaurants = new ArrayList<>();
 
     private static volatile RestaurantRepository INSTANCE;
 
-    public RestaurantRepository() {
-        this.restaurantCollection = getRestaurantCollection();
-    }
+    public RestaurantRepository() {}
 
     public static RestaurantRepository getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new RestaurantRepository();
         }
         return INSTANCE;
-    }
-
-//    public Task<QuerySnapshot> getAllRestaurants() {
-//        return restaurantCollection.get();
-//    }
-
-    private CollectionReference getRestaurantCollection() {
-        return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
     }
 
     /**
@@ -92,9 +71,6 @@ public class RestaurantRepository {
                     restaurants.add(restaurant);
                     restaurantLiveData.setValue(restaurant);
                     restaurantListMutableLiveData.postValue(restaurants);
-
-                    deleteRestaurantInFirestore(restaurant.getRestaurantID());
-                    saveRestaurantInFirestore(restaurant);
                 }
             }
 
@@ -148,35 +124,6 @@ public class RestaurantRepository {
         float rating = result.getRating();
         return new Restaurant(uid, name, latitude, longitude, address, openNow, distance, photo, rating, phoneNumber, webSite);
     }
-
-    /**
-     * Save the restaurant in Firestore
-     */
-    private void deleteRestaurantInFirestore(String placeId) {
-        Log.d(TAG, "deleteRestaurantInFirestore");
-        restaurantCollection.document(placeId)
-                .delete()
-                .addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully deleted!"))
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error deleting document", e);
-                    }
-                });
-    }
-
-    /**
-     * Save the restaurant in Firestore
-     */
-    public Task<Void> saveRestaurantInFirestore(Restaurant restaurant){
-        this.restaurant = restaurant;
-        return restaurantCollection.document(restaurant.getRestaurantID()).set(restaurant);
-    }
-
-    public Task<QuerySnapshot> getRestaurantFromFirebase() {
-        return restaurantCollection.get();
-    }
-
     /**
      * Get the photo from Google
      */

@@ -30,6 +30,10 @@ public class BaseViewModel extends ViewModel {
         return restaurantRepository.getGoogleRestaurantList(latitude, longitude);
     }
 
+    public LiveData<List<Restaurant>> getRestaurants() {
+        return restaurantRepository.restaurantListMutableLiveData;
+    }
+
 
     /**
      * Get going coworkers.
