@@ -271,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (requestPlace.getTypes() != null) {
             for (Place.Type type : requestPlace.getTypes()) {
                 if (type == Place.Type.RESTAURANT) {
-                    mapsFragment.displayRestaurant(requestPlace.getLatLng());
+                    mapsFragment.displayRestaurant(requestPlace.getLatLng(), requestPlace.getName(), requestPlace.getId());
                 }
             }
         }

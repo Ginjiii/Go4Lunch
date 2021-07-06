@@ -169,9 +169,18 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Ea
         mapView.getMapAsync(this);
     }
 
-    public void displayRestaurant(LatLng latLng) {
+    public void displayRestaurant(LatLng latLng, String name, String id) {
         if (latLng != null) {
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
+            int iconResource =  R.drawable.icon_location_normal;
+            LatLng positionRestaurant = new LatLng(latLng.latitude, latLng.longitude);
+            googleMap.addMarker(new MarkerOptions()
+                    .position(positionRestaurant)
+                    .icon(BitmapDescriptorFactory.fromResource(iconResource))
+                    .title(name))
+                    .setTag(id);
+
+            onMarkerClick();
         }
     }
 }
