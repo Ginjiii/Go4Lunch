@@ -3,6 +3,7 @@ import android.app.Activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.go4lunch.goforlunch.models.Coworker;
 import com.example.go4lunch.goforlunch.models.Restaurant;
@@ -30,52 +31,12 @@ import java.util.concurrent.Executor;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 
 public class RestaurantDetailViewModelTest {
-
-//    @Rule
-//    public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
-//
-//    @Mock
-//    CoworkerRepository coworkerRepository;
-//    @Mock
-//    RestaurantRepository restaurantRepository;
-//    @Mock
-//    FirebaseAuth firebaseAuth;
-//    @Mock
-//    private RestaurantDetailViewModel restaurantDetailViewModel;
-//
-//    private Coworker coworker;
-//    private String currentUid = "321";
-//    private String restaurantId = "restaurantId";
-//    private MutableLiveData<Restaurant> restaurantLiveData = new MutableLiveData<>();
-//    private MutableLiveData<Restaurant> googleRestaurantDetail = new MutableLiveData<>();
-//    private Restaurant restaurants;
-//
-//    @Before
-//    public void setUp()  {
-//        when(coworkerRepository.getActualUser()).thenReturn(coworker);
-//        when(restaurantRepository.getGoogleRestaurantDetail(restaurantId)).thenReturn(googleRestaurantDetail);
-//    }
-//
-//    @Test
-//    public void fetchRestaurantViewModel() throws InterruptedException {
-//        //Given
-//        Restaurant restaurantExpected = new Restaurant("1234","name",48.633331,2.33333,"address",true,100,"photoReference",5,"phoneNumber","webSite");
-//        //When
-//        restaurantDetailViewModel.getRestaurantDetail(restaurantId);
-//        restaurants = LiveDataTestUtil.getOrAwaitValue(restaurantDetailViewModel.getRestaurantDetail(restaurantId));
-//        Restaurant restaurantDetailResult = LiveDataTestUtil.getOrAwaitValue(restaurantDetailViewModel.getRestaurantDetail(restaurantId));
-//        restaurantDetailViewModel = new RestaurantDetailViewModel(restaurantRepository, coworkerRepository);
-//        //Then
-//
-//        Assert.assertNotNull(restaurantDetailResult);
-//        Assert.assertEquals(restaurantExpected, restaurantDetailResult );
-//    }
-//}
 
     private RestaurantDetailViewModel restaurantDetailViewModel;
 
@@ -127,7 +88,40 @@ public class RestaurantDetailViewModelTest {
         assertFalse(restaurantDetailViewModel.isRestaurantLiked.getValue());
     }
 
+    @Test
+    public void changeListCoworkerLike(){
+        when(coworkerRepository.getActualUser()).thenReturn(coworker);
+        when(coworkerRepository.getAllCoworker()).thenReturn(mockQuerySnap());
+        when(coworkerRepository.addLikedRestaurant(restaurant1.getRestaurantID())).thenReturn(null);
+        when(coworkerRepository.removeLikedRestaurant(restaurant1.getRestaurantID())).thenReturn(null);
 
+        restaurantDetailViewModel = new RestaurantDetailViewModel(restaurantRepository, coworkerRepository);
+        restaurantDetailViewModel.fetchInfoRestaurant(restaurant1);
+
+
+        restaurantDetailViewModel.updateRestaurantLiked(restaurant1);
+        assertTrue(restaurantDetailViewModel.isRestaurantLiked.getValue());
+
+        // Put to false the like button and update the restaurant
+        MutableLiveData<Boolean> setToFalse = new MutableLiveData<>();
+        setToFalse.postValue(false);
+        restaurantDetailViewModel.updateRestaurantLiked(restaurant1);
+        // check value like to false
+        assertFalse(restaurantDetailViewModel.isRestaurantLiked.getValue());
+    }
+
+
+
+    @Test
+    public void changeListCoworkerEating(){
+
+        when(coworkerRepository.getActualUser()).thenReturn(coworker);
+        when(coworkerRepository.getAllCoworker()).thenReturn(mockQuerySnap());
+
+
+        restaurantDetailViewModel = new RestaurantDetailViewModel(restaurantRepository, coworkerRepository);
+        restaurantDetailViewModel.fetchInfoRestaurant(restaurant1);
+    }
 
 
     private Task<QuerySnapshot> mockQuerySnap(){
@@ -201,3 +195,4 @@ public class RestaurantDetailViewModelTest {
         };
     }
 }
+

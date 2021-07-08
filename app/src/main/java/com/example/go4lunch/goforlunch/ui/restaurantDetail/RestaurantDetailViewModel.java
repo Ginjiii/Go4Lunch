@@ -43,7 +43,8 @@ public class RestaurantDetailViewModel extends BaseViewModel {
         if (coworker.getCoworkerRestaurantChoice() != null) {
             String uidSelection = coworker.getCoworkerRestaurantChoice().getRestaurantId();
             String restaurantId = restaurant.getRestaurantID();
-            isRestaurantPicked.setValue(uidSelection.equals(restaurantId));
+            if (uidSelection != null)
+                isRestaurantPicked.setValue(uidSelection.equals(restaurantId));
         } else {
             isRestaurantPicked.setValue(false);
         }
@@ -52,12 +53,10 @@ public class RestaurantDetailViewModel extends BaseViewModel {
     public void updateRestaurantLiked(Restaurant restaurant) {
         if (isRestaurantLiked.getValue()) {
             isRestaurantLiked.setValue(false);
-            coworkerRepository.removeLikedRestaurant(restaurant.getRestaurantID())
-                    .addOnCompleteListener(result -> Log.i(TAG, "restaurant disliked"));
+            coworkerRepository.removeLikedRestaurant(restaurant.getRestaurantID());
         } else {
             isRestaurantLiked.setValue(true);
-            coworkerRepository.addLikedRestaurant(restaurant.getRestaurantID())
-                    .addOnCompleteListener(result -> Log.i(TAG, "restaurant liked"));
+            coworkerRepository.addLikedRestaurant(restaurant.getRestaurantID());
         }
     }
 
